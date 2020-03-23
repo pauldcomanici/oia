@@ -1,0 +1,42 @@
+# system files
+.DS_Store
+*.log
+*desktop.ini
+
+# Exclude cache directory
+.cache
+__cache__
+
+# Exclude folder where package is build
+lib
+
+# editor files
+*.idea
+*.iml
+*nbproject
+.settings
+.classpath
+.project
+*.prefs
+.vscode/
+nbproject/
+
+# node files
+node_modules
+
+# unit-testing coverage
+coverage
+
+# build related
+build
+buildZip
+
+# documentation
+jsdoc
+
+# sonar-scanner
+*.scannerwork
+
+# other files
+package-lock.json
+

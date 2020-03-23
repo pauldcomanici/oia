@@ -1,0 +1,28 @@
+{
+  "name": "oia",
+  "version": "1.0.0",
+  "description": "oia - JS Packages",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darkyndy/oia.git"
+  },
+  "author": "Paul Comanici",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darkyndy/oia/issues"
+  },
+  "homepage": "https://github.com/darkyndy/oia#readme",
+  "devDependencies": {
+    "@babel/cli": "false7.8.4",
+    "@babel/core": "false7.9.0",
+    "babel-jest": "false25.1.0",
+    "babel-preset-minify": "false0.5.1",
+    "eslint": "false6.8.0",
+    "eslint-plugin-import": "false2.20.1",
+    "jest": "false25.1.0",
+    "lerna": "3.20.2",
+    "rimraf": "false3.0.2"
+  }
+}
