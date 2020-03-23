@@ -1,0 +1,49 @@
+{
+  "name": "babel-plugin-auto-logger",
+  "description": "Babel Plugin that will automatically add logging",
+  "repository": "https://github.com/darkyndy/oia/packages/babel-plugin-auto-logger",
+  "license": "MIT",
+  "private": false,
+  "main": "lib/index.js",
+  "author": "darkyndy",
+  "dependencies": {
+    "@babel/helper-plugin-utils": "7.0.0",
+    "@babel/types": "7.7.4"
+  },
+  "devDependencies": {
+    "@babel/helper-plugin-test-runner": "7.7.4"
+  },
+  "peerDependencies": {},
+  "scripts": {
+    "build": "npm run lint && npm run test-coverage && npm run snyk-test && npm run compile && npm run test-e2e",
+    "compile": "rimraf lib && babel src --out-dir lib",
+    "lint": "npm run lint-source && npm run lint-tests",
+    "lint-source": "eslint ./src",
+    "lint-tests": "eslint ./__tests__",
+    "prepare": "npm run snyk-protect",
+    "prepublishOnly": "npm run build",
+    "postinstall": "node ./scripts/postinstall.js || exit 0",
+    "report-coverage": "codecov",
+    "test": "jest --config=./config/jest-ut.js",
+    "test-e2e": "jest --config=./__e2e__/jest.json",
+    "test-e2e-latest": "npm run compile && npm run test-e2e",
+    "test-watch": "npm run test -- --watch",
+    "test-coverage": "npm run test -- --coverage",
+    "snyk-protect": "snyk protect",
+    "snyk-test": "snyk test",
+    "upgrade-all": "npm-check --update-all",
+    "upgrade-interactive": "npm-check --update"
+  },
+  "keywords": [
+    "babel-plugin",
+    "babel-plugin-auto-logger",
+    "logger",
+    "auto-logger"
+  ],
+  "files": [
+    "lib",
+    "scripts"
+  ],
+  "version": "1.1.2",
+  "snyk": true
+}

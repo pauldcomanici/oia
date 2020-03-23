@@ -2,8 +2,20 @@
   "name": "oia",
   "version": "1.0.0",
   "description": "oia - JS Packages",
+  "private": true,
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "lerna run --parallel build",
+    "bootstrap": "lerna bootstrap",
+    "clear-dependencies": "rimraf \"**/node_modules/**\"",
+    "clear-lib": "rimraf \"packages/*/lib/**\"",
+    "compile": "lerna run --parallel compile",
+    "report-coverage": "codecov",
+    "snyk-test": "lerna run --parallel snyk-test",
+    "snyk-wizard": "snyk wizard",
+    "test": "lerna run --parallel test",
+    "test-coverage": "lerna run --parallel test-coverage"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/darkyndy/oia.git"
@@ -15,14 +27,25 @@
   },
   "homepage": "https://github.com/darkyndy/oia#readme",
   "devDependencies": {
-    "@babel/cli": "false7.8.4",
-    "@babel/core": "false7.9.0",
-    "babel-jest": "false25.1.0",
-    "babel-preset-minify": "false0.5.1",
-    "eslint": "false6.8.0",
-    "eslint-plugin-import": "false2.20.1",
-    "jest": "false25.1.0",
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-optional-chaining": "7.9.0",
+    "@babel/preset-env": "7.9.0",
+    "acorn": "7.1.1",
+    "babel-jest": "25.1.0",
+    "babel-preset-minify": "0.5.1",
+    "codecov": "3.6.5",
+    "eslint": "6.8.0",
+    "eslint-plugin-eslint-comments": "3.1.2",
+    "eslint-plugin-import": "2.20.1",
+    "jest": "25.1.0",
     "lerna": "3.20.2",
-    "rimraf": "false3.0.2"
+    "rimraf": "3.0.2",
+    "snyk": "1.303.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   }
 }

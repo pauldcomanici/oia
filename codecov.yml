@@ -1,0 +1,18 @@
+coverage:
+  parsers:
+    javascript:
+      enable_partials: yes
+
+  status:
+    project:
+      default: off
+      babel-plugin-auto-logger:
+        target: 100%
+        flags: babel-plugin-auto-logger
+
+flags:
+  # filter the folder(s) you wish to measure by that flag
+  babel-plugin-auto-logger:
+    paths:
+      - /packages/babel-plugin-auto-logger
+
