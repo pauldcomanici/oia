@@ -2,7 +2,7 @@
 
 ## v-next
 * moved project source to monorepo (from https://github.com/darkyndy/babel-plugin-auto-logger)
-* 
+* moved to GitHub Actions (replacing Travis CI)
 
 ## v1.1.2
 * :house: Add .whitesource configuration file (#14)

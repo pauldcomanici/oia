@@ -1,34 +1,22 @@
 <p align="center">
-  <a href="https://travis-ci.org/darkyndy/babel-plugin-auto-logger">
+  <a href="https://github.com/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger">
     <img
-      alt="Travis Status"
-      src="https://travis-ci.org/darkyndy/babel-plugin-auto-logger.svg?branch=master"
+      alt="CI Status"
+      src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"
     />
   </a>
-  <a href="https://codecov.io/gh/darkyndy/babel-plugin-auto-logger">
+  <a href="https://codecov.io/gh/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger/src">
     <img
       alt="Coverage Status"
-      src="https://codecov.io/gh/darkyndy/babel-plugin-auto-logger/branch/master/graph/badge.svg"
+      src="https://codecov.io/gh/darkyndy/oia/branch/master/graph/badge.svg?flags=babel-plugin-auto-logger"
     />
   </a>
-  <a href="https://snyk.io/test/github/darkyndy/babel-plugin-auto-logger?targetFile=package.json">
+  <a href="https://snyk.io/test/github/darkyndy/oia?targetFile=packages/babel-plugin-auto-logger/package.json">
     <img
       alt="Known Vulnerabilities"
-      src="https://snyk.io/test/github/darkyndy/babel-plugin-auto-logger/badge.svg?targetFile=package.json"
-      data-canonical-src="https://snyk.io/test/github/darkyndy/babel-plugin-auto-logger?targetFile=package.json"
+      src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
+      data-canonical-src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
       style="max-width:100%;"
-    />
-  </a>
-  <a href="https://david-dm.org/darkyndy/babel-plugin-auto-logger">
-    <img
-      alt="dependencies status"
-      src="https://david-dm.org/darkyndy/babel-plugin-auto-logger/status.svg"
-    />
-  </a>
-  <a href="https://david-dm.org/darkyndy/babel-plugin-auto-logger?type=dev">
-    <img
-      alt="devDependencies status"
-      src="https://david-dm.org/darkyndy/babel-plugin-auto-logger/dev-status.svg"
     />
   </a>
   <a href="https://www.npmjs.com/package/babel-plugin-auto-logger">
@@ -41,12 +29,6 @@
     <img
       alt="MIT License"
       src="https://img.shields.io/npm/l/babel-plugin-auto-logger.svg"
-    />
-  </a>
-  <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fdarkyndy%2Fbabel-plugin-auto-logger?ref=badge_shield">
-    <img
-      alt="FOSSA Status"
-      src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdarkyndy%2Fbabel-plugin-auto-logger.svg?type=shield"
     />
   </a>
   <br/>
