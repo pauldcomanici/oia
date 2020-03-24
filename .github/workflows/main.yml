@@ -31,8 +31,9 @@ jobs:
     - name: Linting
       run: yarn lint
     - name: Test coverage
-      # TODO: inegrate with coverage
-      run: yarn test-coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: yarn test-coverage && yarn report-coverage
     - name: Compile
       run: yarn compile
     - name: E2E tests # require compile
