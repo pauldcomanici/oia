@@ -10,11 +10,15 @@
     "clear-dependencies": "rimraf \"**/node_modules/**\"",
     "clear-lib": "rimraf \"packages/*/lib/**\"",
     "compile": "lerna run --parallel compile",
+    "lint": "lerna run --parallel lint",
+    "lint-source": "lerna run --parallel lint-source",
+    "lint-tests": "lerna run --parallel lint-tests",
     "report-coverage": "codecov",
     "snyk-test": "lerna run --parallel snyk-test",
     "snyk-wizard": "snyk wizard",
     "test": "lerna run --parallel test",
-    "test-coverage": "lerna run --parallel test-coverage"
+    "test-coverage": "lerna run --parallel test-coverage",
+    "test-e2e": "lerna run --parallel test-e2e"
   },
   "repository": {
     "type": "git",
