@@ -1,0 +1,30 @@
+name: Validity
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+  pull_request:
+    branches:
+      - master
+#  release:
+#    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
+#    types: [published, created, edited]
+
+jobs:
+  validity:
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+          with:
+            node-version: 12
+      - run: yarn lint
+      - run: yarn test-coverage
+      - run: yarn snyk-test
+      - run: yarn compile
+      - run: yarn test-e2e
