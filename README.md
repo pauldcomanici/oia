@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/darkyndy/oia">
+  <a href="https://github.com/darkyndy/oia/actions?query=branch%3Amaster">
     <img
       alt="CI Status"
       src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"

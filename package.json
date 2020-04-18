@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "lerna run --parallel build",
+    "build-changelog": "node ./scripts/changelog/index.js",
     "bootstrap": "lerna bootstrap",
     "clear-dependencies": "rimraf \"**/node_modules/**\"",
     "clear-lib": "rimraf \"packages/*/lib/**\"",
@@ -38,7 +39,9 @@
     "acorn": "7.1.1",
     "babel-jest": "25.3.0",
     "babel-preset-minify": "0.5.1",
+    "changelog-parser": "2.8.0",
     "codecov": "3.6.5",
+    "eol": "0.9.1",
     "eslint": "6.8.0",
     "eslint-plugin-eslint-comments": "3.1.2",
     "eslint-plugin-import": "2.20.2",
