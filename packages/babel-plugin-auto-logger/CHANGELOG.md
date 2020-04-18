@@ -1,8 +1,9 @@
 # Changelog
 
 ## v-next
-* moved project source to monorepo (from https://github.com/darkyndy/babel-plugin-auto-logger)
-* moved to GitHub Actions (replacing Travis CI)
+* :house: Update dependencies
+* :house: moved project source to monorepo (from https://github.com/darkyndy/babel-plugin-auto-logger)
+* :house: moved to GitHub Actions (replacing Travis CI)
 
 ## v1.1.2
 * :house: Add .whitesource configuration file (#14)
