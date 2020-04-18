@@ -205,10 +205,10 @@
         "object": "Object",
         "string": "String"
       },
-      "requireParamDescription": true,
+      "requireParamDescription": false,
       "requireParamType": true,
       "requireReturn": true,
-      "requireReturnDescription": true,
+      "requireReturnDescription": false,
       "requireReturnType": true
     }]
   },

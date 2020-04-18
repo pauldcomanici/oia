@@ -82,7 +82,7 @@ privateApi.getFunction = (path, knownData) => {
  *
  * @param {Object} state
  * @param {Array} otherArgs
- * @returns {ArrayExpression|ObjectExpression}
+ * @return {ArrayExpression|ObjectExpression}
  */
 privateApi.getArgsForObject = (state, otherArgs) => {
   const {
@@ -116,7 +116,7 @@ privateApi.getArgsForObject = (state, otherArgs) => {
  * @param {Object} state
  * @param {Array} defaultArgs
  * @param {Array} otherArgs
- * @returns {Array<ObjectExpression>}
+ * @return {Array<ObjectExpression>}
  */
 privateApi.getForObject = (state, defaultArgs, otherArgs) => {
   const {
@@ -143,7 +143,7 @@ privateApi.getForObject = (state, defaultArgs, otherArgs) => {
         types.identifier(args),
         argsForObject
       )
-    )
+    );
   }
 
   return [
