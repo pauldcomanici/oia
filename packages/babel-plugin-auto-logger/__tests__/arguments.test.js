@@ -254,16 +254,16 @@ describe('arguments.js', () => {
         .mockReturnValueOnce('objectPropertySecond');
 
       testSpecificMocks.state = {
-        file: {},
         babelPluginLoggerSettings: {
           output: {
             args: 'argsParam',
             argsAsObject: true,
             name: 'nameParam',
-            type: 'object',
             source: 'sourceParam',
+            type: 'object',
           },
         },
+        file: {},
       };
       testSpecificMocks.otherArgs = [
         'arg1',
@@ -350,7 +350,7 @@ describe('arguments.js', () => {
     it('returns object expression when arguments value should be an object', () => {
 
       expect(
-      privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs)
+        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs)
       ).toEqual(
         'objectExpression'
       );
@@ -377,16 +377,16 @@ describe('arguments.js', () => {
 
 
       testSpecificMocks.state = {
-        file: {},
         babelPluginLoggerSettings: {
           output: {
             args: 'argsParam',
             argsAsObject: true,
             name: 'nameParam',
-            type: 'object',
             source: 'sourceParam',
+            type: 'object',
           },
         },
+        file: {},
       };
       testSpecificMocks.defaultArgs = ['source-path', 'function-name'];
       testSpecificMocks.otherArgs = ['arg1', 'arg2'];
@@ -535,15 +535,15 @@ describe('arguments.js', () => {
         node: {},
       };
       testSpecificMocks.state = {
-        file: {},
         babelPluginLoggerSettings: {
           output: {
             args: 'argsParam',
             name: 'nameParam',
-            type: 'simple',
             source: 'sourceParam',
+            type: 'simple',
           },
         },
+        file: {},
       };
       testSpecificMocks.knownData = {
         column: 11,

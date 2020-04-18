@@ -135,8 +135,8 @@ describe('options.js', () => {
   describe('privateApi.getOutput', () => {
     beforeEach(() => {
       testSpecificMocks.settings = {
-        argsAsObject: true,
         args: 'argsParam',
+        argsAsObject: true,
         name: 'nameParam',
         source: 'sourceParam',
         type: 'object',
@@ -145,8 +145,8 @@ describe('options.js', () => {
         type: 'simple',
       };
       testSpecificMocks.defaultOptionsObject = {
-        argsAsObject: false,
         args: 'args',
+        argsAsObject: false,
         name: 'name',
         source: 'source',
         type: 'object',
@@ -158,7 +158,7 @@ describe('options.js', () => {
         privateApi.getOutput()
       ).toEqual(
         testSpecificMocks.defaultOptions
-      )
+      );
     });
 
     it('returns default settings when provided options is not an object', () => {
@@ -168,17 +168,17 @@ describe('options.js', () => {
         privateApi.getOutput(testSpecificMocks.settings)
       ).toEqual(
         testSpecificMocks.defaultOptions
-      )
+      );
     });
 
     it('returns default settings when type is not valid', () => {
-      testSpecificMocks.settings.type =  'not-supported';
+      testSpecificMocks.settings.type = 'not-supported';
 
       expect(
         privateApi.getOutput(testSpecificMocks.settings)
       ).toEqual(
         testSpecificMocks.defaultOptions
-      )
+      );
     });
 
     it('returns default settings when type is `simple`', () => {
@@ -188,7 +188,7 @@ describe('options.js', () => {
         privateApi.getOutput(testSpecificMocks.settings)
       ).toEqual(
         testSpecificMocks.defaultOptions
-      )
+      );
     });
 
     it('returns default settings for type as `object` when only type as `object` is provided', () => {
@@ -198,7 +198,7 @@ describe('options.js', () => {
         })
       ).toEqual(
         testSpecificMocks.defaultOptionsObject
-      )
+      );
     });
 
     it('returns settings for type as `object` by merging what was provided with defaults (no config for `args`)', () => {
@@ -211,7 +211,7 @@ describe('options.js', () => {
           ...testSpecificMocks.settings,
           args: 'args',
         }
-      )
+      );
     });
 
     it('returns settings for type as `object` by merging what was provided with defaults (no config for `name`)', () => {
@@ -224,7 +224,7 @@ describe('options.js', () => {
           ...testSpecificMocks.settings,
           name: 'name',
         }
-      )
+      );
     });
 
     it('returns settings for type as `object` by merging what was provided with defaults (no config for `source`)', () => {
@@ -237,7 +237,7 @@ describe('options.js', () => {
           ...testSpecificMocks.settings,
           source: 'source',
         }
-      )
+      );
     });
   });
 
