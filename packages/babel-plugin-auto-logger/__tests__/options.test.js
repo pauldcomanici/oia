@@ -132,17 +132,130 @@ describe('options.js', () => {
     });
   });
 
+  describe('privateApi.getOutput', () => {
+    beforeEach(() => {
+      testSpecificMocks.settings = {
+        argsAsObject: true,
+        args: 'argsParam',
+        name: 'nameParam',
+        source: 'sourceParam',
+        type: 'object',
+      };
+      testSpecificMocks.defaultOptions = {
+        type: 'simple',
+      };
+      testSpecificMocks.defaultOptionsObject = {
+        argsAsObject: false,
+        args: 'args',
+        name: 'name',
+        source: 'source',
+        type: 'object',
+      };
+    });
+
+    it('returns default settings when nothing was provided', () => {
+      expect(
+        privateApi.getOutput()
+      ).toEqual(
+        testSpecificMocks.defaultOptions
+      )
+    });
+
+    it('returns default settings when provided options is not an object', () => {
+      testSpecificMocks.settings = 'string?';
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        testSpecificMocks.defaultOptions
+      )
+    });
+
+    it('returns default settings when type is not valid', () => {
+      testSpecificMocks.settings.type =  'not-supported';
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        testSpecificMocks.defaultOptions
+      )
+    });
+
+    it('returns default settings when type is `simple`', () => {
+      testSpecificMocks.settings.type = 'simple';
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        testSpecificMocks.defaultOptions
+      )
+    });
+
+    it('returns default settings for type as `object` when only type as `object` is provided', () => {
+      expect(
+        privateApi.getOutput({
+          type: 'object'
+        })
+      ).toEqual(
+        testSpecificMocks.defaultOptionsObject
+      )
+    });
+
+    it('returns settings for type as `object` by merging what was provided with defaults (no config for `args`)', () => {
+      testSpecificMocks.settings.args = undefined;
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        {
+          ...testSpecificMocks.settings,
+          args: 'args',
+        }
+      )
+    });
+
+    it('returns settings for type as `object` by merging what was provided with defaults (no config for `name`)', () => {
+      testSpecificMocks.settings.name = undefined;
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        {
+          ...testSpecificMocks.settings,
+          name: 'name',
+        }
+      )
+    });
+
+    it('returns settings for type as `object` by merging what was provided with defaults (no config for `source`)', () => {
+      testSpecificMocks.settings.source = undefined;
+
+      expect(
+        privateApi.getOutput(testSpecificMocks.settings)
+      ).toEqual(
+        {
+          ...testSpecificMocks.settings,
+          source: 'source',
+        }
+      )
+    });
+  });
+
   describe('prepare', () => {
     beforeAll(() => {
       jest.spyOn(privateApi, 'getMatcher').mockReturnValue('getMatcher');
       jest.spyOn(privateApi, 'getSourceMatcher').mockReturnValue('getSourceMatcher');
       jest.spyOn(privateApi, 'getSourceExcludeMatcher').mockReturnValue('getSourceExcludeMatcher');
+      jest.spyOn(privateApi, 'getOutput').mockReturnValue('getOutput');
       jest.spyOn(loggingData, 'getOptions').mockReturnValue('loggingData::loggingData');
     });
     beforeEach(() => {
       testSpecificMocks.receivedOptions = {
         loggingData: {
           source: '',
+        },
+        output: {
+          type: 'simple',
         },
         sourceExcludeMatcher: 'sourceExcludeMatcher',
         sourceMatcher: 'sourceMatcher',
@@ -152,12 +265,14 @@ describe('options.js', () => {
       privateApi.getMatcher.mockClear();
       privateApi.getSourceMatcher.mockClear();
       privateApi.getSourceExcludeMatcher.mockClear();
+      privateApi.getOutput.mockClear();
       loggingData.getOptions.mockClear();
     });
     afterAll(() => {
       privateApi.getMatcher.mockRestore();
       privateApi.getSourceMatcher.mockRestore();
       privateApi.getSourceExcludeMatcher.mockRestore();
+      privateApi.getOutput.mockRestore();
       loggingData.getOptions.mockRestore();
     });
 
@@ -197,12 +312,35 @@ describe('options.js', () => {
       );
     });
 
+    it('prepares `output` option by calling `privateApi.getOutput`', () => {
+      options.prepare(testSpecificMocks.receivedOptions);
+
+      expect(privateApi.getOutput.mock.calls).toEqual(
+        [
+          [
+            testSpecificMocks.receivedOptions.output,
+          ],
+        ]
+      );
+    });
+
     it('prepares `loggingData` option by calling `loggingData.getOptions`', () => {
       options.prepare(testSpecificMocks.receivedOptions);
 
       expect(loggingData.getOptions).toHaveBeenCalledWith(
         testSpecificMocks.receivedOptions.loggingData
       );
+    });
+
+    it('returns object with valid options after processing', () => {
+      expect(
+        options.prepare(testSpecificMocks.receivedOptions)
+      ).toEqual({
+        loggingData: loggingData.getOptions(),
+        output: privateApi.getOutput(),
+        sourceExcludeMatcher: privateApi.getMatcher(),
+        sourceMatcher: privateApi.getMatcher(),
+      });
     });
 
   });

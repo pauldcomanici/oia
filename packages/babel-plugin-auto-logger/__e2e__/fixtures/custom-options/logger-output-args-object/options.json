@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    [
+      "./../../../../lib/",
+      {
+        "output": {
+          "type": "object",
+          "argsAsObject": true
+        }
+      }
+    ]
+  ]
+}

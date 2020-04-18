@@ -128,24 +128,37 @@ Abstract example with all plugin options:
     "name": "myLogger",
     "source": "path/to/file"
   },
+  "output": {
+    "argsAsObject": true,
+    "args": "argsParam",
+    "name": "nameParam",
+    "source": "sourceParam",
+    "type": "object"
+  },
   "sourceMatcher": "RegExp",
   "sourceExcludeMatcher": "RegExp"
 }
 ```
 
-#### loggingData.levelForTryCatch
+#### loggingData
+- Data type: Object
+- Default value: see bellow for every property.
+- Details:
+  - Define how logging will be added, service name, method names and when they will apply.
+
+##### loggingData.levelForTryCatch
 - Data type: String
 - Default value: `error`
 - Details:
   - controls what log level will be used inside the catch block
 
-#### loggingData.levelForMemberExpressionCatch
+##### loggingData.levelForMemberExpressionCatch
 - Data type: String
 - Default value: `error`
 - Details:
   - controls what log level will be used inside the block for catch that is a member of an expression (e.g. Promise.catch())
 
-#### loggingData.levels
+##### loggingData.levels
 - Data type: Object
 - Default value:
   ```text
@@ -186,26 +199,101 @@ Abstract example with all plugin options:
     > Tip: If you want all logging levels to use same method, just set same value for `methodName`
 
 
-##### loggingData.levels.logLevel
+###### loggingData.levels.logLevel
 - Data type: Object
 - Default value: specific for every log level
 - Details:
   - allows to use your own method name for logging API
   - ability to control when this log level will be used (only for warn, info & debug) based on regular expression that tests source or function name
 
-#### loggingData.name
+##### loggingData.name
 - Data type: String
 - Default value: `'console'`
 - Details:
   - usually used in combination with `loggingData.source`
   - represents the name for default import if `loggingData.source` has truthy value or the name of a service that is globally available
 
-#### loggingData.source
+##### loggingData.source
 - Data type: String
 - Default value: `''` (empty string)
 - Details:
   - usually used in combination with `loggingData.name`
   - when it has truthy value it can represent the path or the npm package name to the service that will be imported
+
+
+#### output
+- Data type: Object
+- Default value: `{type: 'simple'}`
+- Details:
+  - Specify how arguments are provided to the logging function.
+
+##### output.type
+- Data type: String
+- Default value: `'simple'`
+- Details:
+  - Specify how arguments are provided to the logging function. As one arguments (object) or multiple arguments.
+  - When value is not valid will use the default value.
+
+
+###### output.type == 'simple'
+When value is `'simple'` will provide multiple arguments to the logging function, example:
+```js
+logger.info('[file-path/input.js:16:19]', 'function-name', anotherArg, andOtherArg);
+```
+
+###### output.type == 'object'
+When value is `'object'` will provide one argument to the logging function, example:
+```js
+logger.info({
+  source: '[file-path/input.js:16:19]',
+  name: 'function-name',
+  args: [
+    anotherArg,
+    andOtherArg,
+  ],
+});
+```
+
+You can also configure the name for the `source`, `name` and `args`.
+For example having setting as:
+```json
+{
+  "output": {
+    "type": "object",
+    "argsAsObject": false,
+    "source": "sourceParam",
+    "name": "nameParam",
+    "args": "argsParam"
+  }
+}
+```
+will result in the following code generated for logging:
+```js
+logger.info({
+  sourceParam: '[file-path/input.js:16:19]',
+  nameParam: 'function-name',
+  argsParam: [
+    anotherArg,
+    andOtherArg,
+  ],
+});
+
+```
+
+And when you set `"argsAsObject": true,` will result in:
+
+```js
+logger.info({
+  sourceParam: '[file-path/input.js:16:19]',
+  nameParam: 'function-name',
+  argsParam: {
+    anotherArg: anotherArg,
+    andOtherArg: andOtherArg,
+  },
+});
+
+```
+
 
 #### sourceMatcher
 - Data type: String or Array of Strings

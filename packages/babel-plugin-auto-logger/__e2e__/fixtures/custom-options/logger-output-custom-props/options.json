@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    [
+      "./../../../../lib/",
+      {
+        "output": {
+          "type": "object",
+          "source": "path",
+          "name": "from",
+          "args": "fnArgs"
+        }
+      }
+    ]
+  ]
+}

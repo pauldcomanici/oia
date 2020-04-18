@@ -55,8 +55,10 @@ async function setChangelog(packageDir) {
     parsedChangelog.versions.forEach(
       ({title, body}) => {
         const titleVersion = title.split(' - ')[0];
-        if (updateChangeLogContent && titleVersion !== newTitleVersion) {
+        if (titleVersion === newTitleVersion) {
           updateChangeLogContent = false;
+        }
+        if (updateChangeLogContent) {
           if (body) {
             let versionTitle = title;
 
@@ -64,7 +66,7 @@ async function setChangelog(packageDir) {
               const releaseDate = new Date()
                 .toISOString()
                 .substr(0, 10);
-              versionTitle = `v${newTitleVersion} - ${releaseDate}`;
+              versionTitle = `${newTitleVersion} - ${releaseDate}`;
             }
 
             newChangelogContent += `\n## ${versionTitle}\n${body}\n`;
@@ -75,6 +77,7 @@ async function setChangelog(packageDir) {
 
     if (updateChangeLogContent) {
       writeFileSync(changelogFilePath, eol.lf(newChangelogContent));
+      console.info(`[${packageName}] Changelog was updated`);
     } else {
       console.error(`[${packageName}] Version is the same, cannot generate changelog`);
     }

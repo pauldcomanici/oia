@@ -36,12 +36,24 @@
  */
 
 /**
+ * Plugin Settings for output
+ *
+ * @typedef {Object} PluginConfigOutput
+ * @property {String} [type='simple'] - Specify how arguments are sent to the logging method (can be `simple` or `object`)
+ * @property {String} [source='source'] - Specify property name that will be used for the `source` value.
+ * @property {String} [name='name'] - Specify property name that will be used for the `name` value.
+ * @property {String} [args='args'] - Specify property name that will be used for the `args` value.
+ * @property {Boolean} [argsAsObject=false] - Specify if you want function arguments to be logged as object
+ */
+
+/**
  * Plugin Settings
  *
  * @typedef {Object} PluginConfigObj
- * @property {RegExp} sourceMatcher - regular expression for source matching
- * @property {RegExp} sourceExcludeMatcher - regular expression for exclude source matching
- * @property {LoggerDataObj} loggingData - object with logging data
+ * @property {String} [sourceMatcher] - regular expression for source matching
+ * @property {String} [sourceExcludeMatcher] - regular expression for exclude source matching
+ * @property {LoggerDataObj} [loggingData] - object with logging data
+ * @property {PluginConfigOutput} [output] - object with logging data
  */
 
 /**

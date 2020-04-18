@@ -86,12 +86,42 @@ privateApi.getSourceExcludeMatcher = () => (
 );
 
 /**
+ * Prepare configuration for output
+ *
+ * @param {PluginConfigOutput} [settings]
+ * @return {PluginConfigOutput}
+ */
+privateApi.getOutput = (settings) => {
+  const validTypes = [
+    'simple',
+    'object',
+  ];
+  const options = {
+    type: 'simple',
+  };
+
+  if (settings && typeof settings === 'object') {
+    const useType = settings.type;
+    const isValidType = validTypes.includes(useType);
+    if (isValidType) {
+      options.type = useType;
+
+      if (useType === 'object') {
+        options.source = settings.source || 'source';
+        options.name = settings.name || 'name';
+        options.args = settings.args || 'args';
+        options.argsAsObject = settings.argsAsObject === true;
+      }
+    }
+  }
+
+  return options;
+};
+
+/**
  * Prepare options for the plugin
  *
- * @param {Object} receivedOptions - object with options (state.opts)
- * @param {String} [receivedOptions.sourceMatcher] - matcher for the files where logger will be added. This string will be used as argument for `new RegExp`
- * @param {String} [receivedOptions.sourceExcludeMatcher] - matcher for the files where logger should not be add. This string will be used as argument for `new RegExp`
- * @param {Object} [receivedOptions.loggingData] - object with data for the logger (source, name, levels, map for levels)
+ * @param {PluginConfigObj} receivedOptions - object with options (state.opts)
  * @return {Object} options - object with options for the plugin
  */
 service.prepare = (receivedOptions) => {
@@ -112,6 +142,9 @@ service.prepare = (receivedOptions) => {
     'sourceExcludeMatcher',
     privateApi.getSourceExcludeMatcher()
   );
+
+  // logging output
+  options.output = privateApi.getOutput(receivedOptions.output);
 
   // logging data
   options.loggingData = loggingData.getOptions(receivedOptions.loggingData);

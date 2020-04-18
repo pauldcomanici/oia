@@ -18,6 +18,7 @@
     "build": "npm run lint && npm run test-coverage && npm run snyk-test && npm run compile && npm run test-e2e",
     "build-changelog": "node ../../scripts/changelog/index.js",
     "compile": "rimraf lib && babel src --out-dir lib",
+    "compile-watch": "nodemon --watch ./src --exec \"npm run compile\"",
     "lint": "npm run lint-source && npm run lint-tests",
     "lint-source": "eslint ./src",
     "lint-tests": "eslint ./__tests__",
@@ -27,7 +28,7 @@
     "report-coverage": "codecov",
     "test": "jest --config=./config/jest-ut.js",
     "test-e2e": "jest --config=./__e2e__/jest.json",
-    "test-e2e-latest": "npm run compile && npm run test-e2e",
+    "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
     "test-watch": "npm run test -- --watch",
     "test-coverage": "npm run test -- --coverage",
     "snyk-protect": "snyk protect",
@@ -43,6 +44,6 @@
     "lib",
     "scripts"
   ],
-  "version": "1.1.2",
+  "version": "1.2.0",
   "snyk": true
 }
