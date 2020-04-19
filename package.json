@@ -14,6 +14,7 @@
     "lint": "lerna run --parallel lint",
     "lint-source": "lerna run --parallel lint-source",
     "lint-tests": "lerna run --parallel lint-tests",
+    "release": "lerna publish from-package --yes",
     "report-coverage": "codecov",
     "snyk-test": "lerna run --parallel snyk-test",
     "snyk-wizard": "snyk wizard",
