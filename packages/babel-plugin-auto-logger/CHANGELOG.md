@@ -2,6 +2,9 @@
 
 ## v-next
 
+## v1.2.1 - 2020-04-19
+* :lollipop: ability to log arguments as object when `output.type` is `simple` and `argsAsObject`is `true`
+
 ## v1.2.0 - 2020-04-18
 * :rocket: ability to log data as object
 * :house: Update dependencies

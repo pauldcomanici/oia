@@ -40,3 +40,5 @@ jsdoc
 # other files
 package-lock.json
 
+# local files
+__local__

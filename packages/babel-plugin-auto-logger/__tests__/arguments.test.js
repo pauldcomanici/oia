@@ -136,6 +136,8 @@ describe('arguments.js', () => {
     beforeAll(() => {
       jest.spyOn(types, 'isCatchClause').mockReturnValue(false);
       jest.spyOn(types, 'identifier').mockReturnValue('identifier');
+      jest.spyOn(types, 'objectProperty').mockReturnValue('objectProperty');
+      jest.spyOn(types, 'objectExpression').mockReturnValue('objectExpression');
       jest.spyOn(privateApi, 'getFunctionArguments').mockReturnValue([
         'reason',
         'secondArg',
@@ -149,25 +151,39 @@ describe('arguments.js', () => {
           },
         },
       };
+      testSpecificMocks.state = {
+        babelPluginLoggerSettings: {
+          output: {
+            argsAsObject: false,
+            type: 'object',
+          },
+        },
+        file: {},
+      };
       testSpecificMocks.knownData = {
         column: 11,
         line: 22,
         name: consts.MEMBER_EXPRESSION_CATCH,
       };
     });
+
     afterEach(() => {
       types.isCatchClause.mockClear();
       types.identifier.mockClear();
+      types.objectProperty.mockClear();
+      types.objectExpression.mockClear();
       privateApi.getFunctionArguments.mockClear();
     });
     afterAll(() => {
       types.isCatchClause.mockRestore();
       types.identifier.mockRestore();
+      types.objectProperty.mockRestore();
+      types.objectExpression.mockRestore();
       privateApi.getFunctionArguments.mockRestore();
     });
 
     it('determines if the path is from catch clause by calling `types.isCatchClause`', () => {
-      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData);
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
 
       expect(types.isCatchClause).toHaveBeenCalledWith(
         testSpecificMocks.path
@@ -177,7 +193,7 @@ describe('arguments.js', () => {
     it('if the path is from a catch clause => adds exception as argument for logger by calling `types.identifier` with identifier name', () => {
       types.isCatchClause.mockReturnValueOnce(true);
 
-      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData);
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
 
       expect(types.identifier).toHaveBeenCalledWith(
         testSpecificMocks.path.node.param.name
@@ -187,7 +203,9 @@ describe('arguments.js', () => {
     it('if the path is from a catch clause => returns an array with the exception as identifier', () => {
       types.isCatchClause.mockReturnValueOnce(true);
 
-      expect(privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData)).toEqual(
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual(
         [
           'identifier',
         ]
@@ -197,7 +215,7 @@ describe('arguments.js', () => {
     it('if the path is not from a catch clause and name from knownData does not represent catch member expression => it will not determine function arguments (does not call `privateApi.getFunctionArguments`)', () => {
       testSpecificMocks.knownData = 'NOT_CATCH_MEMBER_EXPRESSION';
 
-      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData);
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
 
       expect(privateApi.getFunctionArguments).not.toBeCalled();
     });
@@ -205,19 +223,43 @@ describe('arguments.js', () => {
     it('if the path is not from a catch clause and name from knownData does not represent catch member expression => returns empty array', () => {
       testSpecificMocks.knownData = 'NOT_CATCH_MEMBER_EXPRESSION';
 
-      expect(privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData)).toEqual([]);
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual([]);
     });
 
     it('if the path is not from a catch clause and name from knownData represents catch member expression => determines function arguments by calling `privateApi.getFunctionArguments`', () => {
-      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData);
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
 
       expect(privateApi.getFunctionArguments).toHaveBeenCalledWith(
         testSpecificMocks.path
       );
     });
 
+    it('if the `argsAsObject` has truthy value => prepares every object property based on identifiers', () => {
+      types.identifier
+        .mockReturnValueOnce('identifier1')
+        .mockReturnValueOnce('identifier2');
+
+      testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = true;
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
+
+      expect(types.objectProperty.mock.calls).toEqual(
+        [
+          [
+            'identifier1',
+            'identifier1',
+          ],
+          [
+            'identifier2',
+            'identifier2',
+          ]
+        ]
+      );
+    });
+
     it('if the path is not from a catch clause and name from knownData represents catch member expression => prepares logging arguments by calling `types.identifier` for every argument of the function', () => {
-      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData);
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
 
       expect(types.identifier.mock.calls).toEqual(
         [
@@ -232,10 +274,88 @@ describe('arguments.js', () => {
     });
 
     it('if the path is not from a catch clause and name from knownData represents catch member expression => returns an array with identifiers for every argument of the function', () => {
-      expect(privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.knownData)).toEqual(
+      types.identifier
+        .mockReturnValueOnce('identifier1')
+        .mockReturnValueOnce('identifier2');
+
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual(
         [
-          'identifier',
-          'identifier',
+          'identifier1',
+          'identifier2',
+        ]
+      );
+    });
+
+    it('when from options `argsAsObject` is truthy and we do not have any identifier => returns empty array', () => {
+      testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = true;
+      testSpecificMocks.knownData = 'NOT_CATCH_MEMBER_EXPRESSION';
+
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual(
+        []
+      );
+    });
+
+    it('when from options `argsAsObject` is truthy and we have identifiers => prepares object properties', () => {
+      types.identifier
+        .mockReturnValueOnce('identifier1')
+        .mockReturnValueOnce('identifier2');
+
+      testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = true;
+
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
+
+      expect(
+        types.objectProperty.mock.calls
+      ).toEqual(
+        [
+          [
+            'identifier1',
+            'identifier1',
+          ],
+          [
+            'identifier2',
+            'identifier2',
+          ],
+        ]
+      );
+    });
+
+    it('when from options `argsAsObject` is truthy and we have identifiers => prepares object expression', () => {
+      types.objectProperty
+        .mockReturnValueOnce('objectProperty1')
+        .mockReturnValueOnce('objectProperty2');
+
+      testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = true;
+
+      privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData);
+
+      expect(
+        types.objectExpression.mock.calls
+      ).toEqual(
+        [
+          [
+            [
+              'objectProperty1',
+              'objectProperty2',
+            ],
+          ],
+        ]
+      );
+    });
+
+    it('when from options `argsAsObject` is truthy and we have identifiers => returns object expression as the only item of an array', () => {
+      testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = true;
+
+
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual(
+        [
+          'objectExpression'
         ]
       );
     });
@@ -245,14 +365,8 @@ describe('arguments.js', () => {
   describe('privateApi.getArgsForObject', () => {
     beforeAll(() => {
       jest.spyOn(types, 'arrayExpression').mockReturnValue('arrayExpression');
-      jest.spyOn(types, 'objectProperty').mockReturnValue('objectProperty');
-      jest.spyOn(types, 'objectExpression').mockReturnValue('objectExpression');
     });
     beforeEach(() => {
-      types.objectProperty
-        .mockReturnValueOnce('objectPropertyFirst')
-        .mockReturnValueOnce('objectPropertySecond');
-
       testSpecificMocks.state = {
         babelPluginLoggerSettings: {
           output: {
@@ -265,38 +379,34 @@ describe('arguments.js', () => {
         },
         file: {},
       };
-      testSpecificMocks.otherArgs = [
+      testSpecificMocks.fnArgs = [
         'arg1',
         'arg2'
       ];
     });
     afterEach(() => {
       types.arrayExpression.mockClear();
-      types.objectProperty.mockClear();
-      types.objectExpression.mockClear();
     });
     afterAll(() => {
       types.arrayExpression.mockRestore();
-      types.objectProperty.mockRestore();
-      types.objectExpression.mockRestore();
     });
 
-    it('returns undefined when we do not have otherArgs', () => {
-      testSpecificMocks.otherArgs = [];
+    it('returns undefined when we do not have fnArgs', () => {
+      testSpecificMocks.fnArgs = [];
       expect(
-        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs)
+        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.fnArgs)
       ).toEqual(undefined);
     });
 
     it('prepares arrayExpression when arguments value should be an array', () => {
       testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = false;
-      privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs);
+      privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.fnArgs);
 
       expect(
         types.arrayExpression.mock.calls
       ).toEqual([
         [
-          testSpecificMocks.otherArgs,
+          testSpecificMocks.fnArgs,
         ]
       ]);
     });
@@ -305,54 +415,18 @@ describe('arguments.js', () => {
       testSpecificMocks.state.babelPluginLoggerSettings.output.argsAsObject = false;
 
       expect(
-        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs)
+        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.fnArgs)
       ).toEqual(
         'arrayExpression'
       );
     });
 
-    it('prepares object properties when arguments value should be an object', () => {
-      privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs);
+    it('returns the first item of fnArgs when arguments value should be an object ', () => {
 
       expect(
-        types.objectProperty.mock.calls
+        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.fnArgs)
       ).toEqual(
-        [
-          [
-            'arg1',
-            'arg1',
-          ],
-          [
-            'arg2',
-            'arg2',
-          ],
-        ]
-      );
-    });
-
-    it('prepares object expression when arguments value should be an object', () => {
-      privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs);
-
-      expect(
-        types.objectExpression.mock.calls
-      ).toEqual(
-        [
-          [
-            [
-              'objectPropertyFirst',
-              'objectPropertySecond',
-            ],
-          ],
-        ]
-      );
-    });
-
-    it('returns object expression when arguments value should be an object', () => {
-
-      expect(
-        privateApi.getArgsForObject(testSpecificMocks.state, testSpecificMocks.otherArgs)
-      ).toEqual(
-        'objectExpression'
+        testSpecificMocks.fnArgs[0]
       );
     });
 
@@ -389,7 +463,7 @@ describe('arguments.js', () => {
         file: {},
       };
       testSpecificMocks.defaultArgs = ['source-path', 'function-name'];
-      testSpecificMocks.otherArgs = ['arg1', 'arg2'];
+      testSpecificMocks.fnArgs = ['arg1', 'arg2'];
     });
     afterEach(() => {
       types.objectExpression.mockClear();
@@ -405,7 +479,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares identifier for source', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.identifier.mock.calls[0]
@@ -415,7 +489,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares object property for source', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.objectProperty.mock.calls[0]
@@ -426,7 +500,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares identifier for name', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.identifier.mock.calls[1]
@@ -436,7 +510,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares object property for name', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.objectProperty.mock.calls[1]
@@ -447,20 +521,20 @@ describe('arguments.js', () => {
     });
 
     it('prepares value for arguments identifier', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         privateApi.getArgsForObject.mock.calls
       ).toEqual([
         [
           testSpecificMocks.state,
-          testSpecificMocks.otherArgs,
+          testSpecificMocks.fnArgs,
         ],
       ]);
     });
 
     it('prepares identifier for arguments', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.identifier.mock.calls[2]
@@ -470,7 +544,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares object property for arguments', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.objectProperty.mock.calls[2]
@@ -481,7 +555,7 @@ describe('arguments.js', () => {
     });
 
     it('prepares object argument for logging (we have function arguments)', () => {
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.objectExpression.mock.calls
@@ -498,7 +572,7 @@ describe('arguments.js', () => {
 
     it('prepares object argument for logging (we do not have function arguments)', () => {
       privateApi.getArgsForObject.mockReturnValueOnce(undefined);
-      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs);
+      privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
         types.objectExpression.mock.calls
@@ -514,7 +588,7 @@ describe('arguments.js', () => {
 
     it('returns array with object argument', () => {
       expect(
-        privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.otherArgs)
+        privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs)
       ).toEqual(
         [
           'objectExpression',
@@ -577,6 +651,7 @@ describe('arguments.js', () => {
 
       expect(privateApi.getFunction).toHaveBeenCalledWith(
         testSpecificMocks.path,
+        testSpecificMocks.state,
         testSpecificMocks.knownData
       );
     });

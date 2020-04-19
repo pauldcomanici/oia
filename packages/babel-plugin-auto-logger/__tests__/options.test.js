@@ -142,6 +142,7 @@ describe('options.js', () => {
         type: 'object',
       };
       testSpecificMocks.defaultOptions = {
+        argsAsObject: false,
         type: 'simple',
       };
       testSpecificMocks.defaultOptionsObject = {
@@ -181,13 +182,16 @@ describe('options.js', () => {
       );
     });
 
-    it('returns default settings when type is `simple`', () => {
+    it('returns settings specific to type as `simple`', () => {
       testSpecificMocks.settings.type = 'simple';
 
       expect(
         privateApi.getOutput(testSpecificMocks.settings)
       ).toEqual(
-        testSpecificMocks.defaultOptions
+        {
+          argsAsObject: true,
+          type: 'simple',
+        }
       );
     });
 

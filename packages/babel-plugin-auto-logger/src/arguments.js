@@ -57,10 +57,14 @@ privateApi.getFunctionArguments = (path) => {
  * Get other arguments that should be added when logging, that are from the function call.
  *
  * @param {Object} path - node path
+ * @param {Object} state - node state
  * @param {LogResourceObj} knownData - object with pre-determined data
- * @return {Array<Identifier>} parameter names that represent an Identifier
+ * @return {Array<Identifier|ObjectExpression>} parameter names that represent an Identifier
  */
-privateApi.getFunction = (path, knownData) => {
+privateApi.getFunction = (path, state, knownData) => {
+  const {
+    argsAsObject,
+  } = state.babelPluginLoggerSettings.output;
 
   const argumentsToAdd = [];
 
@@ -74,39 +78,54 @@ privateApi.getFunction = (path, knownData) => {
     argumentsToAdd.push(...privateApi.getFunctionArguments(path));
   }
 
-  return argumentsToAdd.map((identifierName) => (types.identifier(identifierName)));
+  const identifierArgs = argumentsToAdd.map(
+    (identifierName) => {
+      const argIdentifier = types.identifier(identifierName);
+
+      if (argsAsObject) {
+        return types.objectProperty(
+          argIdentifier,
+          argIdentifier
+        );
+      }
+
+      return argIdentifier;
+    }
+  );
+
+  if (argsAsObject) {
+    if (identifierArgs.length) {
+      return [types.objectExpression(identifierArgs)];
+    }
+
+    return [];
+  }
+
+  return identifierArgs;
 };
 
 /**
  * Get value arguments when logging output is object
  *
  * @param {Object} state
- * @param {Array} otherArgs
+ * @param {Array} fnArgs
  * @return {ArrayExpression|ObjectExpression}
  */
-privateApi.getArgsForObject = (state, otherArgs) => {
+privateApi.getArgsForObject = (state, fnArgs) => {
   const {
     argsAsObject,
   } = state.babelPluginLoggerSettings.output;
 
-  if (otherArgs.length === 0) {
+  if (fnArgs.length === 0) {
     return undefined;
   }
 
   if (argsAsObject) {
-    const objectProperties = otherArgs.map(
-      (otherArgIdentifier) => (
-        types.objectProperty(
-          otherArgIdentifier,
-          otherArgIdentifier
-        )
-      )
-    );
-    return types.objectExpression(objectProperties);
+    return fnArgs[0];
   }
 
   return types.arrayExpression(
-    otherArgs
+    fnArgs
   );
 };
 
@@ -114,11 +133,11 @@ privateApi.getArgsForObject = (state, otherArgs) => {
  * Get arguments when output has as type `object`
  *
  * @param {Object} state
- * @param {Array} defaultArgs
- * @param {Array} otherArgs
+ * @param {Array<StringLiteral>} defaultArgs
+ * @param {Array<Identifier|ObjectExpression>} fnArgs
  * @return {Array<ObjectExpression>}
  */
-privateApi.getForObject = (state, defaultArgs, otherArgs) => {
+privateApi.getForObject = (state, defaultArgs, fnArgs) => {
   const {
     source,
     name,
@@ -135,7 +154,7 @@ privateApi.getForObject = (state, defaultArgs, otherArgs) => {
     ),
   ];
 
-  const argsForObject = privateApi.getArgsForObject(state, otherArgs);
+  const argsForObject = privateApi.getArgsForObject(state, fnArgs);
   if (argsForObject) {
     // add arguments only if they exist
     objectProperties.push(
@@ -167,14 +186,14 @@ service.get = (path, state, knownData) => {
   } = state.babelPluginLoggerSettings.output;
 
   const defaultArgs = privateApi.getDefault(knownData);
-  const otherArgs = privateApi.getFunction(path, knownData);
+  const fnArgs = privateApi.getFunction(path, state, knownData);
 
   if (type === 'object') {
-    return privateApi.getForObject(state, defaultArgs, otherArgs);
+    return privateApi.getForObject(state, defaultArgs, fnArgs);
   }
 
   // by default use simple output
-  return defaultArgs.concat(otherArgs);
+  return defaultArgs.concat(fnArgs);
 };
 
 // only for testing

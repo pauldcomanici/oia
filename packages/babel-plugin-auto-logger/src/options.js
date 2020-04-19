@@ -97,6 +97,7 @@ privateApi.getOutput = (settings) => {
     'object',
   ];
   const options = {
+    argsAsObject: false,
     type: 'simple',
   };
 
@@ -105,12 +106,12 @@ privateApi.getOutput = (settings) => {
     const isValidType = validTypes.includes(useType);
     if (isValidType) {
       options.type = useType;
+      options.argsAsObject = settings.argsAsObject === true;
 
       if (useType === 'object') {
         options.source = settings.source || 'source';
         options.name = settings.name || 'name';
         options.args = settings.args || 'args';
-        options.argsAsObject = settings.argsAsObject === true;
       }
     }
   }
