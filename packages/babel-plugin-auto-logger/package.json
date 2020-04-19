@@ -14,7 +14,7 @@
     "@babel/helper-plugin-test-runner": "7.8.3"
   },
   "scripts": {
-    "build": "npm run lint && npm run test-coverage && npm run snyk-test && npm run compile && npm run test-e2e",
+    "build": "npm run lint && npm run test-coverage && npm run compile && npm run test-e2e",
     "build-changelog": "node ../../scripts/changelog/index.js",
     "compile": "rimraf lib && babel src --out-dir lib",
     "compile-watch": "nodemon --watch ./src --exec \"npm run compile\"",
@@ -30,9 +30,7 @@
     "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
     "test-watch": "npm run test -- --watch",
     "test-coverage": "npm run test -- --coverage",
-    "snyk-protect": "snyk protect",
-    "snyk-test": "snyk test",
-    "snyk-wizard": "snyk wizard"
+    "snyk-test": "snyk test"
   },
   "keywords": [
     "babel-plugin",
