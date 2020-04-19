@@ -30,6 +30,7 @@
     "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
     "test-watch": "npm run test -- --watch",
     "test-coverage": "npm run test -- --coverage",
+    "snyk-protest": "snyk protest",
     "snyk-test": "snyk test"
   },
   "keywords": [
