@@ -14,7 +14,7 @@
     "lint": "lerna run --parallel lint",
     "lint-source": "lerna run --parallel lint-source",
     "lint-tests": "lerna run --parallel lint-tests",
-    "release": "npm run snyk-test && lerna publish from-package --yes",
+    "release": "lerna publish from-package --yes",
     "report-coverage": "codecov",
     "snyk-protest": "snyk protest",
     "snyk-test": "lerna run --parallel snyk-test",
