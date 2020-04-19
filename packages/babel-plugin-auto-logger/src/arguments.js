@@ -23,7 +23,7 @@ const service = {};
  * Get default arguments for logging
  *
  * @param {LogResourceObj} knownData - object with pre-determined data
- * @return {Array<String>} parameter names that represent a string
+ * @return {Array<StringLiteral>} parameter names that represent a string
  */
 privateApi.getDefault = (knownData) => {
   // build first argument, will contain file name, line number and column number
@@ -58,7 +58,7 @@ privateApi.getFunctionArguments = (path) => {
  *
  * @param {Object} path - node path
  * @param {LogResourceObj} knownData - object with pre-determined data
- * @return {Array<String>} parameter names that represent an Identifier
+ * @return {Array<Identifier>} parameter names that represent an Identifier
  */
 privateApi.getFunction = (path, knownData) => {
 
