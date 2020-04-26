@@ -1,0 +1,29 @@
+{
+  "deps": [
+    {
+      "name": "127.0.0.2",
+      "patterns": [
+        "/images/**"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "127.0.0.1",
+      "patterns": [
+        "/api/**"
+      ],
+      "port": 8080
+    }
+  ],
+  "proxy": {
+    "ws": true
+  },
+  "source": {
+    "name": "127.0.0.1",
+    "port": 3000
+  },
+  "vhost": {
+    "name": "http://github.com",
+    "port": 80
+  }
+}

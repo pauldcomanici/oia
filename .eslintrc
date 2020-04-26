@@ -1,6 +1,7 @@
 {
   "env": {
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
@@ -207,7 +208,7 @@
       },
       "requireParamDescription": false,
       "requireParamType": true,
-      "requireReturn": true,
+      "requireReturn": false,
       "requireReturnDescription": false,
       "requireReturnType": true
     }]

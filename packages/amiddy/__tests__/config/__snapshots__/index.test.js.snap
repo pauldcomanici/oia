@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config privateApi.getAbsolutePath throws error when the path does not represents a file 1`] = `
+" Cannot resolve config file: path/to/resolve
+ cwd: process::cwd"
+`;
+
+exports[`config privateApi.loadJSONConfigFile returns content of the file as object when file exists and is valid 1`] = `
+Object {
+  "deps": Array [
+    Object {
+      "name": "127.0.0.2",
+      "patterns": Array [
+        "/images/**",
+      ],
+      "port": 3000,
+    },
+    Object {
+      "name": "127.0.0.1",
+      "patterns": Array [
+        "/api/**",
+      ],
+      "port": 8080,
+    },
+  ],
+  "proxy": Object {
+    "ws": true,
+  },
+  "source": Object {
+    "name": "127.0.0.1",
+    "port": 3000,
+  },
+  "vhost": Object {
+    "name": "http://github.com",
+    "port": 80,
+  },
+}
+`;
+
+exports[`config privateApi.loadJSONConfigFile throws error when file does not exists 1`] = `
+"Cannot read config file: __tests__/__fixtures__/noap.json
+Error: ENOENT: no such file or directory, open '__tests__/__fixtures__/noap.json'"
+`;
+
+exports[`config privateApi.loadJSONConfigFile throws error when file exists but does not have valid json 1`] = `
+"Cannot read config file: __tests__/__fixtures__/invalid.json
+Error: Unexpected token i in JSON at position 4"
+`;
+
+exports[`config privateApi.readFile returns content of the file as string when file exists 1`] = `
+"{
+  \\"deps\\": [
+    {
+      \\"name\\": \\"127.0.0.2\\",
+      \\"patterns\\": [
+        \\"/images/**\\"
+      ],
+      \\"port\\": 3000
+    },
+    {
+      \\"name\\": \\"127.0.0.1\\",
+      \\"patterns\\": [
+        \\"/api/**\\"
+      ],
+      \\"port\\": 8080
+    }
+  ],
+  \\"proxy\\": {
+    \\"ws\\": true
+  },
+  \\"source\\": {
+    \\"name\\": \\"127.0.0.1\\",
+    \\"port\\": 3000
+  },
+  \\"vhost\\": {
+    \\"name\\": \\"http://github.com\\",
+    \\"port\\": 80
+  }
+}"
+`;
+
+exports[`config privateApi.readFile throws error when file does not exists 1`] = `"ENOENT: no such file or directory, open '__tests__/__fixtures__/noap.json'"`;
+
+exports[`config privateApi.validate throws error for every \`dependency\` that does not have patterns as array and ip or name 1`] = `
+"Dependency with index 1 is missing \\"ip\\" or \\"name\\" 
+Dependency with index 1 should have patterns defined as array of strings 
+Dependency with index 2 is missing \\"ip\\" or \\"name\\""
+`;
+
+exports[`config privateApi.validate throws error when \`deps\` is not an array 1`] = `"\`deps\` property should be an array"`;
+
+exports[`config privateApi.validate throws error when \`source\` is not an object (array) 1`] = `"\`source\` property should be an object"`;
+
+exports[`config privateApi.validate throws error when \`source\` is not an object (string) 1`] = `"\`source\` property should be an object"`;
+
+exports[`config privateApi.validate throws error when missing \`deps\` 1`] = `"Missing \`deps\` property"`;
+
+exports[`config privateApi.validate throws error when missing \`vhost.name\` 1`] = `"Missing \`vhost.name\` property"`;
+
+exports[`config privateApi.validate throws error when missing \`vhost\` 1`] = `"Missing \`vhost\` property"`;
