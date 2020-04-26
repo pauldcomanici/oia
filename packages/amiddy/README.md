@@ -1,34 +1,22 @@
 <p align="center">
-  <a href="https://travis-ci.org/darkyndy/amiddy">
+  <a href="https://github.com/darkyndy/oia/tree/master/packages/amiddy">
     <img
-      alt="Travis Status"
-      src="https://travis-ci.org/darkyndy/amiddy.svg?branch=master"
+      alt="CI Status"
+      src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"
     />
   </a>
-  <a href="https://codecov.io/gh/darkyndy/amiddy">
+  <a href="https://codecov.io/gh/darkyndy/oia/tree/master/packages/amiddy/src">
     <img
       alt="Coverage Status"
-      src="https://codecov.io/gh/darkyndy/amiddy/branch/master/graph/badge.svg"
+      src="https://codecov.io/gh/darkyndy/oia/branch/master/graph/badge.svg?flags=amiddy"
     />
   </a>
-  <a href="https://snyk.io/test/github/darkyndy/amiddy?targetFile=package.json">
+  <a href="https://snyk.io/test/github/darkyndy/oia?targetFile=packages/amiddy/package.json">
     <img
       alt="Known Vulnerabilities"
-      src="https://snyk.io/test/github/darkyndy/amiddy/badge.svg?targetFile=package.json"
-      data-canonical-src="https://snyk.io/test/github/darkyndy/amiddy?targetFile=package.json"
+      src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/amiddy/package.json"
+      data-canonical-src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/amiddy/package.json"
       style="max-width:100%;"
-    />
-  </a>
-  <a href="https://david-dm.org/darkyndy/amiddy">
-    <img
-      alt="dependencies status"
-      src="https://david-dm.org/darkyndy/amiddy/status.svg"
-    />
-  </a>
-  <a href="https://david-dm.org/darkyndy/amiddy?type=dev">
-    <img
-      alt="devDependencies status"
-      src="https://david-dm.org/darkyndy/amiddy/dev-status.svg"
     />
   </a>
   <a href="https://www.npmjs.com/package/amiddy">
@@ -41,12 +29,6 @@
     <img
       alt="MIT License"
       src="https://img.shields.io/npm/l/amiddy.svg"
-    />
-  </a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fdarkyndy%2Famiddy?ref=badge_shield">
-    <img
-      alt="FOSSA Status"
-      src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdarkyndy%2Famiddy.svg?type=shield"
     />
   </a>
   <br/>
