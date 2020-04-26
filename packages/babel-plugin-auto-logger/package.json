@@ -1,11 +1,14 @@
 {
   "name": "babel-plugin-auto-logger",
   "description": "Babel Plugin that will automatically add logging",
-  "repository": "https://github.com/darkyndy/oia/packages/babel-plugin-auto-logger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darkyndy/oia"
+  },
   "license": "MIT",
   "private": false,
   "main": "lib/index.js",
-  "author": "darkyndy",
+  "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
     "@babel/helper-plugin-utils": "7.8.3",
     "@babel/types": "7.9.5"
@@ -13,6 +16,7 @@
   "devDependencies": {
     "@babel/helper-plugin-test-runner": "7.8.3"
   },
+  "peerDependencies": {},
   "scripts": {
     "build": "npm run lint && npm run test-coverage && npm run compile && npm run test-e2e",
     "build-changelog": "node ../../scripts/changelog/index.js",
@@ -21,16 +25,16 @@
     "lint": "npm run lint-source && npm run lint-tests",
     "lint-source": "eslint ./src",
     "lint-tests": "eslint ./__tests__",
-    "prepublishOnly": "npm run build",
     "postinstall": "node ./scripts/postinstall.js || exit 0",
+    "prepublishOnly": "npm run build",
     "report-coverage": "codecov",
+    "snyk-protect": "snyk protect",
+    "snyk-test": "snyk test",
     "test": "jest --config=./config/jest-ut.js",
+    "test-coverage": "npm run test -- --coverage",
     "test-e2e": "jest --config=./__e2e__/jest.json",
     "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
-    "test-watch": "npm run test -- --watch",
-    "test-coverage": "npm run test -- --coverage",
-    "snyk-protest": "snyk protest",
-    "snyk-test": "snyk test"
+    "test-watch": "npm run test -- --watch"
   },
   "keywords": [
     "babel-plugin",
@@ -42,6 +46,10 @@
     "lib",
     "scripts"
   ],
+  "bugs": {
+    "url": "https://github.com/darkyndy/oia/issues"
+  },
+  "homepage": "https://github.com/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger",
   "version": "1.2.1",
   "snyk": true
 }

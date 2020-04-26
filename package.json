@@ -16,7 +16,7 @@
     "lint-tests": "lerna run --parallel lint-tests",
     "release": "lerna publish from-package --yes",
     "report-coverage": "codecov",
-    "snyk-protest": "snyk protest",
+    "snyk-protect": "snyk protect",
     "snyk-test": "lerna run --parallel snyk-test",
     "snyk-wizard": "snyk wizard",
     "test": "lerna run --parallel test",
