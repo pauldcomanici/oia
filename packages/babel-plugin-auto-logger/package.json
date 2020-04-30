@@ -11,7 +11,8 @@
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
     "@babel/helper-plugin-utils": "7.8.3",
-    "@babel/types": "7.9.5"
+    "@babel/types": "7.9.5",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@babel/helper-plugin-test-runner": "7.8.3"
@@ -34,7 +35,8 @@
     "test-coverage": "npm run test -- --coverage",
     "test-e2e": "jest --config=./__e2e__/jest.json",
     "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
-    "test-watch": "npm run test -- --watch"
+    "test-watch": "npm run test -- --watch",
+    "prepublish": "npm run snyk-protect"
   },
   "keywords": [
     "babel-plugin",
