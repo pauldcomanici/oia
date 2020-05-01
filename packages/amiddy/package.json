@@ -10,12 +10,12 @@
   "main": "lib/index.js",
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
-    "chalk": "3.0.0",
+    "chalk": "4.0.0",
     "express": "4.17.1",
     "http-proxy": "1.18.0",
     "micromatch": "4.0.2",
     "selfsigned": "1.10.7",
-    "strip-json-comments": "3.0.1",
+    "strip-json-comments": "3.1.0",
     "url": "0.11.0",
     "vhost": "3.0.2"
   },
