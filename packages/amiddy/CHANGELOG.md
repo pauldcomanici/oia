@@ -13,6 +13,7 @@
 ## v-next
 * :house: moved project source to monorepo (from https://github.com/darkyndy/amiddy)
 * :rocket: Ability to set custom response headers for every request
+* :lollipop: Move config documentation under docs/config 
 
 
 ## v1.3.3
