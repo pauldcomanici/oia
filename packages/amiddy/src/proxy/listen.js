@@ -7,9 +7,9 @@ const service = {};
 /**
  * Listen to the request event
  *
- * @param {Object} proxyReq
- * @param {Object} req
- * @param {Object} res
+ * @param {http.ClientRequest} proxyReq
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
  * @param {Object} options
  */
 service.request = (proxyReq, req, res, options) => {
@@ -19,26 +19,42 @@ service.request = (proxyReq, req, res, options) => {
 /**
  * Listen to the response event
  *
- * @param {Object} proxyRes
- * @param {Object} req
- * @param {Object} res
+ * @param {Object} responseOptions
+ *
+ * @return {Function} handleResponse
  */
-service.response = (proxyRes, req, res) => {
-  const id = req.__amiddyId__;
-  if (id === res.__amiddyId__) {
-    // we get response for the request
-    const data = proxyRegistry.get(id);
-    logger.response(data, proxyRes);
+service.response = (responseOptions) =>
 
-    proxyRegistry.clear(id);
-  }
-};
+  /**
+   * Response handler for the proxy
+   *
+   * @param {http.ClientRequest} proxyRes
+   * @param {http.IncomingMessage} req
+   * @param {http.ServerResponse} res
+   */
+  (proxyRes, req, res) => {
+    const id = req.__amiddyId__;
+    if (id === res.__amiddyId__) {
+      // we get response for the request
+      const data = proxyRegistry.get(id);
+      logger.response(data, proxyRes);
+
+      proxyRegistry.clear(id);
+
+      const responseHeaders = responseOptions.headers;
+      Object.keys(responseHeaders).forEach(
+        (headerName) => {
+          res.setHeader(headerName, responseHeaders[headerName]);
+        }
+      );
+    }
+  };
 
 /**
  * Listen to error event
  * @param {Object} error
- * @param {Object} req
- * @param {Object} res
+ * @param {http.IncomingMessage} req
+ * @param {http.ServerResponse} res
  */
 service.error = (error, req, res) => {
   if (error.code !== 'ECONNRESET') {

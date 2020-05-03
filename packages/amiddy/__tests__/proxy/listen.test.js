@@ -77,6 +77,12 @@ describe('proxy-listen', () => {
 
   describe('response', () => {
     beforeEach(() => {
+      testSpecificMocks.responseOptions = {
+        headers: {
+          'X-Special-Proxy-Header': 'on-response',
+        },
+      };
+
       testSpecificMocks.proxyReq = {
         proxyReq: 'proxyReq',
         statusCode: 200,
@@ -88,6 +94,7 @@ describe('proxy-listen', () => {
       testSpecificMocks.res = {
         __amiddyId__: 1,
         res: 'res',
+        setHeader: jest.fn(),
       };
     });
 
@@ -99,7 +106,7 @@ describe('proxy-listen', () => {
 
     it('nothing happens when request id does not match response id (response from other request)', () => {
       testSpecificMocks.req.__amiddyId__ = 2;
-      proxyListen.response(
+      proxyListen.response(testSpecificMocks.responseOptions)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -111,7 +118,7 @@ describe('proxy-listen', () => {
     });
 
     it('retrieves stored data from registry when response is for the tracked request', () => {
-      proxyListen.response(
+      proxyListen.response(testSpecificMocks.responseOptions)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -124,8 +131,8 @@ describe('proxy-listen', () => {
       );
     });
 
-    it('los response data when response is for the tracked request', () => {
-      proxyListen.response(
+    it('logs response data when response is for the tracked request', () => {
+      proxyListen.response(testSpecificMocks.responseOptions)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -142,7 +149,7 @@ describe('proxy-listen', () => {
     });
 
     it('clears registry data when response is for the tracked request', () => {
-      proxyListen.response(
+      proxyListen.response(testSpecificMocks.responseOptions)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,

@@ -46,6 +46,63 @@ describe('proxy', () => {
     testSpecificMocks = {};
   });
 
+  describe('privateApi.getResponseOptions', () => {
+    beforeEach(() => {
+      testSpecificMocks.config = {
+        proxy: {
+          response: {
+            headers: {
+              'X-Special-Proxy-Header': 'on-response',
+            }
+          }
+        }
+      };
+
+      testSpecificMocks.responseStructure = {
+        headers: {},
+      };
+    });
+
+    it('returns object with proxy response options, having response headers from config', () => {
+      expect(
+        privateApi.getResponseOptions(testSpecificMocks.config)
+      ).toEqual({
+        headers: {
+          'X-Special-Proxy-Header': 'on-response',
+        }
+      });
+    });
+
+    it('returns object with proxy response options, having common structure as proxy config was not set', () => {
+      expect(
+        privateApi.getResponseOptions({})
+      ).toEqual(
+        testSpecificMocks.responseStructure
+      );
+    });
+
+    it('returns object with proxy response options, having common structure as proxy response config was not set', () => {
+      testSpecificMocks.config.proxy.response = {};
+
+      expect(
+        privateApi.getResponseOptions(testSpecificMocks.config)
+      ).toEqual(
+        testSpecificMocks.responseStructure
+      );
+    });
+
+    it('returns object with proxy response options, having common structure as proxy response headers config was not set', () => {
+      testSpecificMocks.config.proxy.response.headers = undefined;
+
+      expect(
+        privateApi.getResponseOptions(testSpecificMocks.config)
+      ).toEqual(
+        testSpecificMocks.responseStructure
+      );
+    });
+
+  });
+
   describe('privateApi.vhostCb', () => {
     beforeEach(() => {
       testSpecificMocks.proxy = {
@@ -72,7 +129,9 @@ describe('proxy', () => {
           },
         ],
         proxy: {
-          ws: true,
+          options: {
+            ws: true,
+          },
         },
         source: {
           name: '127.0.0.1',
@@ -115,7 +174,6 @@ describe('proxy', () => {
     });
 
     it('determines dependency that will act as proxy for the request', () => {
-      testSpecificMocks.config.proxy.ws = false;
       privateApi.vhostCb(
         testSpecificMocks.proxy,
         testSpecificMocks.ssl,
@@ -127,6 +185,31 @@ describe('proxy', () => {
       ).toHaveBeenCalledWith(
         testSpecificMocks.config.deps,
         testSpecificMocks.req.url,
+      );
+    });
+
+    it('uses default proxy options if the config for proxy did not had any option', () => {
+      testSpecificMocks.config.proxy = {};
+      privateApi.vhostCb(
+        testSpecificMocks.proxy,
+        testSpecificMocks.ssl,
+        testSpecificMocks.config,
+      )(testSpecificMocks.req, testSpecificMocks.res);
+
+      expect(
+        proxyUtils.extendOptions
+      ).toHaveBeenCalledWith(
+        {
+          changeOrigin: false,
+          headers: {
+            host: testSpecificMocks.config.vhost.name,
+          },
+          secure: false,
+          target: 'proxyUtils::buildUrl',
+          ws: false,
+        },
+        testSpecificMocks.ssl,
+        'proxyUtils::getDependency',
       );
     });
 
@@ -188,6 +271,11 @@ describe('proxy', () => {
       jest.spyOn(privateApi, 'vhostCb').mockReturnValue(
         () => 'vhost-cb'
       );
+      jest.spyOn(privateApi, 'getResponseOptions').mockReturnValue(
+        {
+          headers: {},
+        }
+      );
     });
     beforeEach(() => {
       testSpecificMocks.ssl = {
@@ -228,9 +316,11 @@ describe('proxy', () => {
     afterEach(() => {
       httpProxy.createProxyServer().on.mockClear();
       httpProxy.createProxyServer.mockClear();
+      privateApi.getResponseOptions.mockClear();
       privateApi.vhostCb.mockClear();
     });
     afterAll(() => {
+      privateApi.getResponseOptions.mockRestore();
       privateApi.vhostCb.mockRestore();
     });
 
@@ -243,6 +333,19 @@ describe('proxy', () => {
       expect(
         httpProxy.createProxyServer
       ).toHaveBeenCalledWith();
+    });
+
+    it('prepares options for the response', () => {
+      proxy.create(
+        testSpecificMocks.config,
+        testSpecificMocks.ssl,
+      );
+
+      expect(
+        privateApi.getResponseOptions
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.config
+      );
     });
 
     it('adds listener for `proxyReq`, `proxyRes` and `error` events', () => {
@@ -261,7 +364,7 @@ describe('proxy', () => {
           ],
           [
             'proxyRes',
-            proxyListen.response,
+            proxyListen.response({}),
           ],
           [
             'error',

@@ -9,6 +9,26 @@ import proxyUtils from './utils';
 const privateApi = {};
 
 /**
+ * Get proxy response options
+ *
+ * @param {Object} config
+ * @return {Object}
+ */
+privateApi.getResponseOptions = (config) => {
+  const options = {
+    headers: {},
+  };
+
+  const proxyResponseOptions = config && config.proxy && config.proxy.response || {};
+  const proxyResponseHeaders = proxyResponseOptions.headers;
+  if (proxyResponseHeaders && typeof proxyResponseHeaders === 'object') {
+    options.headers = proxyResponseHeaders;
+  }
+
+  return options;
+};
+
+/**
  * Returns callback for vhost
  *
  * @param {Object} proxy
@@ -23,18 +43,20 @@ privateApi.vhostCb = (proxy, ssl, config) => {
   const vhostConf = config.vhost;
   // base proxy config, can be overwritten by every dependency
   const proxyConf = config.proxy;
+  // base proxy config, can be overwritten by every dependency
+  const proxyOptions = proxyConf && proxyConf.options || {};
   // dependencies
   const deps = config.deps;
 
   return (req, res) => {
 
-    const proxyOptions = {
+    const useProxyOptions = {
       changeOrigin: false,
       secure: false,
       ws: false,
-      ...proxyConf,
+      ...proxyOptions,
       headers: {
-        ...proxyConf.headers,
+        ...proxyOptions.headers,
         host: vhostConf.name,
       },
       target: proxyUtils.buildUrl(source),
@@ -45,10 +67,10 @@ privateApi.vhostCb = (proxy, ssl, config) => {
     const dependency = proxyUtils.getDependency(deps, req.url);
 
     // extend proxy options if there is a dependency that will be used as proxy
-    proxyUtils.extendOptions(proxyOptions, ssl, dependency);
+    proxyUtils.extendOptions(useProxyOptions, ssl, dependency);
 
     // proxy request
-    proxy.proxyRequest(req, res, proxyOptions);
+    proxy.proxyRequest(req, res, useProxyOptions);
   };
 };
 
@@ -72,7 +94,8 @@ service.create = (config, ssl) => {
   proxy.on('proxyReq', proxyListen.request);
 
   // response
-  proxy.on('proxyRes', proxyListen.response);
+  const responseOptions = privateApi.getResponseOptions(config);
+  proxy.on('proxyRes', proxyListen.response(responseOptions));
 
   // error
   proxy.on('error', proxyListen.error);
