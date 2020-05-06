@@ -1,4 +1,6 @@
 
+import url from 'url';
+
 // testing file
 import proxyUtils from '../../src/proxy/utils';
 
@@ -31,6 +33,61 @@ describe('proxy-utils', () => {
       expect(proxyUtils.buildUrl(testSpecificMocks.options))
         .toBe('http://example.com:3030');
     });
+  });
+
+  describe('buildUrlObject', () => {
+    beforeAll(() => {
+      jest.spyOn(proxyUtils, 'buildUrl').mockReturnValue('formattedUrl');
+      jest.spyOn(url, 'parse').mockReturnValue({
+        host: 'example.com'
+      });
+    });
+    beforeEach(() => {
+      testSpecificMocks.options = {
+        https: true,
+        ip: '127.0.0.2',
+        name: 'example.com',
+        port: 3030,
+      };
+    });
+
+    afterEach(() => {
+      proxyUtils.buildUrl.mockClear();
+      url.parse.mockClear();
+    });
+    afterAll(() => {
+      proxyUtils.buildUrl.mockRestore();
+      url.parse.mockRestore();
+    });
+
+    it('prepares formatted url based on provided options', () => {
+      proxyUtils.buildUrlObject(testSpecificMocks.options);
+
+      expect(
+        proxyUtils.buildUrl
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.options
+      );
+    });
+
+    it('prepares parsed url based on formatted url', () => {
+      proxyUtils.buildUrlObject(testSpecificMocks.options);
+
+      expect(
+        url.parse
+      ).toHaveBeenCalledWith(
+        proxyUtils.buildUrl()
+      );
+    });
+
+    it('returns parsed url', () => {
+      expect(
+        proxyUtils.buildUrlObject(testSpecificMocks.options)
+      ).toBe(
+        url.parse()
+      );
+    });
+
   });
 
   describe('getDependency', () => {

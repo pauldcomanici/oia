@@ -24,6 +24,18 @@ service.buildUrl = (options) => {
 };
 
 /**
+ * Build url object
+ *
+ * @param {Object} options - data for url builder
+ * @return {Object} UrlWithStringQuery
+ */
+service.buildUrlObject = (options) => {
+  const formattedUrl = service.buildUrl(options);
+
+  return url.parse(formattedUrl);
+};
+
+/**
  * Get dependency that should be used to proxy this request
  *
  * @param {Array<Object>} deps - dependencies that can be used for proxy
