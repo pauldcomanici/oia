@@ -119,6 +119,23 @@ privateApi.time = (start, now) => {
   return chalk.gray(`${str.padStart(5, ' ')} ${unit.padStart(2, ' ')} `);
 };
 
+/**
+ * Log message if the request was mocked
+ *
+ * @param {Boolean} isMock
+ * @return {String}
+ */
+privateApi.mock = (isMock) => {
+  let str = 'PROXY';
+  let color = chalk.bgBlack.white;
+  if (isMock) {
+    str = 'MOCK';
+    color = chalk.bgBlack.yellow;
+  }
+
+  return color(` ${str.padEnd(5, ' ')} `);
+};
+
 
 const service = {};
 
@@ -130,10 +147,12 @@ const service = {};
  */
 service.response = (data, res) => {
   let executionTime;
+  let isMock = false;
   if (data.startTime) {
     const now = global.Date.now();
     executionTime = privateApi.time(data.startTime, now);
   } else {
+    isMock = true;
     executionTime = privateApi.time(0, 0);
   }
 
@@ -141,6 +160,7 @@ service.response = (data, res) => {
     privateApi.method(data.method),
     privateApi.status(res.statusCode),
     executionTime,
+    privateApi.mock(isMock),
     data.uri,
   ];
 

@@ -6,6 +6,10 @@ import logger, {privateApi} from '../src/logger';
 
 // mocks
 jest.mock('chalk', () => ({
+  bgBlack: {
+    white: jest.fn().mockReturnValue('bg_black-white'),
+    yellow: jest.fn().mockReturnValue('bg_black-yellow'),
+  },
   bgBlue: {
     black: jest.fn().mockReturnValue('bg_blue-black'),
     white: jest.fn().mockReturnValue('bg_blue-white'),
@@ -612,11 +616,63 @@ describe('logger', () => {
     });
   });
 
+  describe('privateApi.mock', () => {
+    beforeEach(() => {
+      testSpecificMocks.isMock = false;
+    });
+
+    afterEach(() => {
+      chalk.bgBlack.white.mockClear();
+      chalk.bgBlack.yellow.mockClear();
+    });
+
+    it('prepares message when isMock is falsy', () => {
+      privateApi.mock(testSpecificMocks.isMock);
+
+      expect(
+        chalk.bgBlack.white
+      ).toHaveBeenCalledWith(
+        ' PROXY '
+      );
+    });
+
+    it('returns string message when isMock is falsy', () => {
+      expect(
+        privateApi.mock(testSpecificMocks.status)
+      ).toBe(
+        chalk.bgBlack.white()
+      );
+    });
+
+
+    it('prepares message when isMock is truthy', () => {
+      testSpecificMocks.isMock = true;
+      privateApi.mock(testSpecificMocks.isMock);
+
+      expect(
+        chalk.bgBlack.yellow
+      ).toHaveBeenCalledWith(
+        ' MOCK  '
+      );
+    });
+
+    it('returns string message when isMock is truthy', () => {
+      testSpecificMocks.isMock = true;
+      expect(
+        privateApi.mock(testSpecificMocks.isMock)
+      ).toBe(
+        chalk.bgBlack.yellow()
+      );
+    });
+
+  });
+
   describe('response', () => {
     beforeAll(() => {
       jest.spyOn(privateApi, 'method').mockReturnValue('method');
       jest.spyOn(privateApi, 'status').mockReturnValue('status');
       jest.spyOn(privateApi, 'time').mockReturnValue('time');
+      jest.spyOn(privateApi, 'mock').mockReturnValue('mock');
       jest.spyOn(global.Date, 'now').mockReturnValue('current-time');
       jest.spyOn(console, 'log').mockReturnValue(undefined);
     });
@@ -635,6 +691,7 @@ describe('logger', () => {
       privateApi.method.mockClear();
       privateApi.status.mockClear();
       privateApi.time.mockClear();
+      privateApi.mock.mockClear();
       global.Date.now.mockClear();
       console.log.mockClear(); // eslint-disable-line no-console
     });
@@ -642,6 +699,7 @@ describe('logger', () => {
       privateApi.method.mockRestore();
       privateApi.status.mockRestore();
       privateApi.time.mockRestore();
+      privateApi.mock.mockRestore();
       global.Date.now.mockRestore();
       console.log.mockRestore(); // eslint-disable-line no-console
     });
@@ -681,11 +739,28 @@ describe('logger', () => {
       );
     });
 
+    it('prepares message for the request type (startDate is not 0)', () => {
+      logger.response(testSpecificMocks.data, testSpecificMocks.res);
+
+      expect(privateApi.mock).toHaveBeenCalledWith(
+        false,
+      );
+    });
+
+    it('prepares message for the request type (startDate is 0)', () => {
+      testSpecificMocks.data.startTime = 0;
+      logger.response(testSpecificMocks.data, testSpecificMocks.res);
+
+      expect(privateApi.mock).toHaveBeenCalledWith(
+        true,
+      );
+    });
+
     it('logs message that contains method name, status code, execution time and uri', () => {
       logger.response(testSpecificMocks.data, testSpecificMocks.res);
 
       expect(console.log).toHaveBeenCalledWith( // eslint-disable-line no-console
-        `${privateApi.method()}${privateApi.status()}${privateApi.time()}${testSpecificMocks.data.uri}`
+        `${privateApi.method()}${privateApi.status()}${privateApi.time()}${privateApi.mock()}${testSpecificMocks.data.uri}` // eslint-disable-line max-len
       );
     });
   });
