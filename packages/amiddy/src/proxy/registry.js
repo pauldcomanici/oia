@@ -30,6 +30,29 @@ privateApi.registry = {};
 const service = {};
 
 /**
+ * Generate data for registry
+ *
+ * @param {http.ClientRequest} proxyReq
+ * @param {Object} options
+ * @return {Object}
+ */
+service.generateEntry = (proxyReq, options) => {
+
+  // Get proxy target uri
+  const target = Object.assign(
+    options.target,
+    {pathname: proxyReq.path}
+  );
+  const uri = decodeURIComponent(url.format(target));
+
+  return {
+    method: proxyReq.method,
+    startTime: 0,
+    uri,
+  };
+};
+
+/**
  * Get registry data based on id
  *
  * @param {String} id - identification
@@ -59,29 +82,20 @@ service.clear = (id) => {
 service.set = (proxyReq, req, res, options) => {
   // request started time
   const startTime = global.Date.now();
-
   // get unique id
   const id = privateApi.id;
   // set unique id (used for next request)
   privateApi.id += 1;
-
-
-  // Get proxy target uri
-  const target = Object.assign(
-    options.target,
-    {pathname: proxyReq.path}
-  );
-  const uri = decodeURIComponent(url.format(target));
 
   // store ID on the request
   req.__amiddyId__ = id;
   // store ID on the response
   res.__amiddyId__ = id;
 
+  const data = service.generateEntry(proxyReq, options);
   privateApi.registry[id] = {
-    method: proxyReq.method,
+    ...data,
     startTime,
-    uri,
   };
 };
 
