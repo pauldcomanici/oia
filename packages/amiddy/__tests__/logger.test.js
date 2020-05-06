@@ -662,12 +662,22 @@ describe('logger', () => {
       );
     });
 
-    it('prepares message for execution time', () => {
+    it('prepares message for execution time (startDate is not 0)', () => {
       logger.response(testSpecificMocks.data, testSpecificMocks.res);
 
       expect(privateApi.time).toHaveBeenCalledWith(
         testSpecificMocks.data.startTime,
         global.Date.now(),
+      );
+    });
+
+    it('prepares message for execution time (startDate is 0)', () => {
+      testSpecificMocks.data.startTime = 0;
+      logger.response(testSpecificMocks.data, testSpecificMocks.res);
+
+      expect(privateApi.time).toHaveBeenCalledWith(
+        testSpecificMocks.data.startTime,
+        0,
       );
     });
 

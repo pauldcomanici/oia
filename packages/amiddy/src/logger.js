@@ -129,11 +129,18 @@ const service = {};
  * @param {Object} res - response data
  */
 service.response = (data, res) => {
-  const now = global.Date.now();
+  let executionTime;
+  if (data.startTime) {
+    const now = global.Date.now();
+    executionTime = privateApi.time(data.startTime, now);
+  } else {
+    executionTime = privateApi.time(0, 0);
+  }
+
   const msgParts = [
     privateApi.method(data.method),
     privateApi.status(res.statusCode),
-    privateApi.time(data.startTime, now),
+    executionTime,
     data.uri,
   ];
 
