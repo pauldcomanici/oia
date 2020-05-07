@@ -36,3 +36,11 @@
 
 # oia
 oia monorepo.
+
+## Packages
+
+| Package                                                                                                  | Version                                                                  | Changelog                                                     | License                                               |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- | ----------------------------------------------------- |
+| [babel-plugin-auto-logger](https://www.npmjs.com/package/babel-plugin-auto-logger)                       | ![version](https://badgen.net/npm/v/babel-plugin-auto-logger)            | [CHANGELOG](packages/babel-plugin-auto-logger/CHANGELOG.md)   | [MIT](packages/babel-plugin-auto-logger/LICENSE)      |
+| [amiddy](https://www.npmjs.com/package/amiddy)                                                           | ![version](https://badgen.net/npm/v/amiddy)                              | [CHANGELOG](packages/amiddy/CHANGELOG.md)                     | [MIT](packages/amiddy/LICENSE)                        |
+
