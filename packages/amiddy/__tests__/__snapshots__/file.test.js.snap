@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`file getAbsolutePath throws error when the path does not represents a file 1`] = `
+" Cannot resolve file: path/to/resolve
+ cwd: process::cwd"
+`;
+
+exports[`file read returns content of the file as string when file exists 1`] = `
+"{
+  \\"deps\\": [
+    {
+      \\"name\\": \\"127.0.0.2\\",
+      \\"patterns\\": [
+        \\"/images/**\\"
+      ],
+      \\"port\\": 3000
+    },
+    {
+      \\"name\\": \\"127.0.0.1\\",
+      \\"patterns\\": [
+        \\"/api/**\\"
+      ],
+      \\"port\\": 8080
+    }
+  ],
+  \\"proxy\\": {
+    \\"ws\\": true
+  },
+  \\"source\\": {
+    \\"name\\": \\"127.0.0.1\\",
+    \\"port\\": 3000
+  },
+  \\"vhost\\": {
+    \\"name\\": \\"http://github.com\\",
+    \\"port\\": 80
+  }
+}"
+`;
+
+exports[`file read throws error when file does not exists 1`] = `"ENOENT: no such file or directory, open '__tests__/__fixtures__/noap.json'"`;

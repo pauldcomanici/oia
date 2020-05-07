@@ -1,20 +1,10 @@
 
-import path from 'path';
-
 // testing file
 import config, {privateApi} from '../../src/config';
 
 
+import file from '../../src/file';
 import debug from '../../src/debug';
-
-
-// mocks
-jest.mock('path', () => (
-  {
-    isAbsolute: jest.fn().mockReturnValue(true),
-    resolve: jest.fn().mockReturnValue('path::resolve'),
-  }
-));
 
 jest.mock('../../src/debug', () => (
   {
@@ -28,21 +18,6 @@ describe('config', () => {
 
   beforeEach(() => {
     testSpecificMocks = {};
-  });
-
-
-  describe('privateApi.readFile', () => {
-
-    it('returns content of the file as string when file exists', () => {
-      expect(privateApi.readFile('__tests__/__fixtures__/config.json')).toMatchSnapshot();
-    });
-
-    it('throws error when file does not exists', () => {
-      expect(() => {
-        privateApi.readFile('__tests__/__fixtures__/noap.json');
-      }).toThrowErrorMatchingSnapshot();
-    });
-
   });
 
   describe('privateApi.loadJSONConfigFile', () => {
@@ -93,126 +68,6 @@ describe('config', () => {
       expect(() => {
         privateApi.loadJSONConfigFile('__tests__/__fixtures__/noap.json');
       }).toThrowErrorMatchingSnapshot();
-    });
-
-  });
-
-  describe('privateApi.isFile', () => {
-
-    it('returns true when provided path as string represents a file', () => {
-      expect(privateApi.isFile('__tests__/__fixtures__/config.json')).toBe(true);
-    });
-
-    it('returns false when provided path as string is a folder', () => {
-      expect(privateApi.isFile('__tests__/__fixtures__')).toBe(false);
-    });
-
-    it('returns false when provided path as string is invalid', () => {
-      expect(privateApi.isFile('__tests__/__fixtures__/noap.json')).toBe(false);
-    });
-
-  });
-
-  describe('privateApi.getAbsolutePath', () => {
-    beforeAll(() => {
-      jest.spyOn(process, 'cwd').mockReturnValue('process::cwd');
-      jest.spyOn(privateApi, 'isFile').mockReturnValue(true);
-    });
-    beforeEach(() => {
-      testSpecificMocks.pathToResolve = 'path/to/resolve';
-    });
-
-    afterEach(() => {
-      path.isAbsolute.mockClear();
-      path.resolve.mockClear();
-      process.cwd.mockClear();
-      privateApi.isFile.mockClear();
-    });
-    afterAll(() => {
-      process.cwd.mockRestore();
-      privateApi.isFile.mockRestore();
-    });
-
-    it('determines current working directory of the Node.js process', () => {
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        process.cwd
-      ).toHaveBeenCalledWith();
-    });
-
-    it('determines if provided path is absolute', () => {
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        path.isAbsolute
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.pathToResolve
-      );
-    });
-
-    it('tries to resolve path when is not absolute', () => {
-      path.isAbsolute.mockReturnValueOnce(false);
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        path.resolve
-      ).toHaveBeenCalledWith(
-        'process::cwd',
-        testSpecificMocks.pathToResolve,
-      );
-    });
-
-    it('determines if we are working with a file based on absolute path (path is absolute)', () => {
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        privateApi.isFile
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.pathToResolve,
-      );
-    });
-
-    it('determines if we are working with a file based on absolute path (path is relative)', () => {
-      path.isAbsolute.mockReturnValueOnce(false);
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        privateApi.isFile
-      ).toHaveBeenCalledWith(
-        'path::resolve',
-      );
-    });
-
-    it('returns absolute path when it represents a file (path is absolute)', () => {
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        privateApi.isFile
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.pathToResolve,
-      );
-    });
-
-    it('returns absolute path when it represents a file (path is relative)', () => {
-      path.isAbsolute.mockReturnValueOnce(false);
-      privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-
-      expect(
-        privateApi.isFile
-      ).toHaveBeenCalledWith(
-        'path::resolve',
-      );
-    });
-
-    it('throws error when the path does not represents a file', () => {
-      privateApi.isFile.mockReturnValueOnce(false);
-
-      expect(
-        () => {
-          privateApi.getAbsolutePath(testSpecificMocks.pathToResolve);
-        }
-      ).toThrowErrorMatchingSnapshot();
     });
 
   });
@@ -680,7 +535,7 @@ describe('config', () => {
     beforeAll(() => {
       jest.spyOn(privateApi, 'setDefaults').mockReturnValue(undefined);
       jest.spyOn(privateApi, 'validate').mockReturnValue(undefined);
-      jest.spyOn(privateApi, 'getAbsolutePath').mockReturnValue('/absolute/path/to/file');
+      jest.spyOn(file, 'getAbsolutePath').mockReturnValue('/absolute/path/to/file');
       jest.spyOn(privateApi, 'loadJSONConfigFile').mockReturnValue(
         {
           data: 'confiObj',
@@ -694,13 +549,13 @@ describe('config', () => {
     afterEach(() => {
       privateApi.setDefaults.mockClear();
       privateApi.validate.mockClear();
-      privateApi.getAbsolutePath.mockClear();
+      file.getAbsolutePath.mockClear();
       privateApi.loadJSONConfigFile.mockClear();
     });
     afterAll(() => {
       privateApi.setDefaults.mockRestore();
       privateApi.validate.mockRestore();
-      privateApi.getAbsolutePath.mockRestore();
+      file.getAbsolutePath.mockRestore();
       privateApi.loadJSONConfigFile.mockRestore();
     });
 
@@ -708,7 +563,7 @@ describe('config', () => {
       config.get();
 
       expect(
-        privateApi.getAbsolutePath
+        file.getAbsolutePath
       ).toHaveBeenCalledWith(
         '.amiddy',
       );
@@ -718,7 +573,7 @@ describe('config', () => {
       config.get(testSpecificMocks.pathToResolve);
 
       expect(
-        privateApi.getAbsolutePath
+        file.getAbsolutePath
       ).toHaveBeenCalledWith(
         testSpecificMocks.pathToResolve,
       );
@@ -730,7 +585,7 @@ describe('config', () => {
       expect(
         privateApi.loadJSONConfigFile
       ).toHaveBeenCalledWith(
-        privateApi.getAbsolutePath(),
+        file.getAbsolutePath(),
       );
     });
 

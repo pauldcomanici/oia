@@ -1,22 +1,10 @@
-import fs from 'fs';
-import path from 'path';
 import stripComments from 'strip-json-comments';
 
-
+import file from '../file';
 import debug from '../debug';
 
 
 const privateApi = {};
-
-/**
- * Synchronously read file contents.
- *
- * @param {String} filePath The filename to read.
- * @return {String} The file contents, with the BOM removed.
- */
-privateApi.readFile = (filePath) => (
-  fs.readFileSync(filePath, 'utf8').replace(/^\ufeff/u, '')
-);
 
 /**
  * Loads a JSON configuration from a file.
@@ -29,7 +17,7 @@ privateApi.loadJSONConfigFile = (filePath) => {
   debug.log(`Loading JSON config file: ${filePath}`);
 
   try {
-    return JSON.parse(stripComments(privateApi.readFile(filePath)));
+    return JSON.parse(stripComments(file.read(filePath)));
   } catch (e) {
     debug.log(`Error reading JSON file: ${filePath}`);
     e.message = `Cannot read config file: ${filePath}\nError: ${e.message}`;
@@ -39,36 +27,6 @@ privateApi.loadJSONConfigFile = (filePath) => {
     };
     throw e;
   }
-};
-
-/**
- * Test if the provided filePath represents a file
- *
- * @param {String} filePath
- * @return {Boolean}
- */
-privateApi.isFile = (filePath) => (
-  fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory()
-);
-
-/**
- * Test if the provided filePath represents a file
- *
- * @param {String} pathToResolve
- * @return {String}
- * @throws {Error}
- */
-privateApi.getAbsolutePath = (pathToResolve) => {
-  const cwd = process.cwd();
-
-  const absolutePath = path.isAbsolute(pathToResolve) ?
-    pathToResolve : path.resolve(cwd, pathToResolve);
-
-  if (privateApi.isFile(absolutePath)) {
-    return absolutePath;
-  }
-
-  throw Error(` Cannot resolve config file: ${pathToResolve}\n cwd: ${cwd}`);
 };
 
 /**
@@ -195,7 +153,7 @@ const service = {};
  */
 service.get = (pathToResolve) => {
   const pathToUse = pathToResolve || '.amiddy';
-  const absolutePath = privateApi.getAbsolutePath(pathToUse);
+  const absolutePath = file.getAbsolutePath(pathToUse);
 
   const configObj = privateApi.loadJSONConfigFile(absolutePath);
 
