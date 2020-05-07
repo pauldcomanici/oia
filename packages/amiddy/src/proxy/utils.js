@@ -55,6 +55,30 @@ service.getDependency = (deps, reqUrl) => (
 );
 
 /**
+ * Get mock data to be used for the response
+ *
+ * @param {Array<Object>} mocks - mocks that can be used
+ * @param {String} reqUrl - request url
+ * @param {String} method - request method
+ * @return {Object} [dependency]
+ */
+service.getMock = (mocks, reqUrl, method) => (
+  mocks && mocks.find(
+    (mock) => {
+      const {
+        methods,
+        patterns,
+      } = mock || {};
+
+      // consider that we have match on method if is not set or method is included in the list of supported methods
+      const matchedMethod = !methods || methods.includes(method);
+
+      return matchedMethod && micromatch.isMatch(reqUrl, (patterns || []), {contains: true});
+    }
+  )
+);
+
+/**
  * Extend proxy options
  *
  * @param {Object} proxyOptions

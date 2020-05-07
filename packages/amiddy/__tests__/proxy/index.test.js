@@ -6,6 +6,7 @@ import httpProxy from 'http-proxy';
 import proxy, {privateApi} from '../../src/proxy';
 
 
+import proxyMock from '../../src/proxy/mock';
 import proxyListen from '../../src/proxy/listen';
 import proxyUtils from '../../src/proxy/utils';
 
@@ -23,6 +24,11 @@ jest.mock('http-proxy', () => (
 ));
 // jest.mock('vhost', () => 'vhost');
 
+jest.mock('../../src/proxy/mock', () => (
+  {
+    execute: jest.fn().mockReturnValue(false),
+  }
+));
 jest.mock('../../src/proxy/listen', () => (
   {
     error: jest.fn(),
@@ -114,6 +120,34 @@ describe('proxy', () => {
       testSpecificMocks.config = {
         deps: [
           {
+            mocks: [
+              {
+                headers: {
+                  'X-Mock-Accepted': 'mocked-header',
+                },
+                patterns: [
+                  '**/endpoint/**',
+                  '**/ping*',
+                ],
+                status: 202
+              },
+              {
+                headers: {
+                  'X-Mock_user_create': 'user-created',
+                },
+                methods: ['POST'],
+                patterns: [
+                  '**/user/*',
+                ],
+                status: 201
+              },
+              {
+                methods: ['GET'],
+                patterns: [
+                  '**/user/*',
+                ],
+              },
+            ],
             name: '127.0.0.2',
             patterns: [
               '/images/**',
@@ -132,6 +166,11 @@ describe('proxy', () => {
           options: {
             ws: true,
           },
+          response: {
+            headers: {
+              'X-Special-Proxy-Header': 'on-response',
+            },
+          },
         },
         source: {
           name: '127.0.0.1',
@@ -145,7 +184,7 @@ describe('proxy', () => {
 
       testSpecificMocks.req = {
         req: 'req',
-        url: 'http://google.com/images/test.png',
+        url: 'http://example.com/api/test',
       };
       testSpecificMocks.res = {
         res: 'res',
@@ -156,21 +195,8 @@ describe('proxy', () => {
       proxyUtils.buildUrl.mockClear();
       proxyUtils.getDependency.mockClear();
       proxyUtils.extendOptions.mockClear();
+      proxyMock.execute.mockClear();
       testSpecificMocks.proxy.proxyRequest.mockClear();
-    });
-
-    it('builds url from source that will be used for proxy options', () => {
-      privateApi.vhostCb(
-        testSpecificMocks.proxy,
-        testSpecificMocks.ssl,
-        testSpecificMocks.config,
-      )(testSpecificMocks.req, testSpecificMocks.res);
-
-      expect(
-        proxyUtils.buildUrl
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.config.source
-      );
     });
 
     it('determines dependency that will act as proxy for the request', () => {
@@ -188,7 +214,69 @@ describe('proxy', () => {
       );
     });
 
-    it('uses default proxy options if the config for proxy did not had any option', () => {
+    it('tries to respond with mock data (use-case: uses dependency determined)', () => {
+      privateApi.vhostCb(
+        testSpecificMocks.proxy,
+        testSpecificMocks.ssl,
+        testSpecificMocks.config,
+      )(testSpecificMocks.req, testSpecificMocks.res);
+
+      expect(
+        proxyMock.execute
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.req,
+        testSpecificMocks.res,
+        'proxyUtils::getDependency',
+        testSpecificMocks.config.proxy.response,
+      );
+    });
+
+    it('tries to respond with mock data (use-case: uses source as dependency was not determined)', () => {
+      proxyUtils.getDependency.mockReturnValueOnce(undefined);
+      privateApi.vhostCb(
+        testSpecificMocks.proxy,
+        testSpecificMocks.ssl,
+        testSpecificMocks.config,
+      )(testSpecificMocks.req, testSpecificMocks.res);
+
+      expect(
+        proxyMock.execute
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.req,
+        testSpecificMocks.res,
+        testSpecificMocks.config.source,
+        testSpecificMocks.config.proxy.response,
+      );
+    });
+
+    it('does not proxy the request if we have data to mock the response', () => {
+      proxyMock.execute.mockReturnValueOnce(true);
+      privateApi.vhostCb(
+        testSpecificMocks.proxy,
+        testSpecificMocks.ssl,
+        testSpecificMocks.config,
+      )(testSpecificMocks.req, testSpecificMocks.res);
+
+      expect(
+        testSpecificMocks.proxy.proxyRequest
+      ).not.toHaveBeenCalled();
+    });
+
+    it('builds url from source that will be used for proxy options', () => {
+      privateApi.vhostCb(
+        testSpecificMocks.proxy,
+        testSpecificMocks.ssl,
+        testSpecificMocks.config,
+      )(testSpecificMocks.req, testSpecificMocks.res);
+
+      expect(
+        proxyUtils.buildUrl
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.config.source
+      );
+    });
+
+    it('uses default proxy options if the config for proxy did not had any option (response was not mocked)', () => {
       testSpecificMocks.config.proxy = {};
       privateApi.vhostCb(
         testSpecificMocks.proxy,
@@ -213,7 +301,7 @@ describe('proxy', () => {
       );
     });
 
-    it('extends proxy options taking in consideration determined dependency', () => {
+    it('extends proxy options taking in consideration determined dependency (response was not mocked)', () => {
       privateApi.vhostCb(
         testSpecificMocks.proxy,
         testSpecificMocks.ssl,
@@ -237,7 +325,7 @@ describe('proxy', () => {
       );
     });
 
-    it('proxies the request', () => {
+    it('proxies the request (response was not mocked)', () => {
       testSpecificMocks.config.proxy.changeOrigin = false;
       testSpecificMocks.config.proxy.secure = false;
 

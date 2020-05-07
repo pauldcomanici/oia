@@ -1,7 +1,7 @@
 import httpProxy from 'http-proxy';
 import vhost from 'vhost';
 
-
+import proxyMock from './mock';
 import proxyListen from './listen';
 import proxyUtils from './utils';
 
@@ -45,32 +45,38 @@ privateApi.vhostCb = (proxy, ssl, config) => {
   const proxyConf = config.proxy;
   // base proxy config, can be overwritten by every dependency
   const proxyOptions = proxyConf && proxyConf.options || {};
+  // base proxy response
+  const proxyResponse = proxyConf && proxyConf.response;
   // dependencies
   const deps = config.deps;
 
   return (req, res) => {
 
-    const useProxyOptions = {
-      changeOrigin: false,
-      secure: false,
-      ws: false,
-      ...proxyOptions,
-      headers: {
-        ...proxyOptions.headers,
-        host: vhostConf.name,
-      },
-      target: proxyUtils.buildUrl(source),
-    };
-
-
     // get dependency that will proxy this request
     const dependency = proxyUtils.getDependency(deps, req.url);
 
-    // extend proxy options if there is a dependency that will be used as proxy
-    proxyUtils.extendOptions(useProxyOptions, ssl, dependency);
+    const mockedResponse = proxyMock.execute(req, res, (dependency || source), proxyResponse);
 
-    // proxy request
-    proxy.proxyRequest(req, res, useProxyOptions);
+    if (!mockedResponse) {
+      const useProxyOptions = {
+        changeOrigin: false,
+        secure: false,
+        ws: false,
+        ...proxyOptions,
+        headers: {
+          ...proxyOptions.headers,
+          host: vhostConf.name,
+        },
+        target: proxyUtils.buildUrl(source),
+      };
+
+      // extend proxy options if there is a dependency that will be used as proxy
+      proxyUtils.extendOptions(useProxyOptions, ssl, dependency);
+
+      // proxy request
+      proxy.proxyRequest(req, res, useProxyOptions);
+    }
+
   };
 };
 

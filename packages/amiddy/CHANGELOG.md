@@ -18,6 +18,7 @@
 * :lollipop: Extend logger response to display if the request is a mock or proxy
 * :lollipop: Ability to build Url object based on dependency data
 * :house: Refactor data generation for registry
+* :rocket: Ability to define mocks for dependencies.
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension

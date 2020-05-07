@@ -139,6 +139,89 @@ describe('proxy-utils', () => {
 
   });
 
+  describe('getMock', () => {
+    beforeEach(() => {
+      testSpecificMocks.mocks = [
+        {
+          headers: {
+            'X-Mock-Accepted': 'mocked-header',
+          },
+          patterns: [
+            '**/endpoint/**',
+            '**/ping*',
+          ],
+          status: 202
+        },
+        {
+          headers: {
+            'X-Mock_user_create': 'user-created',
+          },
+          methods: ['POST'],
+          patterns: [
+            '**/user/*',
+          ],
+          status: 201
+        },
+        {
+          methods: ['GET'],
+          patterns: [
+            '**/user/*',
+          ],
+        },
+        {
+          patterns: [
+            '**/users/*',
+          ],
+        },
+        null,
+        {
+        },
+      ];
+      testSpecificMocks.reqUrl = 'https://example.com/api/user/?test=on';
+      testSpecificMocks.method = 'GET';
+    });
+
+    it('returns object with the mock to be used when there is a match on method and url', () => {
+      expect(
+        proxyUtils.getMock(testSpecificMocks.mocks, testSpecificMocks.reqUrl, testSpecificMocks.method)
+      )
+        .toEqual(
+          testSpecificMocks.mocks[2]
+        );
+    });
+
+    it('returns object with the mock to be used when there is a match on url and all methods are allowed', () => {
+      testSpecificMocks.reqUrl = 'https://example.com/api/users/?test=on';
+      expect(
+        proxyUtils.getMock(testSpecificMocks.mocks, testSpecificMocks.reqUrl, testSpecificMocks.method)
+      )
+        .toEqual(
+          testSpecificMocks.mocks[3]
+        );
+    });
+
+    it('returns object with the mock to be used when there is a match on method and url (multiple patterns)', () => {
+      testSpecificMocks.reqUrl = 'https://example.com/api/endpoint';
+      expect(
+        proxyUtils.getMock(testSpecificMocks.mocks, testSpecificMocks.reqUrl, testSpecificMocks.method)
+      )
+        .toEqual(
+          testSpecificMocks.mocks[0]
+        );
+    });
+
+    it('returns undefined when there is no match', () => {
+      testSpecificMocks.reqUrl = 'https://example.com/api/no-match';
+      expect(
+        proxyUtils.getMock(testSpecificMocks.mocks, testSpecificMocks.reqUrl, testSpecificMocks.method)
+      )
+        .toEqual(
+          undefined
+        );
+    });
+
+  });
+
   describe('extendOptions', () => {
     beforeAll(() => {
       jest.spyOn(proxyUtils, 'buildUrl').mockReturnValue('proxyUtils::buildurl');

@@ -18,6 +18,26 @@ Abstract example:
       "port": 8080,
       "patterns": [
         "/api/**"
+      ],
+      "mocks": [
+        {
+          "patterns": ["/info**"],
+          "response": {"backup":  "if we fail to get fixture content"},
+          "status": 206,
+          "fixture": "__local__/info.txt"
+        },
+        {
+          "methods": ["GET", "POST"],
+          "patterns": ["/exact-path", "/user/**"],
+          "response": {"notes": "for specified patterns at GET or POST respond with this and status code 200"}
+        },
+        {
+          "patterns": ["/company**"],
+          "response": {"notes": "this adds extra headers on the response"},
+          "headers": {
+            "X-Mock": "header for the response"
+          }
+        }
       ]
     }
   ],
