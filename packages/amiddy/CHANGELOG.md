@@ -12,7 +12,7 @@
 
 ## v-next
 * :house: moved project source to monorepo (from https://github.com/darkyndy/amiddy)
-* :rocket: Ability to set custom response headers for every request
+* :boom: Ability to set custom response headers for every request
 * :lollipop: Move config documentation under docs/config 
 * :lollipop: Extend logger response to accept startDate as 0
 * :lollipop: Extend logger response to display if the request is a mock or proxy
