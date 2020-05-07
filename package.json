@@ -39,7 +39,7 @@
     "@babel/plugin-proposal-optional-chaining": "7.9.0",
     "@babel/preset-env": "7.9.6",
     "acorn": "7.1.1",
-    "babel-jest": "25.5.1",
+    "babel-jest": "26.0.1",
     "babel-preset-minify": "0.5.1",
     "changelog-parser": "2.8.0",
     "codecov": "3.6.5",
@@ -47,11 +47,11 @@
     "eslint": "6.8.0",
     "eslint-plugin-eslint-comments": "3.1.2",
     "eslint-plugin-import": "2.20.2",
-    "jest": "25.5.3",
+    "jest": "26.0.1",
     "lerna": "3.20.2",
     "nodemon": "2.0.3",
     "rimraf": "3.0.2",
-    "snyk": "1.316.1"
+    "snyk": "1.319.2"
   },
   "workspaces": {
     "packages": [
