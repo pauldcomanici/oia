@@ -582,6 +582,9 @@ describe('config', () => {
         options: {
           recorder: {
             enabled: true,
+            ignorePatterns: [
+              '**info*',
+            ],
             path: 'path/to/records',
           },
         },
@@ -610,7 +613,10 @@ describe('config', () => {
           options: {
             recorder: {
               enabled: false,
-              fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+              fileNamePattern: '{METHOD}-{PATH}.{EXT}',
+              ignorePatterns: [
+                '**favicon*',
+              ],
               path: '__amiddy__/records',
             },
           },
@@ -639,7 +645,10 @@ describe('config', () => {
           options: {
             recorder: {
               enabled: true,
-              fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+              fileNamePattern: '{METHOD}-{PATH}.{EXT}',
+              ignorePatterns: [
+                '**info*',
+              ],
               path: 'path/to/records',
             },
           },

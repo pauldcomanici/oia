@@ -161,7 +161,10 @@ privateApi.setOptionDefaults = (configObj) => {
     {
       recorder: {
         enabled: false,
-        fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+        fileNamePattern: '{METHOD}-{PATH}.{EXT}',
+        ignorePatterns: [
+          '**favicon*'
+        ],
         path: '__amiddy__/records',
       },
     },

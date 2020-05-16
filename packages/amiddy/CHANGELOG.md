@@ -22,6 +22,7 @@
 * :lollipop: - Setup service that prepares folder for recorded files
 * :lollipop: - Prepare defaults for proxy & options
 * :lollipop: - Integrate setup at startup
+* :lollipop: - Option to ignore patterns when recording response
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension
