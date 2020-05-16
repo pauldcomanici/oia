@@ -3,6 +3,18 @@
 Amiddy options.
 
 
+## options.mock
+Options for mocking.
+
+
+### options.mock.enabled
+- Data type: Boolean
+- Required: No
+- Default value: true
+- Details:
+    - Specify if you want mocking system to be enabled, this allows you to easily disable mocks without the need to remove every mock.
+
+
 ## options.recorder
 Options for recorder.
 

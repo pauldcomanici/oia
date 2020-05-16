@@ -220,6 +220,17 @@ describe('proxy-utils', () => {
         );
     });
 
+    it('returns undefined when the mock that may match is disabled', () => {
+      testSpecificMocks.mocks[2].disabled = true;
+
+      expect(
+        proxyUtils.getMock(testSpecificMocks.mocks, testSpecificMocks.reqUrl, testSpecificMocks.method)
+      )
+        .toEqual(
+          undefined
+        );
+    });
+
   });
 
   describe('extendOptions', () => {

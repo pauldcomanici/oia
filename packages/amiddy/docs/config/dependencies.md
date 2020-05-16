@@ -100,8 +100,28 @@ Every dependency should have patters that will resolve.
         }
       ]
       ```
+    - ```json
+      [
+        {
+          "disabled": true,
+          "methods": ["GET", "POST"],
+          "patterns": ["/exact-path", "/user/**"],
+          "response": {"notes": "mock is ignored"}
+        }
+      ]
+      ```
 - Details:
     - Specify mocks for this dependency.
+
+
+#### dependency.mocks.disabled
+
+- Data type: Boolean
+- Required: No
+- Default value: false
+- Details:
+    - Disable mock.
+    - This allows you to keep data and temporary disable some mocks.
 
 
 #### dependency.mocks.patterns

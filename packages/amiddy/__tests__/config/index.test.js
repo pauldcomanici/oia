@@ -580,6 +580,9 @@ describe('config', () => {
           },
         ],
         options: {
+          mock: {
+            enabled: false,
+          },
           recorder: {
             enabled: true,
             ignorePatterns: [
@@ -611,6 +614,9 @@ describe('config', () => {
             },
           ],
           options: {
+            mock: {
+              enabled: true,
+            },
             recorder: {
               enabled: false,
               fileNamePattern: '{METHOD}-{PATH}.{EXT}',
@@ -643,6 +649,9 @@ describe('config', () => {
             },
           ],
           options: {
+            mock: {
+              enabled: false,
+            },
             recorder: {
               enabled: true,
               fileNamePattern: '{METHOD}-{PATH}.{EXT}',

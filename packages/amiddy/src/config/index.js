@@ -159,6 +159,9 @@ privateApi.setProxyDefaults = (configObj) => {
 privateApi.setOptionDefaults = (configObj) => {
   configObj.options = merge(
     {
+      mock: {
+        enabled: true,
+      },
       recorder: {
         enabled: false,
         fileNamePattern: '{METHOD}-{PATH}.{EXT}',

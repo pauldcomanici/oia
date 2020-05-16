@@ -229,11 +229,11 @@ describe('proxy', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         'proxyUtils::getDependency',
-        testSpecificMocks.config.proxy.response,
+        testSpecificMocks.config,
       );
     });
 
-    it('tries to respond with mock data (use-case: uses source as dependency was not determined)', () => {
+    it('tries to respond with mock data (use-case: uses source, as dependency was not determined)', () => {
       proxyUtils.getDependency.mockReturnValueOnce(undefined);
       privateApi.vhostCb(
         testSpecificMocks.proxy,
@@ -247,7 +247,7 @@ describe('proxy', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.config.source,
-        testSpecificMocks.config.proxy.response,
+        testSpecificMocks.config,
       );
     });
 

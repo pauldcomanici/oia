@@ -66,14 +66,19 @@ service.getMock = (mocks, reqUrl, method) => (
   mocks && mocks.find(
     (mock) => {
       const {
+        disabled,
         methods,
         patterns,
       } = mock || {};
 
-      // consider that we have match on method if is not set or method is included in the list of supported methods
-      const matchedMethod = !methods || methods.includes(method);
+      if (!disabled) {
+        // consider that we have match on method if is not set or method is included in the list of supported methods
+        const matchedMethod = !methods || methods.includes(method);
 
-      return matchedMethod && micromatch.isMatch(reqUrl, (patterns || []), {contains: true});
+        return matchedMethod && micromatch.isMatch(reqUrl, (patterns || []), {contains: true});
+      }
+
+      return false;
     }
   )
 );

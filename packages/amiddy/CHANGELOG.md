@@ -25,6 +25,7 @@
 * :lollipop: - Option to ignore patterns when recording response
 * :lollipop: - Ability to write file
 * :rocket: - Ability to save response for a proxy-request made to a dependency
+* :lollipop: - Ability to enable/disable mocking or to disable a specific mock
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension

@@ -53,7 +53,7 @@ privateApi.vhostCb = (proxy, ssl, config) => {
     // get dependency that will proxy this request
     const dependency = proxyUtils.getDependency(deps, req.url);
 
-    const mockedResponse = proxyMock.execute(req, res, (dependency || source), proxyConf.response);
+    const mockedResponse = proxyMock.execute(req, res, (dependency || source), config);
 
     if (!mockedResponse) {
       const useProxyOptions = {

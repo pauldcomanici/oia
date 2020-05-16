@@ -32,6 +32,14 @@ Abstract example:
           "response": {"notes": "for specified patterns at GET or POST respond with this and status code 200"}
         },
         {
+          "disabled": true,
+          "patterns": ["/company**"],
+          "response": {"notes": "disabled for the moment"},
+          "headers": {
+            "X-Mock": "header for the response"
+          }
+        },
+        {
           "patterns": ["/company**"],
           "response": {"notes": "this adds extra headers on the response"},
           "headers": {
@@ -74,6 +82,9 @@ Abstract example:
     "port": 80
   },
   "options": {
+    "mock": {
+      "enabled": true
+    },
     "recorder": {
       "enabled": true,
       "fileNamePattern": "{METHOD}-{PATH}.{EXT}",

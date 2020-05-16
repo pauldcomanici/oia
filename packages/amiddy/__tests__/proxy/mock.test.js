@@ -376,9 +376,18 @@ describe('proxy-mock', () => {
           },
         ],
       };
-      testSpecificMocks.options = {
-        headers: {
-          'x-proxy-header': 'for-response',
+      testSpecificMocks.config = {
+        options: {
+          mock: {
+            enabled: true,
+          }
+        },
+        proxy: {
+          response: {
+            headers: {
+              'x-proxy-header': 'for-response',
+            },
+          },
         },
       };
     });
@@ -400,7 +409,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -409,25 +418,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.dependency,
         testSpecificMocks.req.url,
         testSpecificMocks.req.method,
-        testSpecificMocks.options,
-      );
-    });
-
-    it('determines the mock for this request', () => {
-      proxyMock.execute(
-        testSpecificMocks.req,
-        testSpecificMocks.res,
-        testSpecificMocks.dependency,
-        testSpecificMocks.options,
-      );
-
-      expect(
-        privateApi.get
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.dependency,
-        testSpecificMocks.req.url,
-        testSpecificMocks.req.method,
-        testSpecificMocks.options,
+        testSpecificMocks.config.proxy.response,
       );
     });
 
@@ -436,7 +427,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -454,7 +445,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -469,7 +460,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -484,7 +475,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -499,7 +490,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -520,7 +511,7 @@ describe('proxy-mock', () => {
         testSpecificMocks.req,
         testSpecificMocks.res,
         testSpecificMocks.dependency,
-        testSpecificMocks.options,
+        testSpecificMocks.config,
       );
 
       expect(
@@ -539,7 +530,7 @@ describe('proxy-mock', () => {
           testSpecificMocks.req,
           testSpecificMocks.res,
           testSpecificMocks.dependency,
-          testSpecificMocks.options,
+          testSpecificMocks.config,
         )
       ).toBe(
         true
@@ -554,7 +545,22 @@ describe('proxy-mock', () => {
           testSpecificMocks.req,
           testSpecificMocks.res,
           testSpecificMocks.dependency,
-          testSpecificMocks.options,
+          testSpecificMocks.config,
+        )
+      ).toBe(
+        false
+      );
+    });
+
+    it('returns false when mocking is not enabled', () => {
+      testSpecificMocks.config.options.mock.enabled = false;
+
+      expect(
+        proxyMock.execute(
+          testSpecificMocks.req,
+          testSpecificMocks.res,
+          testSpecificMocks.dependency,
+          testSpecificMocks.config,
         )
       ).toBe(
         false

@@ -86,14 +86,19 @@ const service = {};
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  * @param {Object} dependency
- * @param {Object} options
+ * @param {Object} config
  * @return {Boolean}
  */
-service.execute = (req, res, dependency, options) => {
+service.execute = (req, res, dependency, config) => {
+  if (!config.options.mock.enabled) {
+    // if mocking is disabled => stop
+    return false;
+  }
+
   const url = req.url;
   const method = req.method;
 
-  const mock = privateApi.get(dependency, url, method, options);
+  const mock = privateApi.get(dependency, url, method, config.proxy.response);
 
   if (mock) {
     const responseHeaders = mock.headers;
