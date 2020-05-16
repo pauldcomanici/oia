@@ -468,11 +468,197 @@ describe('config', () => {
 
   });
 
+  describe('privateApi.setProxyDefaults', () => {
+    beforeEach(() => {
+      testSpecificMocks.configObj = {
+        deps: [
+          {
+            id: '8.8.7.7',
+            patterns: [
+              '/v1',
+            ],
+          },
+        ],
+        proxy: {
+          options: {
+            changeOrigin: true,
+            headers: {
+              'target': 'sent when making request to dependency',
+            },
+            ws: false,
+          },
+          response: {
+            headers: {
+              'X-response-custom': 'on-response',
+            },
+          },
+        },
+        source: {},
+        vhost: {},
+      };
+    });
+
+    it('merges default proxy config with received proxy config (nothing received)', () => {
+      testSpecificMocks.configObj.proxy = {};
+      privateApi.setProxyDefaults(testSpecificMocks.configObj);
+
+      expect(
+        testSpecificMocks.configObj
+      ).toEqual(
+        {
+          deps: [
+            {
+              id: '8.8.7.7',
+              patterns: [
+                '/v1',
+              ],
+            },
+          ],
+          proxy: {
+            options: {
+              changeOrigin: false,
+              secure: false,
+              ws: false,
+            },
+            response: {
+              headers: {},
+            },
+          },
+          source: {},
+          vhost: {},
+        }
+      );
+    });
+
+    it('merges default proxy config with received proxy config (data received)', () => {
+      privateApi.setProxyDefaults(testSpecificMocks.configObj);
+
+      expect(
+        testSpecificMocks.configObj
+      ).toEqual(
+        {
+          deps: [
+            {
+              id: '8.8.7.7',
+              patterns: [
+                '/v1',
+              ],
+            },
+          ],
+          proxy: {
+            options: {
+              changeOrigin: true,
+              headers: {
+                'target': 'sent when making request to dependency',
+              },
+              secure: false,
+              ws: false,
+            },
+            response: {
+              headers: {
+                'X-response-custom': 'on-response',
+              },
+            },
+          },
+          source: {},
+          vhost: {},
+        }
+      );
+    });
+
+  });
+
+  describe('privateApi.setOptionDefaults', () => {
+    beforeEach(() => {
+      testSpecificMocks.configObj = {
+        deps: [
+          {
+            id: '8.8.7.7',
+            patterns: [
+              '/v1',
+            ],
+          },
+        ],
+        options: {
+          recorder: {
+            enabled: true,
+            path: 'path/to/records',
+          },
+        },
+        proxy: {},
+        source: {},
+        vhost: {},
+      };
+    });
+
+    it('merges default options with received options (nothing received)', () => {
+      testSpecificMocks.configObj.options = {};
+      privateApi.setOptionDefaults(testSpecificMocks.configObj);
+
+      expect(
+        testSpecificMocks.configObj
+      ).toEqual(
+        {
+          deps: [
+            {
+              id: '8.8.7.7',
+              patterns: [
+                '/v1',
+              ],
+            },
+          ],
+          options: {
+            recorder: {
+              enabled: false,
+              fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+              path: '__amiddy__/records',
+            },
+          },
+          proxy: {},
+          source: {},
+          vhost: {},
+        }
+      );
+    });
+
+    it('merges default options with received options (data received)', () => {
+      privateApi.setOptionDefaults(testSpecificMocks.configObj);
+
+      expect(
+        testSpecificMocks.configObj
+      ).toEqual(
+        {
+          deps: [
+            {
+              id: '8.8.7.7',
+              patterns: [
+                '/v1',
+              ],
+            },
+          ],
+          options: {
+            recorder: {
+              enabled: true,
+              fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+              path: 'path/to/records',
+            },
+          },
+          proxy: {},
+          source: {},
+          vhost: {},
+        }
+      );
+    });
+
+  });
+
   describe('privateApi.setDefaults', () => {
     beforeAll(() => {
       jest.spyOn(privateApi, 'setSourceDefaults').mockReturnValue(undefined);
       jest.spyOn(privateApi, 'setVhostDefaults').mockReturnValue(undefined);
       jest.spyOn(privateApi, 'setDepsDefaults').mockReturnValue(undefined);
+      jest.spyOn(privateApi, 'setProxyDefaults').mockReturnValue(undefined);
+      jest.spyOn(privateApi, 'setOptionDefaults').mockReturnValue(undefined);
     });
     beforeEach(() => {
       testSpecificMocks.configObj = {
@@ -492,11 +678,15 @@ describe('config', () => {
       privateApi.setSourceDefaults.mockClear();
       privateApi.setVhostDefaults.mockClear();
       privateApi.setDepsDefaults.mockClear();
+      privateApi.setProxyDefaults.mockClear();
+      privateApi.setOptionDefaults.mockClear();
     });
     afterAll(() => {
       privateApi.setSourceDefaults.mockRestore();
       privateApi.setVhostDefaults.mockRestore();
       privateApi.setDepsDefaults.mockRestore();
+      privateApi.setProxyDefaults.mockRestore();
+      privateApi.setOptionDefaults.mockRestore();
     });
 
     it('updates by reference source from config obj', () => {
@@ -524,6 +714,26 @@ describe('config', () => {
 
       expect(
         privateApi.setDepsDefaults
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.configObj
+      );
+    });
+
+    it('updates by reference proxy from config obj', () => {
+      privateApi.setDefaults(testSpecificMocks.configObj);
+
+      expect(
+        privateApi.setProxyDefaults
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.configObj
+      );
+    });
+
+    it('updates by reference options from config obj', () => {
+      privateApi.setDefaults(testSpecificMocks.configObj);
+
+      expect(
+        privateApi.setOptionDefaults
       ).toHaveBeenCalledWith(
         testSpecificMocks.configObj
       );

@@ -20,6 +20,7 @@
 * :house: Refactor data generation for registry
 * :rocket: Ability to define mocks for dependencies.
 * :lollipop: - Setup service that prepares folder for recorded files
+* :lollipop: - Prepare defaults for proxy & options
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension

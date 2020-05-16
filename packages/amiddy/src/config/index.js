@@ -1,4 +1,5 @@
 import stripComments from 'strip-json-comments';
+import merge from 'lodash.merge';
 
 import file from '../file';
 import debug from '../debug';
@@ -130,6 +131,45 @@ privateApi.setDepsDefaults = (configObj) => {
 };
 
 /**
+ * Update config object with defaults for proxy
+ *
+ * @param {Object} configObj
+ */
+privateApi.setProxyDefaults = (configObj) => {
+  configObj.proxy = merge(
+    {
+      options: {
+        changeOrigin: false,
+        secure: false,
+        ws: false,
+      },
+      response: {
+        headers: {},
+      },
+    },
+    configObj.proxy,
+  );
+};
+
+/**
+ * Update config object with defaults for amiddy options
+ *
+ * @param {Object} configObj
+ */
+privateApi.setOptionDefaults = (configObj) => {
+  configObj.options = merge(
+    {
+      recorder: {
+        enabled: false,
+        fileNamePattern: '{METHOD}-{PATHNAME}.{EXT}',
+        path: '__amiddy__/records',
+      },
+    },
+    configObj.options,
+  );
+};
+
+/**
  * Update config object with defaults
  *
  * @param {Object} configObj
@@ -138,7 +178,8 @@ privateApi.setDefaults = (configObj) => {
   privateApi.setSourceDefaults(configObj);
   privateApi.setVhostDefaults(configObj);
   privateApi.setDepsDefaults(configObj);
-
+  privateApi.setProxyDefaults(configObj);
+  privateApi.setOptionDefaults(configObj);
 };
 
 
