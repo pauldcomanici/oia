@@ -6,6 +6,7 @@ import cli, {privateApi} from '../src/cli';
 import config from '../src/config';
 import debug from '../src/debug';
 import server from '../src/server';
+import setup from '../src/setup';
 
 // mocks
 jest.mock('../src/config', () => (
@@ -28,6 +29,11 @@ jest.mock('../src/debug', () => (
 jest.mock('../src/server', () => (
   {
     create: jest.fn(),
+  }
+));
+jest.mock('../src/setup', () => (
+  {
+    init: jest.fn(),
   }
 ));
 
@@ -186,6 +192,14 @@ describe('cli', () => {
 
       expect(config.get).toHaveBeenCalledWith(
         'path/to/config.json'
+      );
+    });
+
+    it('executes setup', () => {
+      cli.run();
+
+      expect(setup.init).toHaveBeenCalledWith(
+        testSpecificMocks.configObj
       );
     });
 

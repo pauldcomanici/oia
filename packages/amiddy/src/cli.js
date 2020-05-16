@@ -1,6 +1,7 @@
 
 import config from './config';
 import debug from './debug';
+import setup from './setup';
 import server from './server';
 
 
@@ -103,6 +104,8 @@ service.run = () => {
     '\nUsing configuration:',
     JSON.stringify(configObj)
   );
+
+  setup.init(configObj);
 
   server.create(configObj);
 
