@@ -23,6 +23,7 @@
 * :lollipop: - Prepare defaults for proxy & options
 * :lollipop: - Integrate setup at startup
 * :lollipop: - Option to ignore patterns when recording response
+* :lollipop: - Ability to write file
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension

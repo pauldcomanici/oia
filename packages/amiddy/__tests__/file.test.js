@@ -1,14 +1,22 @@
 
+import fs from 'fs';
 import path from 'path';
 
 // testing file
 import file, {privateApi} from '../src/file';
+
+import logger from '../src/logger';
 
 // mocks
 jest.mock('path', () => (
   {
     isAbsolute: jest.fn().mockReturnValue(true),
     resolve: jest.fn().mockReturnValue('path::resolve'),
+  }
+));
+jest.mock('../src/logger', () => (
+  {
+    error: jest.fn(),
   }
 ));
 
@@ -32,6 +40,78 @@ describe('file', () => {
 
     it('returns false when provided path as string is invalid', () => {
       expect(privateApi.isFile('__tests__/__fixtures__/noap.json')).toBe(false);
+    });
+
+  });
+
+  describe('privateApi.onSaveCb', () => {
+    beforeEach(() => {
+      testSpecificMocks.err = {
+        message: 'We have error',
+      };
+    });
+
+    afterEach(() => {
+      logger.error.mockClear();
+    });
+
+    it('logs error if we have it', () => {
+      privateApi.onSaveCb(testSpecificMocks.err);
+
+      expect(logger.error).toHaveBeenCalledWith(
+        testSpecificMocks.err.message,
+        'file-write'
+      );
+    });
+
+    it('nothing happens if error has falsy value', () => {
+      testSpecificMocks.err = null;
+      privateApi.onSaveCb(testSpecificMocks.err);
+
+      expect(logger.error).not.toHaveBeenCalled();
+    });
+
+
+  });
+
+  describe('write', () => {
+    beforeAll(() => {
+      jest.spyOn(privateApi, 'onSaveCb').mockReturnValue(undefined);
+      jest.spyOn(fs, 'writeFile').mockReturnValue(undefined);
+    });
+    beforeEach(() => {
+      testSpecificMocks.filePath = '__tests__/__fixtures__/write-dir/file.json';
+      testSpecificMocks.content = '{content: 0}';
+    });
+
+    afterEach(() => {
+      privateApi.onSaveCb.mockClear();
+      fs.writeFile.mockClear();
+    });
+    afterAll(() => {
+      privateApi.onSaveCb.mockRestore();
+      fs.writeFile.mockRestore();
+    });
+
+    it('sanitizes file path', () => {
+      testSpecificMocks.filePath = 'path/to//file';
+      file.write(testSpecificMocks.filePath, testSpecificMocks.content);
+
+      expect(fs.writeFile).toHaveBeenCalledWith(
+        'path/to/file',
+        testSpecificMocks.content,
+        privateApi.onSaveCb
+      );
+    });
+
+    it('writes file content to disk', () => {
+      file.write(testSpecificMocks.filePath, testSpecificMocks.content);
+
+      expect(fs.writeFile).toHaveBeenCalledWith(
+        testSpecificMocks.filePath,
+        testSpecificMocks.content,
+        privateApi.onSaveCb
+      );
     });
 
   });

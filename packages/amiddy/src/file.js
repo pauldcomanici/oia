@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import logger from './logger';
+
 
 const privateApi = {};
 
@@ -14,8 +16,30 @@ privateApi.isFile = (filePath) => (
   fs.existsSync(filePath) && !fs.lstatSync(filePath).isDirectory()
 );
 
+/**
+ * Callback for fs.writeFile
+ *
+ * @param {Object} [err]
+ */
+privateApi.onSaveCb = (err) => {
+  if (err) {
+    logger.error(err.message, 'file-write');
+  }
+};
+
 
 const service = {};
+
+/**
+ * Write file contents.
+ *
+ * @param {String} filePath
+ * @param {String} content
+ */
+service.write = (filePath, content) => {
+  const sanitizedPath = filePath.replace(/\/\//, '/');
+  fs.writeFile(sanitizedPath, content, privateApi.onSaveCb);
+};
 
 /**
  * Synchronously read file contents.
