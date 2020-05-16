@@ -19,6 +19,7 @@
 * :lollipop: Ability to build Url object based on dependency data
 * :house: Refactor data generation for registry
 * :rocket: Ability to define mocks for dependencies.
+* :lollipop: - Setup service that prepares folder for recorded files
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension
