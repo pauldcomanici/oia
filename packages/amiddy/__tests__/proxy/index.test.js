@@ -164,6 +164,8 @@ describe('proxy', () => {
         ],
         proxy: {
           options: {
+            changeOrigin: false,
+            secure: false,
             ws: true,
           },
           response: {
@@ -276,31 +278,6 @@ describe('proxy', () => {
       );
     });
 
-    it('uses default proxy options if the config for proxy did not had any option (response was not mocked)', () => {
-      testSpecificMocks.config.proxy = {};
-      privateApi.vhostCb(
-        testSpecificMocks.proxy,
-        testSpecificMocks.ssl,
-        testSpecificMocks.config,
-      )(testSpecificMocks.req, testSpecificMocks.res);
-
-      expect(
-        proxyUtils.extendOptions
-      ).toHaveBeenCalledWith(
-        {
-          changeOrigin: false,
-          headers: {
-            host: testSpecificMocks.config.vhost.name,
-          },
-          secure: false,
-          target: 'proxyUtils::buildUrl',
-          ws: false,
-        },
-        testSpecificMocks.ssl,
-        'proxyUtils::getDependency',
-      );
-    });
-
     it('extends proxy options taking in consideration determined dependency (response was not mocked)', () => {
       privateApi.vhostCb(
         testSpecificMocks.proxy,
@@ -326,9 +303,6 @@ describe('proxy', () => {
     });
 
     it('proxies the request (response was not mocked)', () => {
-      testSpecificMocks.config.proxy.changeOrigin = false;
-      testSpecificMocks.config.proxy.secure = false;
-
       privateApi.vhostCb(
         testSpecificMocks.proxy,
         testSpecificMocks.ssl,
@@ -423,17 +397,13 @@ describe('proxy', () => {
       ).toHaveBeenCalledWith();
     });
 
-    it('prepares options for the response', () => {
+    it('prepares function for `proxyRes` listener', () => {
       proxy.create(
         testSpecificMocks.config,
         testSpecificMocks.ssl,
       );
 
-      expect(
-        privateApi.getResponseOptions
-      ).toHaveBeenCalledWith(
-        testSpecificMocks.config
-      );
+      expect(proxyListen.response).toHaveBeenCalledWith(testSpecificMocks.config);
     });
 
     it('adds listener for `proxyReq`, `proxyRes` and `error` events', () => {

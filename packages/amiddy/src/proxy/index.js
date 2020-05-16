@@ -44,9 +44,7 @@ privateApi.vhostCb = (proxy, ssl, config) => {
   // base proxy config, can be overwritten by every dependency
   const proxyConf = config.proxy;
   // base proxy config, can be overwritten by every dependency
-  const proxyOptions = proxyConf && proxyConf.options || {};
-  // base proxy response
-  const proxyResponse = proxyConf && proxyConf.response;
+  const proxyOptions = proxyConf.options;
   // dependencies
   const deps = config.deps;
 
@@ -55,13 +53,10 @@ privateApi.vhostCb = (proxy, ssl, config) => {
     // get dependency that will proxy this request
     const dependency = proxyUtils.getDependency(deps, req.url);
 
-    const mockedResponse = proxyMock.execute(req, res, (dependency || source), proxyResponse);
+    const mockedResponse = proxyMock.execute(req, res, (dependency || source), proxyConf.response);
 
     if (!mockedResponse) {
       const useProxyOptions = {
-        changeOrigin: false,
-        secure: false,
-        ws: false,
         ...proxyOptions,
         headers: {
           ...proxyOptions.headers,
@@ -100,8 +95,7 @@ service.create = (config, ssl) => {
   proxy.on('proxyReq', proxyListen.request);
 
   // response
-  const responseOptions = privateApi.getResponseOptions(config);
-  proxy.on('proxyRes', proxyListen.response(responseOptions));
+  proxy.on('proxyRes', proxyListen.response(config));
 
   // error
   proxy.on('error', proxyListen.error);

@@ -1,5 +1,6 @@
 import logger from '../logger';
 import proxyRegistry from './registry';
+import proxyRecorder from './recorder';
 
 
 const service = {};
@@ -19,11 +20,11 @@ service.request = (proxyReq, req, res, options) => {
 /**
  * Listen to the response event
  *
- * @param {Object} responseOptions
+ * @param {Object} config
  *
  * @return {Function} handleResponse
  */
-service.response = (responseOptions) =>
+service.response = (config) =>
 
   /**
    * Response handler for the proxy
@@ -35,13 +36,15 @@ service.response = (responseOptions) =>
   (proxyRes, req, res) => {
     const id = req.__amiddyId__;
     if (id === res.__amiddyId__) {
+      proxyRecorder.saveResponse(proxyRes, config);
+
       // we get response for the request
       const data = proxyRegistry.get(id);
       logger.response(data, proxyRes);
 
       proxyRegistry.clear(id);
 
-      const responseHeaders = responseOptions.headers;
+      const responseHeaders = config.proxy.response.headers;
       Object.keys(responseHeaders).forEach(
         (headerName) => {
           res.setHeader(headerName, responseHeaders[headerName]);
@@ -67,5 +70,6 @@ service.error = (error, req, res) => {
 
   res.end(`Proxy error occurred: ${error.message}`);
 };
+
 
 export default service;

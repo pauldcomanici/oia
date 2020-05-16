@@ -72,6 +72,16 @@ Abstract example:
     "name": "example.com",
     "https": false,
     "port": 80
+  },
+  "options": {
+    "recorder": {
+      "enabled": true,
+      "fileNamePattern": "{METHOD}-{PATH}.{EXT}",
+      "ignorePatterns": [
+        "**favicon*"
+      ],
+      "path": "__local__/records"
+    }
   }
 }
 ```
@@ -94,4 +104,8 @@ See [proxy.md](proxy.md)
 
 #### vhost
 See [vhost.md](vhost.md)
+
+
+#### options
+See [options.md](options.md)
 

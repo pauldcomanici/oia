@@ -5,6 +5,7 @@ import proxyListen from '../../src/proxy/listen';
 
 import logger from '../../src/logger';
 import proxyRegistry from '../../src/proxy/registry';
+import proxyRecorder from '../../src/proxy/recorder';
 
 
 // mocks
@@ -23,6 +24,11 @@ jest.mock('../../src/proxy/registry', () => (
       }
     ),
     set: jest.fn(),
+  }
+));
+jest.mock('../../src/proxy/recorder', () => (
+  {
+    saveResponse: jest.fn(),
   }
 ));
 
@@ -77,9 +83,13 @@ describe('proxy-listen', () => {
 
   describe('response', () => {
     beforeEach(() => {
-      testSpecificMocks.responseOptions = {
-        headers: {
-          'X-Special-Proxy-Header': 'on-response',
+      testSpecificMocks.config = {
+        proxy: {
+          response: {
+            headers: {
+              'X-Special-Proxy-Header': 'on-response',
+            },
+          },
         },
       };
 
@@ -99,6 +109,7 @@ describe('proxy-listen', () => {
     });
 
     afterEach(() => {
+      proxyRecorder.saveResponse.mockClear();
       logger.response.mockClear();
       proxyRegistry.clear.mockClear();
       proxyRegistry.get.mockClear();
@@ -106,7 +117,7 @@ describe('proxy-listen', () => {
 
     it('nothing happens when request id does not match response id (response from other request)', () => {
       testSpecificMocks.req.__amiddyId__ = 2;
-      proxyListen.response(testSpecificMocks.responseOptions)(
+      proxyListen.response(testSpecificMocks.config)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -117,8 +128,23 @@ describe('proxy-listen', () => {
       ).not.toHaveBeenCalled();
     });
 
+    it('tries to save the response', () => {
+      proxyListen.response(testSpecificMocks.config)(
+        testSpecificMocks.proxyReq,
+        testSpecificMocks.req,
+        testSpecificMocks.res,
+      );
+
+      expect(
+        proxyRecorder.saveResponse
+      ).toHaveBeenCalledWith(
+        testSpecificMocks.proxyReq,
+        testSpecificMocks.config,
+      );
+    });
+
     it('retrieves stored data from registry when response is for the tracked request', () => {
-      proxyListen.response(testSpecificMocks.responseOptions)(
+      proxyListen.response(testSpecificMocks.config)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -132,7 +158,7 @@ describe('proxy-listen', () => {
     });
 
     it('logs response data when response is for the tracked request', () => {
-      proxyListen.response(testSpecificMocks.responseOptions)(
+      proxyListen.response(testSpecificMocks.config)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
@@ -149,7 +175,7 @@ describe('proxy-listen', () => {
     });
 
     it('clears registry data when response is for the tracked request', () => {
-      proxyListen.response(testSpecificMocks.responseOptions)(
+      proxyListen.response(testSpecificMocks.config)(
         testSpecificMocks.proxyReq,
         testSpecificMocks.req,
         testSpecificMocks.res,
