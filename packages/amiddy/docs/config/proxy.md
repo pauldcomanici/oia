@@ -12,5 +12,15 @@ For complete list of options see [http-proxy#options](https://www.npmjs.com/pack
 Properties for the proxy when response is returned.
 
 ## proxy.response.headers
-Headers that should be added to the response.
 
+- Data type: Object
+- Required: No
+- Default value: N/A
+- Example value:
+    - ```json
+      {
+        "X-Mock": "header for the response"
+      }
+      ```
+- Details:
+    - Headers that should be added to the response.

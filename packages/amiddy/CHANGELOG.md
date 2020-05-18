@@ -11,21 +11,22 @@
 
 
 ## v-next
-* :house: moved project source to monorepo (from https://github.com/darkyndy/amiddy)
+* :memo: Upgrade guide from v1 to v2, see [v1->v2.md](docs/upgrade/v1->v2.md)
 * :boom: Ability to set custom response headers for every request
+* :rocket: Ability to save response for a proxy-request made to a dependency
+* :rocket: Ability to define mocks for dependencies.
 * :lollipop: Move config documentation under docs/config 
 * :lollipop: Extend logger response to accept startDate as 0
 * :lollipop: Extend logger response to display if the request is a mock or proxy
 * :lollipop: Ability to build Url object based on dependency data
-* :house: Refactor data generation for registry
-* :rocket: Ability to define mocks for dependencies.
 * :lollipop: - Setup service that prepares folder for recorded files
 * :lollipop: - Prepare defaults for proxy & options
 * :lollipop: - Integrate setup at startup
 * :lollipop: - Option to ignore patterns when recording response
 * :lollipop: - Ability to write file
-* :rocket: - Ability to save response for a proxy-request made to a dependency
 * :lollipop: - Ability to enable/disable mocking or to disable a specific mock
+* :house: Refactor data generation for registry
+* :house: moved project source to monorepo (from https://github.com/darkyndy/amiddy)
 
 ## v1.3.3
 * :lollipop: Update default opts for selfsigned `keyUsage` extension
