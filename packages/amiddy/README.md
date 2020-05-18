@@ -51,6 +51,12 @@
 Middleware package that makes development much simpler.
 
 
+## Key features
+1. proxy any dependency based on pattern matcher (fallback to source)
+2. mock dependency responses
+3. record dependency response
+
+
 ## Installation
 ```sh
 npm install --save-dev amiddy
@@ -59,6 +65,7 @@ Or if you are using [yarn](https://yarnpkg.com/en/)
 ```sh
 yarn add --dev amiddy
 ```
+
 
 ## Usage
 Add new script in `package.json`. Example:

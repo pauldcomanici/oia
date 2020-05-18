@@ -1,16 +1,8 @@
 # Changelog
 
-> **Tags:**
-> - :boom:       [Breaking Change]
-> - :rocket:     [New Feature]
-> - :lollipop:   [Enhancement]
-> - :bug:        [Bug Fix]
-> - :memo:       [Documentation]
-> - :house:      [Internal]
-> - :nail_care:  [Polish]
-
-
 ## v-next
+
+## v2.0.0 - 2020-05-18
 * :memo: Upgrade guide from v1 to v2, see [v1->v2.md](docs/upgrade/v1->v2.md)
 * :boom: Ability to set custom response headers for every request
 * :rocket: Ability to save response for a proxy-request made to a dependency
@@ -36,16 +28,13 @@
 * :house: Update dependencies
 * :lollipop: Set default attrs & opts for selfsigned that are based on latest security guidelines
 
-
 ## v1.3.1
 * :house: Update dependencies
 * :house: Remove fossa notification with webhook
 * :house: Add postinstall script
 
-
 ## v1.3.0
 * :house: Update dependencies
-
 
 ## v1.2.0
 * :rocket: `name` property contains domain name and is a fallback if `ip` is not set (applies to every dependency).
@@ -54,16 +43,13 @@
 * :memo: Update documentation
 * :house: Update dependencies
 
-
 ## v1.1.0
 * :lollipop: Ability to show complete url when logging requests
 * :house: Update dependencies
 
-
 ## v1.0.1
 * :lollipop: Improve colors that are used when logging
 * :house: Update dependencies
-
 
 ## v1.0.0
 * :house: First release, contains base functionality that allows starting a server that acts as a middleware for your application
