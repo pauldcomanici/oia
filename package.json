@@ -42,7 +42,7 @@
     "babel-jest": "26.0.1",
     "babel-preset-minify": "0.5.1",
     "changelog-parser": "2.8.0",
-    "codecov": "3.6.5",
+    "codecov": "3.7.1",
     "eol": "0.9.1",
     "eslint": "6.8.0",
     "eslint-plugin-eslint-comments": "3.1.2",
