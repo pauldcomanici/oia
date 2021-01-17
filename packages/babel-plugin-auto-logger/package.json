@@ -10,11 +10,11 @@
   "main": "lib/index.js",
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
-    "@babel/helper-plugin-utils": "7.8.3",
-    "@babel/types": "7.9.6"
+    "@babel/helper-plugin-utils": "7.10.4",
+    "@babel/types": "7.12.12"
   },
   "devDependencies": {
-    "@babel/helper-plugin-test-runner": "7.8.3"
+    "@babel/helper-plugin-test-runner": "7.10.4"
   },
   "peerDependencies": {},
   "scripts": {

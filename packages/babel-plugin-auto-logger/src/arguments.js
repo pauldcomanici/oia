@@ -80,11 +80,12 @@ privateApi.getFunction = (path, state, knownData) => {
 
   const identifierArgs = argumentsToAdd.map(
     (identifierName) => {
+      const argIdentifierKey = types.stringLiteral(identifierName);
       const argIdentifier = types.identifier(identifierName);
 
       if (argsAsObject) {
         return types.objectProperty(
-          argIdentifier,
+          argIdentifierKey,
           argIdentifier
         );
       }
@@ -145,11 +146,11 @@ privateApi.getForObject = (state, defaultArgs, fnArgs) => {
   } = state.babelPluginLoggerSettings.output;
   const objectProperties = [
     types.objectProperty(
-      types.identifier(source),
+      types.stringLiteral(source),
       defaultArgs[0]
     ),
     types.objectProperty(
-      types.identifier(name),
+      types.stringLiteral(name),
       defaultArgs[1]
     ),
   ];
@@ -159,7 +160,7 @@ privateApi.getForObject = (state, defaultArgs, fnArgs) => {
     // add arguments only if they exist
     objectProperties.push(
       types.objectProperty(
-        types.identifier(args),
+        types.stringLiteral(args),
         argsForObject
       )
     );

@@ -7,13 +7,13 @@ function sum(a, b) {
     });
     myPromise.catch(reason => {
       console.error("[custom-options/logger-output-simple-args-as-object/input.js:6:32]", "memberExpressionCatch", {
-        reason: reason
+        "reason": reason
       });
       const rejectHandler = 'some implementation for sum';
     });
   } catch (ex) {
     console.error("[custom-options/logger-output-simple-args-as-object/input.js:9:15]", "catchClause", {
-      ex: ex
+      "ex": ex
     });
     const catchBlock = 'demo purpose for sum';
   }
@@ -30,13 +30,13 @@ function sub(a, b) {
     });
     myPromise.catch(reason => {
       console.error("[custom-options/logger-output-simple-args-as-object/input.js:21:32]", "memberExpressionCatch", {
-        reason: reason
+        "reason": reason
       });
       const rejectHandler = 'some implementation for sub';
     });
   } catch (ex) {
     console.error("[custom-options/logger-output-simple-args-as-object/input.js:24:15]", "catchClause", {
-      ex: ex
+      "ex": ex
     });
     const catchBlock = 'demo purpose for sub';
   }
@@ -53,13 +53,13 @@ function multiply(a, b) {
     });
     myPromise.catch(reason => {
       console.error("[custom-options/logger-output-simple-args-as-object/input.js:36:32]", "memberExpressionCatch", {
-        reason: reason
+        "reason": reason
       });
       const rejectHandler = 'some implementation for multiply';
     });
   } catch (ex) {
     console.error("[custom-options/logger-output-simple-args-as-object/input.js:39:15]", "catchClause", {
-      ex: ex
+      "ex": ex
     });
     const catchBlock = 'demo purpose for multiply';
   }
@@ -76,13 +76,13 @@ function division(a, b) {
     });
     myPromise.catch(reason => {
       console.error("[custom-options/logger-output-simple-args-as-object/input.js:51:32]", "memberExpressionCatch", {
-        reason: reason
+        "reason": reason
       });
       const rejectHandler = 'some implementation for division';
     });
   } catch (ex) {
     console.error("[custom-options/logger-output-simple-args-as-object/input.js:54:15]", "catchClause", {
-      ex: ex
+      "ex": ex
     });
     const catchBlock = 'demo purpose for division';
   }

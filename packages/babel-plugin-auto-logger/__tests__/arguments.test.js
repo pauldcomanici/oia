@@ -138,6 +138,7 @@ describe('arguments.js', () => {
       jest.spyOn(types, 'identifier').mockReturnValue('identifier');
       jest.spyOn(types, 'objectProperty').mockReturnValue('objectProperty');
       jest.spyOn(types, 'objectExpression').mockReturnValue('objectExpression');
+      jest.spyOn(types, 'stringLiteral').mockReturnValue('stringLiteral');
       jest.spyOn(privateApi, 'getFunctionArguments').mockReturnValue([
         'reason',
         'secondArg',
@@ -172,6 +173,7 @@ describe('arguments.js', () => {
       types.identifier.mockClear();
       types.objectProperty.mockClear();
       types.objectExpression.mockClear();
+      types.stringLiteral.mockClear();
       privateApi.getFunctionArguments.mockClear();
     });
     afterAll(() => {
@@ -179,6 +181,7 @@ describe('arguments.js', () => {
       types.identifier.mockRestore();
       types.objectProperty.mockRestore();
       types.objectExpression.mockRestore();
+      types.stringLiteral.mockRestore();
       privateApi.getFunctionArguments.mockRestore();
     });
 
@@ -237,6 +240,9 @@ describe('arguments.js', () => {
     });
 
     it('if the `argsAsObject` has truthy value => prepares every object property based on identifiers', () => {
+      types.stringLiteral
+        .mockReturnValueOnce('identifierKey1')
+        .mockReturnValueOnce('identifierKey2');
       types.identifier
         .mockReturnValueOnce('identifier1')
         .mockReturnValueOnce('identifier2');
@@ -247,11 +253,11 @@ describe('arguments.js', () => {
       expect(types.objectProperty.mock.calls).toEqual(
         [
           [
-            'identifier1',
+            'identifierKey1',
             'identifier1',
           ],
           [
-            'identifier2',
+            'identifierKey2',
             'identifier2',
           ]
         ]
@@ -300,6 +306,9 @@ describe('arguments.js', () => {
     });
 
     it('when from options `argsAsObject` is truthy and we have identifiers => prepares object properties', () => {
+      types.stringLiteral
+        .mockReturnValueOnce('identifierKey1')
+        .mockReturnValueOnce('identifierKey2');
       types.identifier
         .mockReturnValueOnce('identifier1')
         .mockReturnValueOnce('identifier2');
@@ -313,11 +322,11 @@ describe('arguments.js', () => {
       ).toEqual(
         [
           [
-            'identifier1',
+            'identifierKey1',
             'identifier1',
           ],
           [
-            'identifier2',
+            'identifierKey2',
             'identifier2',
           ],
         ]
@@ -436,7 +445,7 @@ describe('arguments.js', () => {
     beforeAll(() => {
       jest.spyOn(types, 'objectExpression').mockReturnValue('objectExpression');
       jest.spyOn(types, 'objectProperty').mockReturnValue('objectProperty');
-      jest.spyOn(types, 'identifier').mockReturnValue('identifier');
+      jest.spyOn(types, 'stringLiteral').mockReturnValue('stringLiteral');
       jest.spyOn(privateApi, 'getArgsForObject').mockReturnValue('argsForObject');
     });
     beforeEach(() => {
@@ -444,7 +453,7 @@ describe('arguments.js', () => {
         .mockReturnValueOnce('sourceObjProperty')
         .mockReturnValueOnce('nameObjProperty')
         .mockReturnValueOnce('argsObjProperty');
-      types.identifier
+      types.stringLiteral
         .mockReturnValueOnce('sourceIdentifier')
         .mockReturnValueOnce('nameIdentifier')
         .mockReturnValueOnce('argsIdentifier');
@@ -468,13 +477,13 @@ describe('arguments.js', () => {
     afterEach(() => {
       types.objectExpression.mockClear();
       types.objectProperty.mockClear();
-      types.identifier.mockClear();
+      types.stringLiteral.mockClear();
       privateApi.getArgsForObject.mockClear();
     });
     afterAll(() => {
       types.objectExpression.mockRestore();
       types.objectProperty.mockRestore();
-      types.identifier.mockRestore();
+      types.stringLiteral.mockRestore();
       privateApi.getArgsForObject.mockRestore();
     });
 
@@ -482,7 +491,7 @@ describe('arguments.js', () => {
       privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
-        types.identifier.mock.calls[0]
+        types.stringLiteral.mock.calls[0]
       ).toEqual([
         testSpecificMocks.state.babelPluginLoggerSettings.output.source,
       ]);
@@ -503,7 +512,7 @@ describe('arguments.js', () => {
       privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
-        types.identifier.mock.calls[1]
+        types.stringLiteral.mock.calls[1]
       ).toEqual([
         testSpecificMocks.state.babelPluginLoggerSettings.output.name,
       ]);
@@ -537,7 +546,7 @@ describe('arguments.js', () => {
       privateApi.getForObject(testSpecificMocks.state, testSpecificMocks.defaultArgs, testSpecificMocks.fnArgs);
 
       expect(
-        types.identifier.mock.calls[2]
+        types.stringLiteral.mock.calls[2]
       ).toEqual([
         testSpecificMocks.state.babelPluginLoggerSettings.output.args,
       ]);
