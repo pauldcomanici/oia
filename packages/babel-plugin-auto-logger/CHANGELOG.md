@@ -4,6 +4,10 @@
 * :house: Update dependencies
 * :lollipop: Use stringLiteral instead of identifier when building object keys
 
+## v1.2.2 - 2021-01-17
+* :house: Update dependencies
+* :lollipop: Use stringLiteral instead of identifier when building object keys
+
 ## v1.2.1 - 2020-04-19
 * :lollipop: ability to log arguments as object when `output.type` is `simple` and `argsAsObject`is `true`
 
