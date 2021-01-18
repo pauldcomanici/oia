@@ -71,8 +71,10 @@ privateApi.getFunction = (path, state, knownData) => {
   const isCatchClause = types.isCatchClause(path);
 
   if (isCatchClause) {
-    // for the catch we need to add the exception
-    argumentsToAdd.push(path.node.param.name);
+    if (path.node.param) {
+      // for the catch we need to add the exception only if it is used
+      argumentsToAdd.push(path.node.param.name);
+    }
   } else if (knownData.name === consts.MEMBER_EXPRESSION_CATCH) {
     // for a member expression that is catch we should add his arguments
     argumentsToAdd.push(...privateApi.getFunctionArguments(path));

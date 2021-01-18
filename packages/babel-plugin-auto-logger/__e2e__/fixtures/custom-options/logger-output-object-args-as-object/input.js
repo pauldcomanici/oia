@@ -40,6 +40,12 @@ function multiply(a, b) {
     const catchBlock = 'demo purpose for multiply';
   }
 
+  try {
+    const text = 'simple catch';
+  } catch {
+    const catchBlock = 'demo purpose for multiply';
+  }
+
   return a * b;
 }
 

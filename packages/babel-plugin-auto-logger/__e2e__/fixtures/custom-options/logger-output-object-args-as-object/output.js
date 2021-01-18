@@ -106,25 +106,35 @@ function multiply(a, b) {
     const catchBlock = 'demo purpose for multiply';
   }
 
+  try {
+    const text = 'simple catch';
+  } catch {
+    console.error({
+      "source": "[custom-options/logger-output-object-args-as-object/input.js:45:10]",
+      "name": "catchClause"
+    });
+    const catchBlock = 'demo purpose for multiply';
+  }
+
   return a * b;
 }
 
 function division(a, b) {
   console.log({
-    "source": "[custom-options/logger-output-object-args-as-object/input.js:46:24]",
+    "source": "[custom-options/logger-output-object-args-as-object/input.js:52:24]",
     "name": "division"
   });
 
   try {
     const myPromise = new Promise(() => {
       console.log({
-        "source": "[custom-options/logger-output-object-args-as-object/input.js:49:40]",
+        "source": "[custom-options/logger-output-object-args-as-object/input.js:55:40]",
         "name": "array-item-0"
       });
     });
     myPromise.catch(reason => {
       console.error({
-        "source": "[custom-options/logger-output-object-args-as-object/input.js:51:32]",
+        "source": "[custom-options/logger-output-object-args-as-object/input.js:57:32]",
         "name": "memberExpressionCatch",
         "args": {
           "reason": reason
@@ -134,7 +144,7 @@ function division(a, b) {
     });
   } catch (ex) {
     console.error({
-      "source": "[custom-options/logger-output-object-args-as-object/input.js:54:15]",
+      "source": "[custom-options/logger-output-object-args-as-object/input.js:60:15]",
       "name": "catchClause",
       "args": {
         "ex": ex

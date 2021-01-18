@@ -215,6 +215,17 @@ describe('arguments.js', () => {
       );
     });
 
+    it('if the path is from a catch clause without params => returns an empty array', () => {
+      types.isCatchClause.mockReturnValueOnce(true);
+      testSpecificMocks.path.node.param = null;
+
+      expect(
+        privateApi.getFunction(testSpecificMocks.path, testSpecificMocks.state, testSpecificMocks.knownData)
+      ).toEqual(
+        []
+      );
+    });
+
     it('if the path is not from a catch clause and name from knownData does not represent catch member expression => it will not determine function arguments (does not call `privateApi.getFunctionArguments`)', () => {
       testSpecificMocks.knownData = 'NOT_CATCH_MEMBER_EXPRESSION';
 

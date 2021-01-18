@@ -1,8 +1,7 @@
 # Changelog
 
 ## v-next
-* :house: Update dependencies
-* :lollipop: Use stringLiteral instead of identifier when building object keys
+* :bug: Plugin should not throw error when catch clause does not contain parameters
 
 ## v1.2.2 - 2021-01-17
 * :house: Update dependencies
