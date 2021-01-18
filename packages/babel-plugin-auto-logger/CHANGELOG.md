@@ -1,6 +1,8 @@
 # Changelog
 
 ## v-next
+
+## v1.2.3 - 2021-01-18
 * :bug: Plugin should not throw error when catch clause does not contain parameters
 
 ## v1.2.2 - 2021-01-17
