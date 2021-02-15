@@ -88,7 +88,7 @@ Using `--config` or `-c` arguments you can provide path to the configuration fil
 Example: `npm run start-amiddy --config=../path/to/file.json`
 
 ### Options
-See [docs/config/README.md](docs/config/README.md)
+See [docs/config/README.md](https://github.com/darkyndy/oia/blob/master/packages/amiddy/docs/config/README.md)
 
 
 ## Command Line Options
