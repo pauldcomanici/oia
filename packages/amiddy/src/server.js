@@ -38,8 +38,16 @@ service.create = (config) => {
   const vhostConf = config.vhost;
   const isHttps = vhostConf.https;
   const protocol = isHttps ? 'https' : 'http';
-  const ssl = isHttps ?
-    certificate.generate(vhostConf.name, config.selfsigned) : null;
+  let ssl = null;
+  if (isHttps) {
+    const sslConfig = config.sslFiles;
+    if (sslConfig) {
+      ssl = certificate.read(sslConfig);
+    } else {
+      // use selfsigned as backup
+      ssl = certificate.generate(vhostConf.name, config.selfsigned);
+    }
+  }
 
   app.use(proxy.create(config, ssl));
 
@@ -49,7 +57,7 @@ service.create = (config) => {
   if (isHttps) {
     server = https.createServer({
       cert: ssl.cert,
-      key: ssl['private'],
+      key: ssl.key || ssl['private'],
     }, app);
   } else {
     server = http.createServer(app);

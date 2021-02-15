@@ -1,3 +1,4 @@
+import fs from 'fs';
 import selfsigned from 'selfsigned';
 
 const privateApi = {};
@@ -22,6 +23,23 @@ privateApi.getAltName = (vhostName) => {
 };
 
 const service = {};
+
+/**
+ * Read certificate files
+ *
+ * @param {Object} config
+ * @param {String} config.cert - path to the cert file
+ * @param {String} config.key - path to the key file
+ * @return {Object}
+ */
+service.read = (config) => {
+  const sslObj = {};
+
+  sslObj.cert = fs.readFileSync(config.cert);
+  sslObj.key = fs.readFileSync(config.key);
+
+  return sslObj;
+};
 
 /**
  * Generate certificate

@@ -60,6 +60,10 @@ Abstract example:
       "days": 365
     }
   },
+  "sslFiles": {
+    "cert": "path/to/cert.crt",
+    "key": "path/to/cert.key"
+  },
   "source": {
     "ip": "127.0.0.1",
     "https": false,
@@ -103,6 +107,10 @@ See [dependencies.md](dependencies.md)
 
 #### selfsigned
 See [selfsigned.md](selfsigned.md)
+
+
+#### sslFiles
+See [sslFiles.md](sslFiles.md)
 
 
 ## source

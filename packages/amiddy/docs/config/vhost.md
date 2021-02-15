@@ -24,6 +24,7 @@ vhost to use.
     - `true`
 - Details:
     - Specify if the vhost uses secure protocol.
+    - When is set to `true`, it will try to use [sslFiles](sslFiles.md) and if they are not provided will use [selfsigned](selfsigned.md) certificate.
 
 
 ## vhost.port

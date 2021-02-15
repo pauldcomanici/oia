@@ -306,7 +306,7 @@ describe('proxy-utils', () => {
       );
     });
 
-    it('updates/adds by reference ssl from proxy options when dependency has secure connection and ssl argument has truthy value', () => {
+    it('updates/adds by reference ssl from proxy options when dependency has secure connection and ssl argument has truthy value (private property on ssl)', () => {
       testSpecificMocks.dependency.https = true;
       proxyUtils.extendOptions(testSpecificMocks.proxyOptions, testSpecificMocks.ssl, testSpecificMocks.dependency);
 
@@ -316,6 +316,23 @@ describe('proxy-utils', () => {
           ssl: {
             cert: testSpecificMocks.ssl.cert,
             key: testSpecificMocks.ssl['private'],
+          },
+          target: proxyUtils.buildUrl(),
+        }
+      );
+    });
+    it('updates/adds by reference ssl from proxy options when dependency has secure connection and ssl argument has truthy value (key property on ssl)', () => {
+      testSpecificMocks.dependency.https = true;
+      testSpecificMocks.ssl.key = 'key-content';
+
+      proxyUtils.extendOptions(testSpecificMocks.proxyOptions, testSpecificMocks.ssl, testSpecificMocks.dependency);
+
+      expect(testSpecificMocks.proxyOptions).toEqual(
+        {
+          _initial: 'value',
+          ssl: {
+            cert: testSpecificMocks.ssl.cert,
+            key: testSpecificMocks.ssl.key,
           },
           target: proxyUtils.buildUrl(),
         }

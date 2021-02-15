@@ -1,5 +1,7 @@
 # selfsigned
 Options to generate selfsigned certificate.
+When [sslFiles](./sslFiles.md) is provided selfsigned is not used.
+The configuration applies to the proxy when _vhost.https_ is set to `true`.
 
 
 ## selfsigned.attrs

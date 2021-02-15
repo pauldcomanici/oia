@@ -2,6 +2,7 @@
 
 ## v-next
 * :house: Update dependencies
+* :rocket: Ability to provide own files (cert & key) for the certificate
 
 ## v2.0.0 - 2020-05-18
 * :memo: Upgrade guide from v1 to v2, see [v1->v2.md](docs/upgrade/v1->v2.md)

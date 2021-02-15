@@ -53,6 +53,12 @@ jest.mock('../src/certificate', () => (
         private: 'private',
       }
     ),
+    read: jest.fn().mockReturnValue(
+      {
+        cert: 'cert-content',
+        key: 'key-content',
+      }
+    ),
   }
 ));
 jest.mock('../src/proxy/index', () => (
@@ -97,7 +103,7 @@ describe('server', () => {
   });
 
   describe('create', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       jest.spyOn(privateApi, 'listen').mockReturnValue('listen-fn');
     });
     beforeEach(() => {
@@ -141,6 +147,19 @@ describe('server', () => {
       server.create(testSpecificMocks.config);
 
       expect(express).toHaveBeenCalledWith();
+    });
+
+    it('uses certificate files when vhost uses https protocol and ssl files are provided', () => {
+      testSpecificMocks.config.vhost.https = true;
+      testSpecificMocks.config.sslFiles = {
+        cert: 'path-to-cert-file',
+        key: 'path-to-key-file',
+      };
+      server.create(testSpecificMocks.config);
+
+      expect(certificate.read).toHaveBeenCalledWith(
+        testSpecificMocks.config.sslFiles
+      );
     });
 
     it('generates certificate when vhost uses https protocol', () => {
@@ -194,7 +213,24 @@ describe('server', () => {
       );
     });
 
-    it('creates secure http server when hvost uses secure connection', () => {
+    it('creates secure http server when vhost uses secure connection (ssl.key used as key)', () => {
+      testSpecificMocks.config.vhost.https = true;
+      testSpecificMocks.ssl = {
+        cert: 'cert-content',
+        key: 'key-content',
+      };
+      certificate.generate.mockReturnValueOnce(testSpecificMocks.ssl);
+
+
+      server.create(testSpecificMocks.config);
+
+      expect(https.createServer).toHaveBeenCalledWith(
+        testSpecificMocks.ssl,
+        express()
+      );
+    });
+
+    it('creates secure http server when vhost uses secure connection (ssl.private used as key)', () => {
       testSpecificMocks.config.vhost.https = true;
       server.create(testSpecificMocks.config);
       testSpecificMocks.ssl = certificate.generate();
@@ -208,7 +244,7 @@ describe('server', () => {
       );
     });
 
-    it('creates non-secure http server when hvost uses non-secure connection', () => {
+    it('creates non-secure http server when vhost uses non-secure connection', () => {
       server.create(testSpecificMocks.config);
 
       expect(http.createServer).toHaveBeenCalledWith(

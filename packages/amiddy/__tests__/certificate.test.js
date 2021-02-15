@@ -1,3 +1,4 @@
+import fs from 'fs';
 import selfsigned from 'selfsigned';
 
 // testing file
@@ -54,7 +55,7 @@ describe('server', () => {
   });
 
   describe('generate', () => {
-    beforeEach(() => {
+    beforeAll(() => {
       jest.spyOn(privateApi, 'getAltName').mockReturnValue('*.dns.name');
     });
     beforeEach(() => {
@@ -171,6 +172,81 @@ describe('server', () => {
         certificate.generate(testSpecificMocks.selfsignedConf)
       ).toEqual(
         selfsigned.generate()
+      );
+    });
+
+  });
+
+  describe('read', () => {
+    beforeAll(() => {
+      jest.spyOn(fs, 'readFileSync').mockReturnValue('fs.readFileSync');
+    });
+    beforeEach(() => {
+      testSpecificMocks.config = {
+        cert: 'file.crt',
+        key: 'file.key',
+      };
+    });
+
+    afterEach(() => {
+      fs.readFileSync.mockClear();
+    });
+    afterAll(() => {
+      fs.readFileSync.mockRestore();
+    });
+
+    it('returns an object with cert and key properties that contain each file content', () => {
+      fs.readFileSync
+        .mockReturnValueOnce('cert-file-content')
+        .mockReturnValueOnce('key-file-content');
+      expect(
+        certificate.read(testSpecificMocks.config)
+      ).toEqual({
+        cert: 'cert-file-content',
+        key: 'key-file-content',
+      });
+    });
+
+    it('reads the content of cert & key file based on path from config', () => {
+      certificate.read(testSpecificMocks.config);
+
+      expect(
+        fs.readFileSync.mock.calls
+      ).toEqual(
+        [
+          [testSpecificMocks.config.cert],
+          [testSpecificMocks.config.key],
+        ]
+      );
+    });
+
+    it('throws error when it fails to read the content of the cert file', () => {
+      fs.readFileSync.mockImplementationOnce(() => {
+        throw 'cert-error';
+      });
+
+      expect(
+        () => {
+          certificate.read(testSpecificMocks.config);
+        }
+      ).toThrow(
+        'cert-error'
+      );
+    });
+
+    it('throws error when it fails to read the content of the key file', () => {
+      fs.readFileSync
+        .mockImplementationOnce(() => ('cert-file-content'))
+        .mockImplementationOnce(() => {
+          throw 'key-error';
+        });
+
+      expect(
+        () => {
+          certificate.read(testSpecificMocks.config);
+        }
+      ).toThrow(
+        'key-error'
       );
     });
 
