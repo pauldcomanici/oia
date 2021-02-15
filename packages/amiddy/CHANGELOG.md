@@ -1,6 +1,8 @@
 # Changelog
 
 ## v-next
+
+## v2.1.0 - 2021-02-15
 * :house: Update dependencies
 * :rocket: Ability to provide own files (cert & key) for the certificate
 
