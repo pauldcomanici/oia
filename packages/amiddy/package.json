@@ -39,11 +39,11 @@
     "snyk-test": "snyk test",
     "start": "nodemon lib/index.js --watch lib",
     "start-latest": "npm run compile && npm run start -- --debug",
-    "test": "jest --config=./config/jest-ut.js",
+    "test": "jest --config=./config/jest-ut.js --maxWorkers=50%",
     "test-coverage": "npm run test -- --coverage",
     "test-e2e": "echo \"Not available\"",
     "test-e2e-watch": "echo \"Not available\"",
-    "test-watch": "npm run test -- --watch"
+    "test-watch": "npm run test -- --watch --maxWorkers=25%"
   },
   "keywords": [
     "middleware",

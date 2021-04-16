@@ -30,11 +30,11 @@
     "report-coverage": "codecov",
     "snyk-protect": "snyk protect",
     "snyk-test": "snyk test",
-    "test": "jest --config=./config/jest-ut.js",
+    "test": "jest --config=./config/jest-ut.js --maxWorkers=50%",
     "test-coverage": "npm run test -- --coverage",
     "test-e2e": "jest --config=./__e2e__/jest.json",
     "test-e2e-watch": "nodemon --watch ./lib --watch ./__e2e__ --exec \"npm run test-e2e\"",
-    "test-watch": "npm run test -- --watch"
+    "test-watch": "npm run test -- --watch --maxWorkers=25%"
   },
   "keywords": [
     "babel-plugin",
