@@ -1,7 +1,8 @@
 # Changelog
 
 ## v-next
-:memo: Fix the link to the config documentation (when clicking from npm)
+* :house: Update dependencies
+* :memo: Fix the link to the config documentation (when clicking from npm)
 
 ## v2.1.0 - 2021-02-15
 * :house: Update dependencies
