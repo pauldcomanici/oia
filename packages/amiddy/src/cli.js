@@ -15,6 +15,8 @@ const privateApi = {};
 privateApi.argsMapWithVal = {
   c: 'config',
   config: 'config',
+  p: 'placeholders',
+  placeholders: 'placeholders',
 };
 
 /**
@@ -73,7 +75,9 @@ privateApi.extractArgs = (args) => {
 
         return acc;
       },
-      {}
+      {
+        config: '.amiddy'
+      }
     );
 
 
@@ -96,7 +100,7 @@ service.run = () => {
     debug.activate();
   }
 
-  const configObj = config.get(filteredArgs.config);
+  const configObj = config.get(filteredArgs);
 
   debug.block(
     '\nUsing options:',

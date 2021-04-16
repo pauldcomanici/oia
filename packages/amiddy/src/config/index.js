@@ -195,11 +195,13 @@ const service = {};
  * Get configuration. If no path is provided will use `.amiddy` file
  *  that should be at the same level with package.json
  *
- * @param {String} [pathToResolve]
+ * @param {Object} props
+ * @param {String} props.config
+ * @param {String} [props.placeholders]
  * @return {Object}
  */
-service.get = (pathToResolve) => {
-  const pathToUse = pathToResolve || '.amiddy';
+service.get = (props) => {
+  const pathToUse = props.config;
   const absolutePath = file.getAbsolutePath(pathToUse);
 
   const configObj = privateApi.loadJSONConfigFile(absolutePath);

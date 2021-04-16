@@ -771,7 +771,9 @@ describe('config', () => {
       );
     });
     beforeEach(() => {
-      testSpecificMocks.pathToResolve = 'path/to/resolve';
+      testSpecificMocks.props = {
+        config: 'path/to/resolve',
+      };
     });
 
     afterEach(() => {
@@ -787,28 +789,18 @@ describe('config', () => {
       privateApi.loadJSONConfigFile.mockRestore();
     });
 
-    it('uses `.amiddy` as file when path has falsy value', () => {
-      config.get();
-
-      expect(
-        file.getAbsolutePath
-      ).toHaveBeenCalledWith(
-        '.amiddy',
-      );
-    });
-
     it('retrieves absolute path to file', () => {
-      config.get(testSpecificMocks.pathToResolve);
+      config.get(testSpecificMocks.props);
 
       expect(
         file.getAbsolutePath
       ).toHaveBeenCalledWith(
-        testSpecificMocks.pathToResolve,
+        testSpecificMocks.props.config,
       );
     });
 
     it('loads json file', () => {
-      config.get(testSpecificMocks.pathToResolve);
+      config.get(testSpecificMocks.props);
 
       expect(
         privateApi.loadJSONConfigFile
@@ -818,7 +810,7 @@ describe('config', () => {
     });
 
     it('validates config object', () => {
-      config.get(testSpecificMocks.pathToResolve);
+      config.get(testSpecificMocks.props);
 
       expect(
         privateApi.validate
@@ -830,7 +822,7 @@ describe('config', () => {
     });
 
     it('set defaults on config object', () => {
-      config.get(testSpecificMocks.pathToResolve);
+      config.get(testSpecificMocks.props);
 
       expect(
         privateApi.setDefaults
@@ -843,7 +835,7 @@ describe('config', () => {
 
     it('returns config object if is valid', () => {
       expect(
-        config.get(testSpecificMocks.pathToResolve)
+        config.get(testSpecificMocks.props)
       ).toEqual(
         {
           data: 'confiObj',
@@ -860,7 +852,7 @@ describe('config', () => {
 
       expect(
         () => {
-          config.get(testSpecificMocks.pathToResolve);
+          config.get(testSpecificMocks.props);
         }
       ).toThrow('Throw');
     });
