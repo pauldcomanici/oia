@@ -61,17 +61,19 @@ describe('cli', () => {
       testSpecificMocks.args = [];
     });
 
-    it('returns empty object when array with arguments does not contain accepted props', () => {
+    it('returns default object when array with arguments does not contain accepted props', () => {
       testSpecificMocks.args = [
         '--invalid=val',
         '--other=',
       ];
       expect(
         privateApi.extractArgs(testSpecificMocks.args)
-      ).toEqual({});
+      ).toEqual({
+        config: '.amiddy',
+      });
     });
 
-    it('returns empty object when array with arguments does not contain accepted props that have valid data', () => {
+    it('returns default object when array with arguments does not contain accepted props that have valid data', () => {
       testSpecificMocks.args = [
         '--invalid=val',
         '--other=',
@@ -79,7 +81,9 @@ describe('cli', () => {
       ];
       expect(
         privateApi.extractArgs(testSpecificMocks.args)
-      ).toEqual({});
+      ).toEqual({
+        config: '.amiddy',
+      });
     });
 
     it('returns object with key as accepted argument and his value based on array provided', () => {
@@ -191,7 +195,10 @@ describe('cli', () => {
       cli.run();
 
       expect(config.get).toHaveBeenCalledWith(
-        'path/to/config.json'
+        {
+          config: 'path/to/config.json',
+          debug: true,
+        }
       );
     });
 
