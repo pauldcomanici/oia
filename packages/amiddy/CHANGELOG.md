@@ -3,7 +3,7 @@
 ## v-next
 * :house: Update dependencies
 * :memo: Fix the link to the config documentation (when clicking from npm)
-* :rocket: Ability to use a base configuration for defaults and placeholders and a specific config where you can define placeholder values. [#16](https://github.com/darkyndy/oia/issues/16)
+* :rocket: Ability to use a base configuration and tokens file to generate amiddy configuration. [#16](https://github.com/darkyndy/oia/issues/16)
 
 ## v2.1.0 - 2021-02-15
 * :house: Update dependencies

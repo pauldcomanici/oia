@@ -1,5 +1,6 @@
 import stripComments from 'strip-json-comments';
 import merge from 'lodash.merge';
+import chalk from 'chalk';
 
 import file from '../file';
 import debug from '../debug';
@@ -8,20 +9,43 @@ import debug from '../debug';
 const privateApi = {};
 
 /**
- * Loads a JSON configuration from a file.
+ * Loads a file.
  *
  * @param {String} filePath - The filename to load.
- * @return {Object} config - The configuration object from the file.
+ * @return {String} output - The file content.
  * @throws {Error} If the file cannot be read.
  */
-privateApi.loadJSONConfigFile = (filePath) => {
-  debug.log(`Loading JSON config file: ${filePath}`);
+privateApi.loadFile = (filePath) => {
+  debug.log(`Loading file: ${filePath}`);
 
   try {
-    return JSON.parse(stripComments(file.read(filePath)));
+    return stripComments(file.read(filePath));
+  } catch (e) {
+    debug.log(`Error reading file: ${filePath}`);
+    e.message = `Cannot read file: ${filePath}\nError: ${e.message}`;
+    e.messageData = {
+      message: e.message,
+      path: filePath,
+    };
+    throw e;
+  }
+};
+
+/**
+ * Loads a JSON from a file.
+ *
+ * @param {String} filePath - The filename to load.
+ * @return {Object} output - The object from the file.
+ * @throws {Error} If the file cannot be read.
+ */
+privateApi.loadJSONFile = (filePath) => {
+  debug.log(`Loading JSON file: ${filePath}`);
+
+  try {
+    return JSON.parse(privateApi.loadFile(filePath));
   } catch (e) {
     debug.log(`Error reading JSON file: ${filePath}`);
-    e.message = `Cannot read config file: ${filePath}\nError: ${e.message}`;
+    e.message = `Cannot read JSON file: ${filePath}\nError: ${e.message}`;
     e.messageData = {
       message: e.message,
       path: filePath,
@@ -188,6 +212,43 @@ privateApi.setDefaults = (configObj) => {
   privateApi.setOptionDefaults(configObj);
 };
 
+/**
+ * Generate config object by replacing tokens from base json
+ *
+ * @param {String} config
+ * @param {Object} tokensObj
+ * @return {Object} configObj
+ */
+privateApi.generateConfig = (config, tokensObj) => {
+  const warnColored = chalk.hex('#C03D29');
+
+  const updatedConfig = Object.keys(tokensObj)
+    .reduce(
+      (acc, token) => {
+        const regExp = new RegExp(token, 'g');
+        const hasMatch = regExp.test(acc);
+
+        if (hasMatch) {
+          return acc.replace(regExp, tokensObj[token]);
+        }
+
+        // eslint-disable-next-line no-console, max-len
+        console.warn(`${warnColored('Token')} ${warnColored.bold(token)} ${warnColored('was not wound in base configuration')}`);
+        return acc;
+      },
+      config
+    );
+
+  try {
+    return JSON.parse(updatedConfig);
+  } catch (e) {
+    const msg = 'Error parsing config as JSON';
+    debug.log(msg);
+    e.message = `${msg} ${e.message}`;
+    throw e;
+  }
+};
+
 
 const service = {};
 
@@ -197,14 +258,24 @@ const service = {};
  *
  * @param {Object} props
  * @param {String} props.config
- * @param {String} [props.placeholders]
+ * @param {String} [props.tokens]
  * @return {Object}
  */
 service.get = (props) => {
-  const pathToUse = props.config;
-  const absolutePath = file.getAbsolutePath(pathToUse);
+  let configObj;
 
-  const configObj = privateApi.loadJSONConfigFile(absolutePath);
+  const tokens = props.tokens;
+  const configPath = file.getAbsolutePath(props.config);
+  if (tokens) {
+    // when we do not have placeholders -> read config as string & replace tokens
+    const tokensPath = file.getAbsolutePath(tokens);
+    const tokensObj = privateApi.loadJSONFile(tokensPath);
+    const config = privateApi.loadFile(configPath);
+    configObj = privateApi.generateConfig(config, tokensObj);
+  } else {
+    // when we do not have placeholders -> take the config file directly
+    configObj = privateApi.loadJSONFile(configPath);
+  }
 
   privateApi.validate(configObj);
 

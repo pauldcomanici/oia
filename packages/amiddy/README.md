@@ -81,10 +81,10 @@ After that start the server by running `npm run start-amiddy`
 
 ### Via `.amiddy` (Recommended)
 You need to have at project root folder a file named `.amiddy` that contains valid json.
-You just need to create a file with this name, complete [json configuration](#options) and you can start the server.  
+Create a file with this name, complete [json configuration](#options) and you can start the server.
 
 ### Via CLI
-Using `--config` or `-c` arguments you can provide path to the configuration file.
+Using `--config` or `-c` arguments you can provide the path to the configuration file.
 Example: `npm run start-amiddy --config=../path/to/file.json`
 
 ### Options
@@ -95,6 +95,10 @@ See [docs/config/README.md](https://github.com/darkyndy/oia/blob/master/packages
 
 ### `--config`, `-c`
 Allows you to set the configuration file.
+
+### `--tokens`, `-t`
+Allows you to set the tokens file.
+When using tokens file, the config file will be used as base configuration, see [#16](https://github.com/darkyndy/oia/issues/16).
 
 ### `--debug`, `-d`
 Allows you to see debug logs. Useful to see what is the configuration that was loaded.

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`config privateApi.loadJSONConfigFile returns content of the file as object when file exists and is valid 1`] = `
+exports[`config privateApi.loadJSONFile returns content of the file as object when file exists and is valid 1`] = `
 Object {
   "deps": Array [
     Object {
@@ -32,13 +32,14 @@ Object {
 }
 `;
 
-exports[`config privateApi.loadJSONConfigFile throws error when file does not exists 1`] = `
-"Cannot read config file: __tests__/__fixtures__/noap.json
+exports[`config privateApi.loadJSONFile throws error when file does not exists 1`] = `
+"Cannot read JSON file: __tests__/__fixtures__/noap.json
+Error: Cannot read file: __tests__/__fixtures__/noap.json
 Error: ENOENT: no such file or directory, open '__tests__/__fixtures__/noap.json'"
 `;
 
-exports[`config privateApi.loadJSONConfigFile throws error when file exists but does not have valid json 1`] = `
-"Cannot read config file: __tests__/__fixtures__/invalid.json
+exports[`config privateApi.loadJSONFile throws error when file exists but does not have valid json 1`] = `
+"Cannot read JSON file: __tests__/__fixtures__/invalid.json
 Error: Unexpected token i in JSON at position 4"
 `;
 
