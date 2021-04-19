@@ -15,8 +15,8 @@ const privateApi = {};
 privateApi.argsMapWithVal = {
   c: 'config',
   config: 'config',
-  p: 'placeholders',
-  placeholders: 'placeholders',
+  t: 'tokens',
+  tokens: 'tokens',
 };
 
 /**

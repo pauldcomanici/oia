@@ -20,23 +20,23 @@ describe('config', () => {
     testSpecificMocks = {};
   });
 
-  describe('privateApi.loadJSONConfigFile', () => {
+  describe('privateApi.loadJSONFile', () => {
 
     afterEach(() => {
       debug.log.mockClear();
     });
 
     it('logs debug message with the file path', () => {
-      privateApi.loadJSONConfigFile('__tests__/__fixtures__/config.json');
+      privateApi.loadJSONFile('__tests__/__fixtures__/config.json');
 
       expect(debug.log).toHaveBeenCalledWith(
-        'Loading JSON config file: __tests__/__fixtures__/config.json'
+        'Loading JSON file: __tests__/__fixtures__/config.json'
       );
     });
 
     it('logs debug message with the file path and error message if there was a problem', () => {
       try {
-        privateApi.loadJSONConfigFile('__tests__/__fixtures__/invalid.json');
+        privateApi.loadJSONFile('__tests__/__fixtures__/invalid.json');
       } catch (e) {
       }
 
@@ -45,7 +45,10 @@ describe('config', () => {
       ).toEqual(
         [
           [
-            'Loading JSON config file: __tests__/__fixtures__/invalid.json',
+            'Loading JSON file: __tests__/__fixtures__/invalid.json',
+          ],
+          [
+            'Loading file: __tests__/__fixtures__/invalid.json',
           ],
           [
             'Error reading JSON file: __tests__/__fixtures__/invalid.json',
@@ -55,18 +58,18 @@ describe('config', () => {
     });
 
     it('returns content of the file as object when file exists and is valid', () => {
-      expect(privateApi.loadJSONConfigFile('__tests__/__fixtures__/config.json')).toMatchSnapshot();
+      expect(privateApi.loadJSONFile('__tests__/__fixtures__/config.json')).toMatchSnapshot();
     });
 
     it('throws error when file exists but does not have valid json', () => {
       expect(() => {
-        privateApi.loadJSONConfigFile('__tests__/__fixtures__/invalid.json');
+        privateApi.loadJSONFile('__tests__/__fixtures__/invalid.json');
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('throws error when file does not exists', () => {
       expect(() => {
-        privateApi.loadJSONConfigFile('__tests__/__fixtures__/noap.json');
+        privateApi.loadJSONFile('__tests__/__fixtures__/noap.json');
       }).toThrowErrorMatchingSnapshot();
     });
 
@@ -759,14 +762,94 @@ describe('config', () => {
 
   });
 
+  describe('privateApi.generateConfig', () => {
+    beforeAll(() => {
+      jest.spyOn(console, 'warn').mockReturnValue(undefined);
+    });
+    beforeEach(() => {
+      testSpecificMocks.config = '{"__PROP__": "value", "__ANOTHER__": {"__PROP__": "multi-level"}, "nr": 2}';
+      testSpecificMocks.tokensObj = {
+        __ANOTHER__: 'another',
+        __PROP__: 'prop',
+      };
+    });
+
+    afterEach(() => {
+      console.warn.mockClear(); // eslint-disable-line no-console
+    });
+    afterAll(() => {
+      console.warn.mockRestore(); // eslint-disable-line no-console
+    });
+
+    it('replaces all tokens from the config and returns an object', () => {
+      expect(privateApi.generateConfig(testSpecificMocks.config, testSpecificMocks.tokensObj))
+        .toEqual({
+          another: {
+            prop: 'multi-level',
+          },
+          nr: 2,
+          prop: 'value',
+        });
+    });
+
+    it('replaces all tokens from the config and returns an object', () => {
+      expect(privateApi.generateConfig(testSpecificMocks.config, testSpecificMocks.tokensObj))
+        .toEqual({
+          another: {
+            prop: 'multi-level',
+          },
+          nr: 2,
+          prop: 'value',
+        });
+    });
+
+    it('throws error when config cannot be parsed as JSON', () => {
+      testSpecificMocks.config = '{"__PROP__": "value", "__ANOTHER__": {__PROP__": "multi-level"}, "nr": 2}';
+      expect(
+        () => {
+          privateApi.generateConfig(testSpecificMocks.config, testSpecificMocks.tokensObj);
+        }
+      ).toThrow('Error parsing config as JSON');
+    });
+
+    it('logs warning message when the base config does not contain the token', () => {
+      testSpecificMocks.tokensObj.__NOT__ = 'warning';
+
+      privateApi.generateConfig(testSpecificMocks.config, testSpecificMocks.tokensObj);
+
+      expect(console.warn).toHaveBeenCalled(); // eslint-disable-line no-console
+    });
+
+    it('even if a token is not found it returns an object with all other tokens replaced', () => {
+      testSpecificMocks.tokensObj.__NOT__ = 'warning';
+
+      expect(privateApi.generateConfig(testSpecificMocks.config, testSpecificMocks.tokensObj))
+        .toEqual({
+          another: {
+            prop: 'multi-level',
+          },
+          nr: 2,
+          prop: 'value',
+        });
+    });
+  });
+
   describe('get', () => {
     beforeAll(() => {
       jest.spyOn(privateApi, 'setDefaults').mockReturnValue(undefined);
       jest.spyOn(privateApi, 'validate').mockReturnValue(undefined);
       jest.spyOn(file, 'getAbsolutePath').mockReturnValue('/absolute/path/to/file');
-      jest.spyOn(privateApi, 'loadJSONConfigFile').mockReturnValue(
+      jest.spyOn(privateApi, 'loadFile').mockReturnValue(
+        '{"prop": "config data"}'
+      );
+      jest.spyOn(privateApi, 'loadJSONFile').mockReturnValue(
         {
           data: 'confiObj',
+        }
+      );
+      jest.spyOn(privateApi, 'generateConfig').mockReturnValue(
+        {
+          data: 'confiObj generated',
         }
       );
     });
@@ -780,32 +863,90 @@ describe('config', () => {
       privateApi.setDefaults.mockClear();
       privateApi.validate.mockClear();
       file.getAbsolutePath.mockClear();
-      privateApi.loadJSONConfigFile.mockClear();
+      privateApi.loadFile.mockClear();
+      privateApi.loadJSONFile.mockClear();
+      privateApi.generateConfig.mockClear();
     });
     afterAll(() => {
       privateApi.setDefaults.mockRestore();
       privateApi.validate.mockRestore();
       file.getAbsolutePath.mockRestore();
-      privateApi.loadJSONConfigFile.mockRestore();
+      privateApi.loadFile.mockRestore();
+      privateApi.loadJSONFile.mockRestore();
+      privateApi.generateConfig.mockRestore();
     });
 
-    it('retrieves absolute path to file', () => {
+    it('when we do not have file for tokens, retrieves absolute path for config file', () => {
       config.get(testSpecificMocks.props);
 
       expect(
         file.getAbsolutePath
       ).toHaveBeenCalledWith(
-        testSpecificMocks.props.config,
+        testSpecificMocks.props.config
       );
     });
 
-    it('loads json file', () => {
+    it('when we do not have file for tokens, loads config file as JSON', () => {
       config.get(testSpecificMocks.props);
 
       expect(
-        privateApi.loadJSONConfigFile
+        privateApi.loadJSONFile
       ).toHaveBeenCalledWith(
         file.getAbsolutePath(),
+      );
+    });
+
+    it('when we have file for tokens, retrieves absolute path for config file & tokens file', () => {
+      testSpecificMocks.props.tokens = 'path/for/tokens';
+      config.get(testSpecificMocks.props);
+
+      expect(
+        file.getAbsolutePath.mock.calls
+      ).toEqual(
+        [
+          [testSpecificMocks.props.config],
+          [testSpecificMocks.props.tokens],
+        ]
+      );
+    });
+
+    it('when we have file for tokens, loads tokens file as JSON', () => {
+      testSpecificMocks.props.tokens = 'path/for/tokens';
+      file.getAbsolutePath
+        .mockReturnValueOnce('/abs/config/file')
+        .mockReturnValueOnce('/abs/tokens/file');
+      config.get(testSpecificMocks.props);
+
+      expect(
+        privateApi.loadJSONFile
+      ).toHaveBeenCalledWith(
+        '/abs/tokens/file'
+      );
+    });
+
+    it('when we have file for tokens, loads config file as string', () => {
+      testSpecificMocks.props.tokens = 'path/for/tokens';
+      file.getAbsolutePath
+        .mockReturnValueOnce('/abs/config/file')
+        .mockReturnValueOnce('/abs/tokens/file');
+      config.get(testSpecificMocks.props);
+
+      expect(
+        privateApi.loadFile
+      ).toHaveBeenCalledWith(
+        '/abs/config/file'
+      );
+    });
+
+    it('when we have file for tokens, generates config object using config and tokens', () => {
+      testSpecificMocks.props.tokens = 'path/for/tokens';
+      config.get(testSpecificMocks.props);
+
+      expect(
+        privateApi.generateConfig
+      ).toHaveBeenCalledWith(
+        privateApi.loadFile(),
+        privateApi.loadJSONFile(),
       );
     });
 
