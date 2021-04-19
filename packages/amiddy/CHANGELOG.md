@@ -1,6 +1,8 @@
 # Changelog
 
 ## v-next
+
+## v2.2.0 - 2021-04-19
 * :house: Update dependencies
 * :memo: Fix the link to the config documentation (when clicking from npm)
 * :rocket: Ability to use a base configuration and tokens file to generate amiddy configuration. [#16](https://github.com/darkyndy/oia/issues/16)

@@ -59,6 +59,6 @@
     "url": "https://github.com/darkyndy/oia/issues"
   },
   "homepage": "https://github.com/darkyndy/oia/tree/master/packages/amiddy",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "snyk": true
 }
