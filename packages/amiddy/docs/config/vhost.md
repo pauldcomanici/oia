@@ -9,7 +9,7 @@ vhost to use.
 - Default value: `example.com`
 - Example value:
     - `github.com`
-    - `darkyndy.github.com`
+    - `pauldcomanici.github.com`
 - Details:
     - Specify the vhostname.
 
