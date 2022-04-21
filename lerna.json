@@ -1,11 +1,11 @@
 {
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "packages": [
     "packages/*"
   ],
   "command": {
     "publish": {
-      "npmClient": "yarn",
+      "npmClient": "npm",
       "verifyAccess": false
     }
   },
