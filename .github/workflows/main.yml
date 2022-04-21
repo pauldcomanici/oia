@@ -27,15 +27,15 @@ jobs:
       with:
         node-version: '16.x'
     - name: Install deps
-      run: yarn install --force --frozen-lockfile
+      run: npm ci -dd
     - name: Linting
-      run: yarn lint
+      run: npm run lint
     - name: Test coverage
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      run: yarn test-coverage && yarn report-coverage
+      run: npm run test-coverage && npm run report-coverage
     - name: Compile
-      run: yarn compile
+      run: npm run compile
     - name: E2E tests # require compile
-      run: yarn test-e2e
+      run: npm run test-e2e
 
