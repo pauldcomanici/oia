@@ -32,7 +32,6 @@
     "postinstall": "node ./scripts/postinstall.js || exit 0",
     "prepublishOnly": "npm run build",
     "report-coverage": "codecov",
-    "snyk-protect": "snyk protect",
     "snyk-test": "snyk test",
     "test": "jest --config=./config/jest-ut.js --maxWorkers=50%",
     "test-coverage": "npm run test -- --coverage",
