@@ -1,6 +1,6 @@
 
 // services
-import options from './options';
+import options from './options.js';
 
 /**
  * Setup service for the plugin

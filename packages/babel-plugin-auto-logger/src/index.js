@@ -2,8 +2,8 @@
 import {declare} from '@babel/helper-plugin-utils';
 
 // services
-import setup from './setup';
-import visitors from './visitors';
+import setup from './setup.js';
+import visitors from './visitors.js';
 
 /**
  * Babel plugin that will automatically add logging.

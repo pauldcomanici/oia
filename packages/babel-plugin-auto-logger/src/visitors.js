@@ -2,9 +2,9 @@
 import * as types from '@babel/types';
 
 // services
-import utils from './utils';
+import utils from './utils.js';
 // constants
-import consts from './constants';
+import consts from './constants.js';
 
 /**
  * Visitors service

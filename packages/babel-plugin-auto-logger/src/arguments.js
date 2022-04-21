@@ -2,7 +2,7 @@
 import * as types from '@babel/types';
 
 // constants
-import consts from './constants';
+import consts from './constants.js';
 
 /**
  * Utils service for logging arguments.

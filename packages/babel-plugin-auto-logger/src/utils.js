@@ -2,11 +2,11 @@
 import * as types from '@babel/types';
 
 // services
-import loggingArguments from './arguments';
-import loggingData from './logging';
-import sourceFile from './source-file';
+import loggingArguments from './arguments.js';
+import loggingData from './logging.js';
+import sourceFile from './source-file.js';
 // constants
-import consts from './constants';
+import consts from './constants.js';
 
 /**
  * Utils service for the plugin.

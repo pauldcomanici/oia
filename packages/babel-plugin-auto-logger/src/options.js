@@ -1,6 +1,6 @@
 
 // services
-import loggingData from './logging';
+import loggingData from './logging.js';
 
 /**
  * Utils service that prepares plugin options.

@@ -1,6 +1,6 @@
 
 // constants
-import consts from './constants';
+import consts from './constants.js';
 
 /**
  * Private API for logging service.

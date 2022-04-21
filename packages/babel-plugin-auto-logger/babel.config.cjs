@@ -1,13 +1,19 @@
 "use strict";
 
-module.exports = function (api) { // eslint-disable-line no-undef
+module.exports = function (api) {
+  const env = api.env();
   api.cache.never();
 
   const envConfig = {
+    modules: false,
     targets: {
       node: true,
     },
   };
+
+  if (env === 'test') {
+    envConfig.modules = 'auto';
+  }
 
   return {
     comments: false,
