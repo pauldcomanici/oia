@@ -1,6 +1,8 @@
 # Changelog
 
 ## v-next
+
+## v2.2.1 - 2022-04-21
 * :house: Update dependencies
 * :house: Update README
 

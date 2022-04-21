@@ -59,6 +59,6 @@
     "url": "https://github.com/pauldcomanici/oia/issues"
   },
   "homepage": "https://github.com/pauldcomanici/oia/tree/master/packages/amiddy",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "snyk": true
 }
