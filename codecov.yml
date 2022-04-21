@@ -1,18 +1,15 @@
+codecov:
+  require_ci_to_pass: yes
+
 coverage:
-  parsers:
-    javascript:
-      enable_partials: yes
+  range: "80...100"
 
   status:
     project:
-      default: off
+      default: false  # disable the default status that measures entire project
+      amiddy:
+        paths:
+          - /packages/amiddy
       babel-plugin-auto-logger:
-        target: 100%
-        flags: babel-plugin-auto-logger
-
-flags:
-  # filter the folder(s) you wish to measure by that flag
-  babel-plugin-auto-logger:
-    paths:
-      - /packages/babel-plugin-auto-logger
-
+        paths:
+          - /packages/babel-plugin-auto-logger
