@@ -8,8 +8,18 @@ coverage:
     project:
       default: false  # disable the default status that measures entire project
       amiddy:
-        paths:
-          - /packages/amiddy
+        target: 100%
+        flags:
+          - amiddy
       babel-plugin-auto-logger:
-        paths:
-          - /packages/babel-plugin-auto-logger
+        target: 100%
+        flags:
+          - babel-plugin-auto-logger
+
+flags:
+  amiddy:
+    paths:
+      - /packages/amiddy
+  babel-plugin-auto-logger:
+    paths:
+      - /packages/babel-plugin-auto-logger
