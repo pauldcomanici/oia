@@ -30,10 +30,12 @@ jobs:
       run: npm ci -dd
     - name: Linting
       run: npm run lint
-    - name: Test coverage
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      run: npm run test-coverage && npm run report-coverage
+    - name: Test with coverage
+      run: npm run test-coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
     - name: Compile
       run: npm run compile
     - name: E2E tests # require compile
