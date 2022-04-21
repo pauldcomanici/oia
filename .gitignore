@@ -38,7 +38,7 @@ jsdoc
 *.scannerwork
 
 # other files
-package-lock.json
+yarn.lock
 
 # local files
 __local__

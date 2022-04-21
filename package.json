@@ -55,9 +55,7 @@
     "rimraf": "3.0.2",
     "snyk": "1.908.0"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  }
+  "workspaces": [
+    "./packages/*"
+  ]
 }
