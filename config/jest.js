@@ -1,4 +1,4 @@
-module.exports = {
+const jestConfig = {
   automock: false,
   collectCoverageFrom: [
     '**/src/**/*.js',
@@ -26,3 +26,5 @@ module.exports = {
   testRegex: '/__tests__/.*\\.test\\.js$',
   verbose: false,
 };
+
+export default jestConfig;

@@ -86,4 +86,4 @@ async function setChangelog(packageDir) {
   }
 }
 
-module.exports = setChangelog;
+export default setChangelog;
