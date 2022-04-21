@@ -38,7 +38,6 @@
     "lint-tests": "eslint ./__tests__",
     "postinstall": "node ./scripts/postinstall.js || exit 0",
     "prepublishOnly": "npm run build",
-    "report-coverage": "codecov",
     "snyk-test": "snyk test",
     "start": "nodemon lib/index.js --watch lib",
     "start-latest": "npm run compile && npm run start -- --debug",

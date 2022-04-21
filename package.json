@@ -19,7 +19,6 @@
     "lint-source": "lerna run --parallel lint-source",
     "lint-tests": "lerna run --parallel lint-tests",
     "release": "lerna publish from-package --yes",
-    "report-coverage": "codecov",
     "snyk-test": "lerna run --parallel snyk-test",
     "test": "lerna run --parallel test",
     "test-coverage": "lerna run --parallel test-coverage",
