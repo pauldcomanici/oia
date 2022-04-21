@@ -7,7 +7,11 @@
   },
   "license": "MIT",
   "private": false,
-  "main": "lib/index.js",
+  "exports": "lib/index.js",
+  "type": "module",
+  "engines": {
+    "node": "^12.17.0 || ^14.13 || >=16.0.0"
+  },
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
     "chalk": "4.1.2",

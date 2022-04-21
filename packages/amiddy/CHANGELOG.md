@@ -1,6 +1,7 @@
 # Changelog
 
 ## v-next
+* :boom: package is now pure ESM. Please [read this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 
 ## v2.2.1 - 2022-04-21
 * :house: Update dependencies

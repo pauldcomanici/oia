@@ -1,9 +1,11 @@
-const jestConfig = require('./../../../config/jest');
+import jestConfig from './../../../config/jest.js';
 
-module.exports = {
+const config = {
   ...jestConfig,
   rootDir: './../',
   setupFilesAfterEnv: [
     '<rootDir>/config/jest-setup.js',
   ],
 };
+
+export default config;

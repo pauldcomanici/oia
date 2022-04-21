@@ -4,6 +4,10 @@
   "description": "oia - JS Packages",
   "private": true,
   "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": "^12.17.0 || ^14.13 || >=16.0.0"
+  },
   "scripts": {
     "build": "lerna run --parallel build",
     "build-changelog": "node ./scripts/changelog/index.js",
