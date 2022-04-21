@@ -2,8 +2,8 @@ import stripComments from 'strip-json-comments';
 import merge from 'lodash.merge';
 import chalk from 'chalk';
 
-import file from '../file';
-import debug from '../debug';
+import file from '../file.js';
+import debug from '../debug.js';
 
 
 const privateApi = {};

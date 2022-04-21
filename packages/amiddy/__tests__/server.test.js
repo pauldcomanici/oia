@@ -5,11 +5,11 @@ import https from 'https';
 import express from 'express';
 
 // testing file
-import server, {privateApi} from '../src/server';
+import server, {privateApi} from '../src/server.js';
 
-import logger from '../src/logger';
-import certificate from '../src/certificate';
-import proxy from '../src/proxy';
+import logger from '../src/logger.js';
+import certificate from '../src/certificate.js';
+import proxy from '../src/proxy/index.js';
 
 
 // mocks

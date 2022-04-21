@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import cli from './cli';
+import cli from './cli.js';
 
 /**
  * Entry point for starting amiddy

@@ -1,8 +1,8 @@
 
-import config from './config';
-import debug from './debug';
-import setup from './setup';
-import server from './server';
+import config from './config/index.js';
+import debug from './debug.js';
+import setup from './setup/index.js';
+import server from './server.js';
 
 
 const privateApi = {};

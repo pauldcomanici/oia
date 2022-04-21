@@ -1,9 +1,9 @@
 
-import file from '../file';
-import logger from '../logger';
+import file from '../file.js';
+import logger from '../logger.js';
 
-import proxyRegistry from './registry';
-import proxyUtils from './utils';
+import proxyRegistry from './registry.js';
+import proxyUtils from './utils.js';
 
 const privateApi = {};
 

@@ -4,9 +4,9 @@ import https from 'https';
 import express from 'express';
 
 
-import logger from './logger';
-import certificate from './certificate';
-import proxy from './proxy';
+import logger from './logger.js';
+import certificate from './certificate.js';
+import proxy from './proxy/index.js';
 
 
 const privateApi = {};

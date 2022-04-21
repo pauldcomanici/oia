@@ -1,6 +1,6 @@
-import logger from '../logger';
-import proxyRegistry from './registry';
-import proxyRecorder from './recorder';
+import logger from '../logger.js';
+import proxyRegistry from './registry.js';
+import proxyRecorder from './recorder.js';
 
 
 const service = {};

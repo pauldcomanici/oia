@@ -2,8 +2,8 @@
 import micromatch from 'micromatch';
 import mime from 'mime-types';
 
-import file from '../file';
-import proxyUtils from './utils';
+import file from '../file.js';
+import proxyUtils from './utils.js';
 
 
 const privateApi = {};

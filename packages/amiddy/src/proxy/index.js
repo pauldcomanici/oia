@@ -1,9 +1,9 @@
 import httpProxy from 'http-proxy';
 import vhost from 'vhost';
 
-import proxyMock from './mock';
-import proxyListen from './listen';
-import proxyUtils from './utils';
+import proxyMock from './mock.js';
+import proxyListen from './listen.js';
+import proxyUtils from './utils.js';
 
 
 const privateApi = {};

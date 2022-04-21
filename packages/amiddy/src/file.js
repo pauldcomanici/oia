@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import logger from './logger';
+import logger from './logger.js';
 
 
 const privateApi = {};
