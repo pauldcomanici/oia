@@ -25,6 +25,10 @@ const jestConfig = {
   rootDir: './../',
   testRegex: '/__tests__/.*\\.test\\.js$',
   verbose: false,
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname'
+  ]
 };
 
 export default jestConfig;

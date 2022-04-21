@@ -49,6 +49,7 @@
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.26.0",
     "jest": "27.5.1",
+    "jest-watch-typeahead": "^1.0.0",
     "lerna": "4.0.0",
     "nodemon": "2.0.15",
     "rimraf": "3.0.2",
