@@ -1,21 +1,21 @@
 <p align="center">
-  <a href="https://github.com/darkyndy/oia/actions?query=branch%3Amaster">
+  <a href="https://github.com/pauldcomanici/oia/actions?query=branch%3Amaster">
     <img
       alt="CI Status"
-      src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"
+      src="https://github.com/pauldcomanici/oia/workflows/CI/badge.svg"
     />
   </a>
-  <a href="https://codecov.io/gh/darkyndy/oia/tree/master/">
+  <a href="https://codecov.io/gh/pauldcomanici/oia/tree/master/">
     <img
       alt="Coverage Status"
-      src="https://codecov.io/gh/darkyndy/oia/branch/master/graph/badge.svg"
+      src="https://codecov.io/gh/pauldcomanici/oia/branch/master/graph/badge.svg"
     />
   </a>
-  <a href="https://snyk.io/test/github/darkyndy/oia?targetFile=package.json">
+  <a href="https://snyk.io/test/github/pauldcomanici/oia?targetFile=package.json">
     <img
       alt="Known Vulnerabilities"
-      src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=package.json"
-      data-canonical-src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=package.json"
+      src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=package.json"
+      data-canonical-src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=package.json"
       style="max-width:100%;"
     />
   </a>

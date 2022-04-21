@@ -1,21 +1,21 @@
 <p align="center">
-  <a href="https://github.com/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger">
+  <a href="https://github.com/pauldcomanici/oia/tree/master/packages/babel-plugin-auto-logger">
     <img
       alt="CI Status"
-      src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"
+      src="https://github.com/pauldcomanici/oia/workflows/CI/badge.svg"
     />
   </a>
-  <a href="https://codecov.io/gh/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger/src">
+  <a href="https://codecov.io/gh/pauldcomanici/oia/tree/master/packages/babel-plugin-auto-logger/src">
     <img
       alt="Coverage Status"
-      src="https://codecov.io/gh/darkyndy/oia/branch/master/graph/badge.svg?flags=babel-plugin-auto-logger"
+      src="https://codecov.io/gh/pauldcomanici/oia/branch/master/graph/badge.svg?flags=babel-plugin-auto-logger"
     />
   </a>
-  <a href="https://snyk.io/test/github/darkyndy/oia?targetFile=packages/babel-plugin-auto-logger/package.json">
+  <a href="https://snyk.io/test/github/pauldcomanici/oia?targetFile=packages/babel-plugin-auto-logger/package.json">
     <img
       alt="Known Vulnerabilities"
-      src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
-      data-canonical-src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
+      src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
+      data-canonical-src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=packages/babel-plugin-auto-logger/package.json"
       style="max-width:100%;"
     />
   </a>
@@ -25,7 +25,7 @@
       src="https://img.shields.io/npm/dm/babel-plugin-auto-logger.svg?maxAge=57600"
     />
   </a>
-  <a href="https://github.com/darkyndy/babel-plugin-auto-logger/blob/master/LICENSE">
+  <a href="https://github.com/pauldcomanici/babel-plugin-auto-logger/blob/master/LICENSE">
     <img
       alt="MIT License"
       src="https://img.shields.io/npm/l/babel-plugin-auto-logger.svg"

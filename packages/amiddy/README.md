@@ -1,21 +1,21 @@
 <p align="center">
-  <a href="https://github.com/darkyndy/oia/tree/master/packages/amiddy">
+  <a href="https://github.com/pauldcomanici/oia/tree/master/packages/amiddy">
     <img
       alt="CI Status"
-      src="https://github.com/darkyndy/oia/workflows/CI/badge.svg"
+      src="https://github.com/pauldcomanici/oia/workflows/CI/badge.svg"
     />
   </a>
-  <a href="https://codecov.io/gh/darkyndy/oia/tree/master/packages/amiddy/src">
+  <a href="https://codecov.io/gh/pauldcomanici/oia/tree/master/packages/amiddy/src">
     <img
       alt="Coverage Status"
-      src="https://codecov.io/gh/darkyndy/oia/branch/master/graph/badge.svg?flags=amiddy"
+      src="https://codecov.io/gh/pauldcomanici/oia/branch/master/graph/badge.svg?flags=amiddy"
     />
   </a>
-  <a href="https://snyk.io/test/github/darkyndy/oia?targetFile=packages/amiddy/package.json">
+  <a href="https://snyk.io/test/github/pauldcomanici/oia?targetFile=packages/amiddy/package.json">
     <img
       alt="Known Vulnerabilities"
-      src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/amiddy/package.json"
-      data-canonical-src="https://snyk.io/test/github/darkyndy/oia/badge.svg?targetFile=packages/amiddy/package.json"
+      src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=packages/amiddy/package.json"
+      data-canonical-src="https://snyk.io/test/github/pauldcomanici/oia/badge.svg?targetFile=packages/amiddy/package.json"
       style="max-width:100%;"
     />
   </a>
@@ -25,7 +25,7 @@
       src="https://img.shields.io/npm/dm/amiddy.svg?maxAge=57600"
     />
   </a>
-  <a href="https://github.com/darkyndy/amiddy/blob/master/LICENSE">
+  <a href="https://github.com/pauldcomanici/amiddy/blob/master/LICENSE">
     <img
       alt="MIT License"
       src="https://img.shields.io/npm/l/amiddy.svg"
@@ -88,7 +88,7 @@ Using `--config` or `-c` arguments you can provide the path to the configuration
 Example: `npm run start-amiddy --config=../path/to/file.json`
 
 ### Options
-See [docs/config/README.md](https://github.com/darkyndy/oia/blob/master/packages/amiddy/docs/config/README.md)
+See [docs/config/README.md](https://github.com/pauldcomanici/oia/blob/master/packages/amiddy/docs/config/README.md)
 
 
 ## Command Line Options
@@ -98,7 +98,7 @@ Allows you to set the configuration file.
 
 ### `--tokens`, `-t`
 Allows you to set the tokens file.
-When using tokens file, the config file will be used as base configuration, see [#16](https://github.com/darkyndy/oia/issues/16).
+When using tokens file, the config file will be used as base configuration, see [#16](https://github.com/pauldcomanici/oia/issues/16).
 
 ### `--debug`, `-d`
 Allows you to see debug logs. Useful to see what is the configuration that was loaded.

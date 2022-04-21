@@ -25,14 +25,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darkyndy/oia.git"
+    "url": "git+https://github.com/pauldcomanici/oia.git"
   },
   "author": "Paul Comanici",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/darkyndy/oia/issues"
+    "url": "https://github.com/pauldcomanici/oia/issues"
   },
-  "homepage": "https://github.com/darkyndy/oia#readme",
+  "homepage": "https://github.com/pauldcomanici/oia#readme",
   "devDependencies": {
     "@babel/cli": "7.17.6",
     "@babel/core": "7.17.9",

@@ -3,20 +3,20 @@
   "description": "Middleware server with high configurability for development",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darkyndy/oia"
+    "url": "https://github.com/pauldcomanici/oia"
   },
   "license": "MIT",
   "private": false,
   "main": "lib/index.js",
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
-    "chalk": "4.1.0",
-    "express": "4.17.1",
+    "chalk": "4.1.2",
+    "express": "4.17.3",
     "http-proxy": "1.18.1",
     "lodash.merge": "4.6.2",
-    "micromatch": "4.0.4",
-    "mime-types": "2.1.30",
-    "selfsigned": "1.10.8",
+    "micromatch": "4.0.5",
+    "mime-types": "2.1.35",
+    "selfsigned": "2.0.1",
     "strip-json-comments": "3.1.1",
     "url": "0.11.0",
     "vhost": "3.0.2"
@@ -56,9 +56,9 @@
     "scripts"
   ],
   "bugs": {
-    "url": "https://github.com/darkyndy/oia/issues"
+    "url": "https://github.com/pauldcomanici/oia/issues"
   },
-  "homepage": "https://github.com/darkyndy/oia/tree/master/packages/amiddy",
+  "homepage": "https://github.com/pauldcomanici/oia/tree/master/packages/amiddy",
   "version": "2.2.0",
   "snyk": true
 }

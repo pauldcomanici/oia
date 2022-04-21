@@ -2,6 +2,7 @@
 
 ## v-next
 * :house: Update dependencies
+* :house: Update README
 
 ## v1.2.3 - 2021-01-18
 * :bug: Plugin should not throw error when catch clause does not contain parameters

@@ -3,18 +3,18 @@
   "description": "Babel Plugin that will automatically add logging",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darkyndy/oia"
+    "url": "https://github.com/pauldcomanici/oia"
   },
   "license": "MIT",
   "private": false,
   "main": "lib/index.js",
   "author": "Paul Comanici <darkyndy@gmail.com>",
   "dependencies": {
-    "@babel/helper-plugin-utils": "7.10.4",
-    "@babel/types": "7.12.12"
+    "@babel/helper-plugin-utils": "7.16.7",
+    "@babel/types": "7.17.0"
   },
   "devDependencies": {
-    "@babel/helper-plugin-test-runner": "7.10.4"
+    "@babel/helper-plugin-test-runner": "7.16.7"
   },
   "peerDependencies": {},
   "scripts": {
@@ -47,9 +47,9 @@
     "scripts"
   ],
   "bugs": {
-    "url": "https://github.com/darkyndy/oia/issues"
+    "url": "https://github.com/pauldcomanici/oia/issues"
   },
-  "homepage": "https://github.com/darkyndy/oia/tree/master/packages/babel-plugin-auto-logger",
+  "homepage": "https://github.com/pauldcomanici/oia/tree/master/packages/babel-plugin-auto-logger",
   "version": "1.2.3",
   "snyk": true
 }
