@@ -1,14 +1,11 @@
 
-const {
+import {
   join,
-} = require('path');
-const {
-  lstatSync,
-  readdirSync,
-} = require('fs-extra');
+} from 'path';
+import fsExtra from 'fs-extra';
 
 
-const setChangelog = require('./package.js');
+import setChangelog from './package.js';
 
 
 /**
@@ -18,7 +15,7 @@ const setChangelog = require('./package.js');
  * @returns {Boolean}
  */
 function isDirectory(path) {
-  return lstatSync(path).isDirectory();
+  return fsExtra.lstatSync(path).isDirectory();
 }
 
 
@@ -30,7 +27,7 @@ function isDirectory(path) {
 function getPackageDirectories() {
   const dirName = 'packages';
   try {
-    return readdirSync(dirName)
+    return fsExtra.readdirSync(dirName)
       .map(name => join(dirName, name))
       .filter(isDirectory);
   } catch (err) {

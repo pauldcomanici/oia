@@ -1,11 +1,7 @@
 
-const parseChangelog = require('changelog-parser');
-const {
-  existsSync,
-  readFileSync,
-  writeFileSync,
-} = require('fs-extra');
-const eol = require('eol');
+import parseChangelog from 'changelog-parser';
+import fsExtra from 'fs-extra';
+import eol from 'eol';
 
 
 /**
@@ -18,7 +14,7 @@ async function setChangelog(packageDir) {
   const unreleasedVersion = 'v-next';
   const changelogFilePath = `${packageDir}/CHANGELOG.md`;
 
-  const packageJsonString = readFileSync(`${packageDir}/package.json`);
+  const packageJsonString = fsExtra.readFileSync(`${packageDir}/package.json`);
   const packageJson = JSON.parse(packageJsonString);
   const newVersion = packageJson.version;
   const packageName = packageJson.name;
@@ -26,9 +22,9 @@ async function setChangelog(packageDir) {
   let changelogExists = false;
   let parsedChangelog;
 
-  console.info(`[${packageName}] Preparing changelog`);
+  console.info(`[${packageName}] Preparing changelog`); // eslint-disable-line no-console
   try {
-    if (existsSync(changelogFilePath)) {
+    if (fsExtra.existsSync(changelogFilePath)) {
       changelogExists = true;
     }
   } catch (err) {
@@ -36,7 +32,7 @@ async function setChangelog(packageDir) {
   }
 
   if (changelogExists) {
-    const fileContent = readFileSync(changelogFilePath, 'utf8');
+    const fileContent = fsExtra.readFileSync(changelogFilePath, 'utf8');
 
     try {
       parsedChangelog = await parseChangelog({
@@ -76,13 +72,13 @@ async function setChangelog(packageDir) {
     );
 
     if (updateChangeLogContent) {
-      writeFileSync(changelogFilePath, eol.lf(newChangelogContent));
-      console.info(`[${packageName}] Changelog was updated`);
+      fsExtra.writeFileSync(changelogFilePath, eol.lf(newChangelogContent));
+      console.info(`[${packageName}] Changelog was updated`); // eslint-disable-line no-console
     } else {
-      console.error(`[${packageName}] Version is the same, cannot generate changelog`);
+      console.error(`[${packageName}] Version is the same, cannot generate changelog`); // eslint-disable-line no-console
     }
   } else {
-    console.error(`[${packageName}] CHANGELOG.md not found in ${packageDir}/`);
+    console.error(`[${packageName}] CHANGELOG.md not found in ${packageDir}/`); // eslint-disable-line no-console
   }
 }
 
