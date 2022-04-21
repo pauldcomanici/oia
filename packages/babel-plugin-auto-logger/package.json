@@ -52,6 +52,6 @@
     "url": "https://github.com/pauldcomanici/oia/issues"
   },
   "homepage": "https://github.com/pauldcomanici/oia/tree/master/packages/babel-plugin-auto-logger",
-  "version": "1.2.4",
+  "version": "2.0.0",
   "snyk": true
 }
