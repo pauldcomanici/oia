@@ -22,7 +22,6 @@
     "report-coverage": "codecov",
     "snyk-protect": "snyk protect",
     "snyk-test": "lerna run --parallel snyk-test",
-    "snyk-wizard": "snyk wizard",
     "test": "lerna run --parallel test",
     "test-coverage": "lerna run --parallel test-coverage",
     "test-e2e": "lerna run --parallel test-e2e"
